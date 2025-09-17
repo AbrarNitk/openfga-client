@@ -11,7 +11,7 @@ pub struct OpenFgaConfig {
     /// OpenFGA store ID
     pub store_id: String,
     /// OpenFGA authorization model ID
-    pub authorization_model_id: Option<String>,
+    pub authorization_model_id: String,
 }
 
 /// Application context that holds shared resources
@@ -49,10 +49,6 @@ impl Ctx {
         // Log OpenFGA configuration
         if !fga_config.store_id.is_empty() {
             tracing::info!("Using OpenFGA store ID: {}", fga_config.store_id);
-        }
-
-        if let Some(model_id) = &fga_config.authorization_model_id {
-            tracing::info!("Using OpenFGA authorization model ID: {}", model_id);
         }
 
         Ok(Self {
@@ -108,11 +104,11 @@ fn get_fga_config() -> OpenFgaConfig {
     let authorization_model_id = match env::var("OPENFGA_AUTH_MODEL_ID") {
         Ok(id) => {
             tracing::info!("Using OpenFGA authorization model ID: {}", id);
-            Some(id)
+            id
         }
         Err(_) => {
             tracing::info!("OPENFGA_AUTH_MODEL_ID not set, will need to be set later");
-            None
+            std::process::exit(1);
         }
     };
 

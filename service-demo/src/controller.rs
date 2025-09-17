@@ -98,12 +98,6 @@ async fn check_permission(
         return Err("OpenFGA store ID not configured".into());
     }
 
-    // Get authorization model ID from context
-    let authorization_model_id = match &ctx.fga_config.authorization_model_id {
-        Some(id) => id,
-        None => return Err("OpenFGA authorization model ID not configured".into()),
-    };
-
     // Get the OpenFGA client
     let mut service_client = ctx.fga_client.clone();
 
@@ -122,7 +116,7 @@ async fn check_permission(
             relation: tuple_key.relation,
             object: tuple_key.object,
         }),
-        authorization_model_id: authorization_model_id.clone(),
+        authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
         ..Default::default()
     });
 
@@ -392,11 +386,7 @@ pub async fn list_objects(
     // Create ListObjects request
     let request = Request::new(ListObjectsRequest {
         store_id: ctx.fga_config.store_id.clone(),
-        authorization_model_id: ctx
-            .fga_config
-            .authorization_model_id
-            .clone()
-            .unwrap_or_default(),
+        authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
         r#type: object_type.clone(),
         consistency: 8,
         relation: relation.clone(),
@@ -459,11 +449,7 @@ pub async fn get_shared_resources(
         for relation in &relations {
             let request = Request::new(ListObjectsRequest {
                 store_id: ctx.fga_config.store_id.clone(),
-                authorization_model_id: ctx
-                    .fga_config
-                    .authorization_model_id
-                    .clone()
-                    .unwrap_or_default(),
+                authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
                 r#type: object_type.to_string(),
                 consistency: 8,
                 relation: relation.to_string(),
