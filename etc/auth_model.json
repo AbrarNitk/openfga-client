@@ -1,0 +1,260 @@
+{
+    "schema_version": "1.1",
+    "type_definitions": [
+      {
+        "type": "user",
+        "relations": {},
+        "metadata": null
+      },
+      {
+        "type": "group",
+        "relations": {
+          "member": {
+            "this": {}
+          }
+        },
+        "metadata": {
+          "relations": {
+            "member": {
+              "directly_related_user_types": [
+                {
+                  "type": "user",
+                  "condition": ""
+                },
+                {
+                  "type": "group",
+                  "relation": "member",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            }
+          },
+          "module": "",
+          "source_info": null
+        }
+      },
+      {
+        "type": "organisation",
+        "relations": {
+          "child": {
+            "this": {}
+          },
+          "descendant_member": {
+            "union": {
+              "child": [
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "member"
+                  }
+                },
+                {
+                  "tupleToUserset": {
+                    "tupleset": {
+                      "object": "",
+                      "relation": "child"
+                    },
+                    "computedUserset": {
+                      "object": "",
+                      "relation": "descendant_member"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "member": {
+            "this": {}
+          }
+        },
+        "metadata": {
+          "relations": {
+            "child": {
+              "directly_related_user_types": [
+                {
+                  "type": "organisation",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            },
+            "descendant_member": {
+              "directly_related_user_types": [],
+              "module": "",
+              "source_info": null
+            },
+            "member": {
+              "directly_related_user_types": [
+                {
+                  "type": "user",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            }
+          },
+          "module": "",
+          "source_info": null
+        }
+      },
+      {
+        "type": "resource",
+        "relations": {
+          "admin": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "owner"
+                  }
+                }
+              ]
+            }
+          },
+          "editor": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "admin"
+                  }
+                }
+              ]
+            }
+          },
+          "owner": {
+            "this": {}
+          },
+          "parent_org": {
+            "this": {}
+          },
+          "viewer": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "object": "",
+                    "relation": "editor"
+                  }
+                },
+                {
+                  "tupleToUserset": {
+                    "tupleset": {
+                      "object": "",
+                      "relation": "parent_org"
+                    },
+                    "computedUserset": {
+                      "object": "",
+                      "relation": "descendant_member"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "metadata": {
+          "relations": {
+            "admin": {
+              "directly_related_user_types": [
+                {
+                  "type": "user",
+                  "condition": ""
+                },
+                {
+                  "type": "group",
+                  "relation": "member",
+                  "condition": ""
+                },
+                {
+                  "type": "organisation",
+                  "relation": "member",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            },
+            "editor": {
+              "directly_related_user_types": [
+                {
+                  "type": "user",
+                  "condition": ""
+                },
+                {
+                  "type": "group",
+                  "relation": "member",
+                  "condition": ""
+                },
+                {
+                  "type": "organisation",
+                  "relation": "member",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            },
+            "owner": {
+              "directly_related_user_types": [
+                {
+                  "type": "user",
+                  "condition": ""
+                },
+                {
+                  "type": "organisation",
+                  "relation": "member",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            },
+            "parent_org": {
+              "directly_related_user_types": [
+                {
+                  "type": "organisation",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            },
+            "viewer": {
+              "directly_related_user_types": [
+                {
+                  "type": "user",
+                  "condition": ""
+                },
+                {
+                  "type": "group",
+                  "relation": "member",
+                  "condition": ""
+                }
+              ],
+              "module": "",
+              "source_info": null
+            }
+          },
+          "module": "",
+          "source_info": null
+        }
+      }
+    ],
+    "conditions": {}
+  }

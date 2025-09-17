@@ -1,0 +1,48 @@
+model
+    schema 1.1
+
+type user
+
+
+type group
+    relations
+        define member: [user, group#member]
+
+
+type organisation
+    relations
+        define member: [user]
+        define child: [organisation]
+        define descendant_member: member or descendant_member from child
+
+
+type service
+    relations
+        define parent_org: [organisation]
+        define shared_to_child_orgs: [group#member]
+        define admin: [user, group#member, organisation#member] or shared_to_child_orgs from parent_org
+        define editor: [user, group#member, organisation#member] or admin
+        define viewer: [user, group#member] or editor or descendant_member from parent_org
+
+
+type service_type
+    relations
+        define parent_service: [service]
+        define parent_org: [organisation]
+        define shared_to_child_orgs: [group#member]
+        define admin: [user, group#member, organisation#member] or shared_to_child_orgs from parent_org or admin from parent_service
+        define editor: [user, group#member, organisation#member] or admin
+        define viewer: [user, group#member] or editor or descendant_member from parent_org
+
+
+type resource
+    relations
+        define parent_service_type: [service_type]
+        define parent_service: [service]
+        define parent_org: [organisation]
+        define shared_to_child_orgs: [group#member]
+        define owner: [user, organisation#member]
+        define admin: [user, group#member, organisation#member] or owner or shared_to_child_orgs from parent_org or admin from parent_service_type
+        define editor: [user, group#member, organisation#member] or admin
+        define viewer: [user, group#member] or editor or descendant_member from parent_org
+

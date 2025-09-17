@@ -1,0 +1,18 @@
+{
+  "description": "Updated resource via API",
+  "properties": {
+    "environment": "production",
+    "version": "1.1.0",
+    "tags": ["api", "updated", "production"],
+    "metadata": {
+      "updated_by": "api-test-script",
+      "purpose": "testing updates",
+      "last_modified": "2024-01-15T10:30:00Z"
+    }
+  },
+  "configuration": {
+    "enabled": true,
+    "max_connections": 200,
+    "timeout": 60
+  }
+}

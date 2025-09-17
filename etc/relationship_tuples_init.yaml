@@ -1,0 +1,48 @@
+tuples:
+    # Organization memberships
+    - user: user:abrar
+      relation: member
+      object: organisation:system
+    - user: user:abrar
+      relation: admin
+      object: organisation:system
+
+    # Parent-child organization relationships
+    - user: organisation:partner
+      relation: child
+      object: organisation:system
+    - user: organisation:partner_child
+      relation: child
+      object: organisation:partner
+
+    # Group memberships
+    - user: user:anne
+      relation: member
+      object: group:admin
+    - user: user:emily
+      relation: member
+      object: group:admin
+    - user: user:bob
+      relation: member
+      object: group:admin
+
+    # Resource-to-organization relationships
+    - user: organisation:system
+      relation: parent_org
+      object: resource:connector/s3/101
+
+    # Resource permissions
+    - user: user:bob
+      relation: owner
+      object: resource:connector/mysql/301
+    - user: group:admin#member
+      relation: admin
+      object: resource:connector/mysql/301
+    - user: user:diana
+      relation: editor
+      object: resource:connector/gcs/401
+
+    # Alice as admin on a new document
+    - user: user:alice
+      relation: admin
+      object: resource:connector/document/601

@@ -1,0 +1,17 @@
+{
+  "description": "A new resource created via API",
+  "properties": {
+    "environment": "development",
+    "version": "1.0.0",
+    "tags": ["api", "test", "demo"],
+    "metadata": {
+      "created_by": "api-test-script",
+      "purpose": "testing"
+    }
+  },
+  "configuration": {
+    "enabled": true,
+    "max_connections": 100,
+    "timeout": 30
+  }
+}

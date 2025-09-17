@@ -1,0 +1,11 @@
+[package]
+name = "openfga-client"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tonic = { workspace = true }
+prost = { workspace = true }
+prost-wkt = { workspace = true }
+prost-wkt-types = { workspace = true }
+serde = { version = "1.0.225", features = ["derive"] }

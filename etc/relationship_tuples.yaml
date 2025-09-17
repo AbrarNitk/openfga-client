@@ -1,0 +1,343 @@
+tuples:
+    # Organization memberships
+    - user: user:anne
+      relation: member
+      object: organisation:system
+    - user: user:bob
+      relation: member
+      object: organisation:system
+    - user: user:alice
+      relation: member
+      object: organisation:system
+    
+    # Org B (partner) members
+    - user: user:carl
+      relation: member
+      object: organisation:partner
+    - user: user:diana
+      relation: member
+      object: organisation:partner
+    
+    # Org C (partner_child) members  
+    - user: user:emily
+      relation: member
+      object: organisation:partner_child
+    - user: user:frank
+      relation: member
+      object: organisation:partner_child
+
+    # Parent-child organization relationships
+    # Org A (system) -> Org B (partner)
+    - user: organisation:partner
+      relation: child
+      object: organisation:system
+    
+    # Org A (system) -> Org C (partner_child) - direct child of A
+    - user: organisation:partner_child
+      relation: child
+      object: organisation:system
+
+    # Group memberships
+    # Admin group (system org members)
+    - user: user:anne
+      relation: member
+      object: group:admin
+    - user: user:bob
+      relation: member
+      object: group:admin
+    - user: user:alice
+      relation: member
+      object: group:admin
+
+    # Selective sharing groups
+    # Group for sharing ONLY with Org B
+    - user: user:carl
+      relation: member
+      object: group:share_with_b_only
+    - user: user:diana
+      relation: member
+      object: group:share_with_b_only
+
+    # Group for sharing ONLY with Org C
+    - user: user:emily
+      relation: member
+      object: group:share_with_c_only
+    - user: user:frank
+      relation: member
+      object: group:share_with_c_only
+
+    # Group for sharing with BOTH Org B and Org C
+    - user: user:carl
+      relation: member
+      object: group:share_with_b_and_c
+    - user: user:diana
+      relation: member
+      object: group:share_with_b_and_c
+    - user: user:emily
+      relation: member
+      object: group:share_with_b_and_c
+    - user: user:frank
+      relation: member
+      object: group:share_with_b_and_c
+
+    # Service definitions and relationships
+    # Org A (system) services
+    - user: organisation:system
+      relation: parent_org
+      object: service:connector
+    - user: organisation:system
+      relation: parent_org
+      object: service:analytics
+    - user: organisation:system
+      relation: parent_org
+      object: service:security
+    - user: organisation:system
+      relation: parent_org
+      object: service:monitoring
+
+    # Org B (partner) services
+    - user: organisation:partner
+      relation: parent_org
+      object: service:partner_tools
+
+    # Org C (partner_child) services
+    - user: organisation:partner_child
+      relation: parent_org
+      object: service:reporting
+
+    # Service type definitions and relationships
+    # Connector service types (Org A)
+    - user: service:connector
+      relation: parent_service
+      object: service_type:connector/s3
+    - user: service:connector
+      relation: parent_service
+      object: service_type:connector/mysql
+    - user: service:connector
+      relation: parent_service
+      object: service_type:connector/gcs
+    - user: service:connector
+      relation: parent_service
+      object: service_type:connector/document
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:connector/s3
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:connector/mysql
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:connector/gcs
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:connector/document
+
+    # Analytics service types (Org A)
+    - user: service:analytics
+      relation: parent_service
+      object: service_type:analytics/dashboard
+    - user: service:analytics
+      relation: parent_service
+      object: service_type:analytics/reports
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:analytics/dashboard
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:analytics/reports
+
+    # Security service types (Org A)
+    - user: service:security
+      relation: parent_service
+      object: service_type:security/audit
+    - user: service:security
+      relation: parent_service
+      object: service_type:security/compliance
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:security/audit
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:security/compliance
+
+    # Monitoring service types (Org A)
+    - user: service:monitoring
+      relation: parent_service
+      object: service_type:monitoring/metrics
+    - user: service:monitoring
+      relation: parent_service
+      object: service_type:monitoring/alerts
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:monitoring/metrics
+    - user: organisation:system
+      relation: parent_org
+      object: service_type:monitoring/alerts
+
+    # Resource relationships to services, service types, and organizations
+    # Connector resources
+    - user: service_type:connector/s3
+      relation: parent_service_type
+      object: resource:connector/s3/101
+    - user: service:connector
+      relation: parent_service
+      object: resource:connector/s3/101
+    - user: organisation:system
+      relation: parent_org
+      object: resource:connector/s3/101
+
+    - user: service_type:connector/mysql
+      relation: parent_service_type
+      object: resource:connector/mysql/301
+    - user: service:connector
+      relation: parent_service
+      object: resource:connector/mysql/301
+    - user: organisation:system
+      relation: parent_org
+      object: resource:connector/mysql/301
+
+    - user: service_type:connector/gcs
+      relation: parent_service_type
+      object: resource:connector/gcs/401
+    - user: service:connector
+      relation: parent_service
+      object: resource:connector/gcs/401
+    - user: organisation:system
+      relation: parent_org
+      object: resource:connector/gcs/401
+
+    - user: service_type:connector/document
+      relation: parent_service_type
+      object: resource:connector/document/601
+    - user: service:connector
+      relation: parent_service
+      object: resource:connector/document/601
+    - user: organisation:system
+      relation: parent_org
+      object: resource:connector/document/601
+
+    # Analytics resources
+    - user: service_type:analytics/dashboard
+      relation: parent_service_type
+      object: resource:analytics/dashboard/main
+    - user: service:analytics
+      relation: parent_service
+      object: resource:analytics/dashboard/main
+    - user: organisation:system
+      relation: parent_org
+      object: resource:analytics/dashboard/main
+
+    - user: service_type:analytics/reports
+      relation: parent_service_type
+      object: resource:analytics/reports/monthly
+    - user: service:analytics
+      relation: parent_service
+      object: resource:analytics/reports/monthly
+    - user: organisation:system
+      relation: parent_org
+      object: resource:analytics/reports/monthly
+
+    # Security resources
+    - user: service_type:security/audit
+      relation: parent_service_type
+      object: resource:security/audit/logs
+    - user: service:security
+      relation: parent_service
+      object: resource:security/audit/logs
+    - user: organisation:system
+      relation: parent_org
+      object: resource:security/audit/logs
+
+    - user: service_type:security/compliance
+      relation: parent_service_type
+      object: resource:security/compliance/reports
+    - user: service:security
+      relation: parent_service
+      object: resource:security/compliance/reports
+    - user: organisation:system
+      relation: parent_org
+      object: resource:security/compliance/reports
+
+    # Monitoring resources
+    - user: service_type:monitoring/metrics
+      relation: parent_service_type
+      object: resource:monitoring/metrics/cpu
+    - user: service:monitoring
+      relation: parent_service
+      object: resource:monitoring/metrics/cpu
+    - user: organisation:system
+      relation: parent_org
+      object: resource:monitoring/metrics/cpu
+
+    - user: service_type:monitoring/alerts
+      relation: parent_service_type
+      object: resource:monitoring/alerts/critical
+    - user: service:monitoring
+      relation: parent_service
+      object: resource:monitoring/alerts/critical
+    - user: organisation:system
+      relation: parent_org
+      object: resource:monitoring/alerts/critical
+
+    # Resource permissions (direct ownership)
+    - user: user:bob
+      relation: owner
+      object: resource:connector/mysql/301
+    - user: group:admin#member
+      relation: admin
+      object: resource:connector/mysql/301
+    - user: user:alice
+      relation: admin
+      object: resource:connector/document/601
+
+    # =================================================================
+    # SELECTIVE SHARING EXAMPLES: Org A → Org B, Org A → Org C, Org A → Both
+    # =================================================================
+
+    # 1. SHARE WITH ORG B ONLY (partner org)
+    # Connector service - only Org B gets access
+    - user: group:share_with_b_only#member
+      relation: shared_to_child_orgs
+      object: service:connector
+
+    # Analytics dashboard service type - only Org B gets access  
+    - user: group:share_with_b_only#member
+      relation: shared_to_child_orgs
+      object: service_type:analytics/dashboard
+
+    # Specific security audit resource - only Org B gets access
+    - user: group:share_with_b_only#member
+      relation: shared_to_child_orgs
+      object: resource:security/audit/logs
+
+    # 2. SHARE WITH ORG C ONLY (partner_child org)
+    # Analytics reports service type - only Org C gets access
+    - user: group:share_with_c_only#member
+      relation: shared_to_child_orgs
+      object: service_type:analytics/reports
+
+    # Security compliance resource - only Org C gets access
+    - user: group:share_with_c_only#member
+      relation: shared_to_child_orgs
+      object: resource:security/compliance/reports
+
+    # Monitoring metrics service type - only Org C gets access
+    - user: group:share_with_c_only#member
+      relation: shared_to_child_orgs
+      object: service_type:monitoring/metrics
+
+    # 3. SHARE WITH BOTH ORG B AND ORG C
+    # Security service - both Org B and Org C get access
+    - user: group:share_with_b_and_c#member
+      relation: shared_to_child_orgs
+      object: service:security
+
+    # Monitoring alerts resource - both Org B and Org C get access
+    - user: group:share_with_b_and_c#member
+      relation: shared_to_child_orgs
+      object: resource:monitoring/alerts/critical
+
+    # Analytics monthly reports resource - both Org B and Org C get access
+    - user: group:share_with_b_and_c#member
+      relation: shared_to_child_orgs
+      object: resource:analytics/reports/monthly
