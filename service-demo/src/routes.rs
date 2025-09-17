@@ -34,7 +34,10 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
     let public_routes = Router::new()
         .route("/health", get(health_check))
         .route("/", get(root))
-        .route("/api/auth/create-tuple", post(fga::create_tuple));
+        .route("/api/auth/create-tuple", post(fga::create_tuple))
+        .route("/api/auth/list-objs", get(fga::list_objects))
+        .route("/api/auth/list-users", get(fga::list_users))
+        .route("/api/auth/list-tuples", get(fga::list_tuples));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)
