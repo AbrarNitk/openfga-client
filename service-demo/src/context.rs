@@ -2,7 +2,6 @@ use openfga_client::OpenFgaServiceClient;
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;
 use std::env;
-use std::sync::Arc;
 use std::time::Duration;
 use tonic::transport::Channel;
 
@@ -30,7 +29,7 @@ pub struct Ctx {
 
 impl Ctx {
     /// Create a new application context
-    pub async fn new() -> Result<Arc<Self>, Box<dyn std::error::Error>> {
+    pub async fn new() -> Result<Self, Box<dyn std::error::Error>> {
         // Load environment variables from .env file if it exists
         dotenv::dotenv().ok();
 
@@ -56,12 +55,12 @@ impl Ctx {
             tracing::info!("Using OpenFGA authorization model ID: {}", model_id);
         }
 
-        Ok(Arc::new(Self {
+        Ok(Self {
             db,
             profile,
             fga_client,
             fga_config,
-        }))
+        })
     }
 }
 

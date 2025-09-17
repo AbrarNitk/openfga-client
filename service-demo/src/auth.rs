@@ -6,7 +6,6 @@ use axum::{
     response::Response,
 };
 use serde_json::{Value, json};
-use std::sync::Arc;
 
 use crate::context::Ctx;
 
@@ -18,7 +17,7 @@ pub struct AuthUser {
 
 /// Authentication middleware that extracts user ID from headers
 pub async fn auth_middleware(
-    State(_ctx): State<Arc<Ctx>>,
+    State(_ctx): State<Ctx>,
     headers: HeaderMap,
     mut request: Request,
     next: Next,

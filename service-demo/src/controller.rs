@@ -11,7 +11,6 @@ use openfga_client::{
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::collections::HashMap;
-use std::sync::Arc;
 use tonic::Request;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -81,7 +80,7 @@ pub struct SharedResource {
 
 /// Check if a user has the required permission for a resource
 async fn check_permission(
-    ctx: &Arc<Ctx>,
+    ctx: &Ctx,
     user_id: &str,
     relation: &str,
     object_id: &str,
@@ -161,7 +160,7 @@ async fn check_permission(
 
 // Create a new resource
 pub async fn create_resource(
-    State(ctx): State<Arc<Ctx>>,
+    State(ctx): State<Ctx>,
     Extension(auth_user): Extension<AuthUser>,
     Path(params): Path<ResourceParams>,
     Json(_payload): Json<Value>,
@@ -235,7 +234,7 @@ pub async fn create_resource(
 
 // Update an existing resource
 pub async fn update_resource(
-    State(ctx): State<Arc<Ctx>>,
+    State(ctx): State<Ctx>,
     Extension(auth_user): Extension<AuthUser>,
     Path(params): Path<ResourceParams>,
     Json(_payload): Json<Value>,
@@ -305,7 +304,7 @@ pub async fn update_resource(
 
 // Get a resource
 pub async fn get_resource(
-    State(ctx): State<Arc<Ctx>>,
+    State(ctx): State<Ctx>,
     Extension(auth_user): Extension<AuthUser>,
     Path(params): Path<ResourceParams>,
 ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
@@ -375,7 +374,7 @@ pub async fn get_resource(
 
 /// List objects that a user has access to using OpenFGA ListObjects API
 pub async fn list_objects(
-    State(ctx): State<Arc<Ctx>>,
+    State(ctx): State<Ctx>,
     Extension(auth_user): Extension<AuthUser>,
     Query(params): Query<ListQueryParams>,
 ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
@@ -441,7 +440,7 @@ pub async fn list_objects(
 
 /// Get shared resources from parent organizations (comprehensive approach)
 pub async fn get_shared_resources(
-    State(ctx): State<Arc<Ctx>>,
+    State(ctx): State<Ctx>,
     Extension(auth_user): Extension<AuthUser>,
 ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
     let user_id = &auth_user.user_id;
@@ -591,7 +590,7 @@ pub async fn get_shared_resources(
 
 // Delete a resource
 pub async fn delete_resource(
-    State(ctx): State<Arc<Ctx>>,
+    State(ctx): State<Ctx>,
     Extension(auth_user): Extension<AuthUser>,
     Path(params): Path<ResourceParams>,
 ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {

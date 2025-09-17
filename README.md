@@ -690,3 +690,5 @@ For faster builds:
 ## References
 
 - [OpenFGA API](https://github.com/openfga/api)
+- [OpenFGA Rust Client](https://github.com/liamwh/openfga-rs)
+

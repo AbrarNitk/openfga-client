@@ -1,6 +1,6 @@
 use crate::auth;
 use crate::context::Ctx;
-use crate::controller;
+use crate::{controller, fga};
 use axum::{
     Json, Router,
     http::StatusCode,
@@ -8,10 +8,9 @@ use axum::{
     routing::{get, post},
 };
 use serde_json::{Value, json};
-use std::sync::Arc;
 
 /// Create all routes for the application
-pub fn create_routes<S: Send + Sync>(ctx: Arc<Ctx>) -> Router<S> {
+pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
     // Create protected routes that require authentication
     let protected_routes = Router::new()
         .route(
@@ -34,7 +33,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Arc<Ctx>) -> Router<S> {
     // Create public routes that don't require authentication
     let public_routes = Router::new()
         .route("/health", get(health_check))
-        .route("/", get(root));
+        .route("/", get(root))
+        .route("/api/auth/create-tuple", post(fga::create_tuple));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)
