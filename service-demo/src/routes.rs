@@ -37,6 +37,7 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/", get(root))
         .route("/api/ofga/tuple-write", post(apis::tuples::write_tuple))
         .route("/api/ofga/tuple-read", post(apis::tuples::read_tuple))
+        .route("/api/ofga/tuple-delete", post(apis::tuples::delete_tuple))
         .route("/api/auth/list-objs", get(fga::list_objects))
         .route("/api/auth/list-users", get(fga::list_users))
         .route("/api/auth/list-tuples", get(fga::list_tuples))

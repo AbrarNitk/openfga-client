@@ -1,7 +1,7 @@
 use axum::{Json, extract::State, http::StatusCode};
 use openfga_client::{
-    ConsistencyPreference, ReadRequest, ReadRequestTupleKey, TupleKey, WriteRequest,
-    WriteRequestWrites,
+    ConsistencyPreference, ReadRequest, ReadRequestTupleKey, TupleKey, TupleKeyWithoutCondition,
+    WriteRequest, WriteRequestDeletes, WriteRequestWrites,
 };
 use serde_json::{Value, json};
 
@@ -62,5 +62,37 @@ pub async fn read_tuple(
     Ok((
         StatusCode::OK,
         Json(json!({ "message": "Tuple read", "read_response": read_response.into_inner() })),
+    ))
+}
+
+pub async fn delete_tuple(
+    State(ctx): State<Ctx>,
+    Json(tuple): Json<TupleKeyWithoutCondition>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    let delete_request = WriteRequest {
+        authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
+        store_id: ctx.fga_config.store_id.clone(),
+        deletes: Some(WriteRequestDeletes {
+            tuple_keys: vec![tuple],
+            on_missing: "error".to_string(),
+        }),
+        writes: None,
+    };
+
+    let delete_response = match ctx.fga_client.clone().write(delete_request).await {
+        Ok(delete_response) => delete_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "message": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            json!({ "message": "Tuple deleted", "delete_response": delete_response.into_inner() }),
+        ),
     ))
 }
