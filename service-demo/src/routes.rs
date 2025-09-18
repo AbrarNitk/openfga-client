@@ -35,13 +35,7 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
     let public_routes = Router::new()
         .route("/health", get(health_check))
         .route("/", get(root))
-        .route("/api/ofga/tuple-write", post(apis::tuples::write_tuple))
-        .route("/api/ofga/tuple-read", post(apis::tuples::read_tuple))
-        .route("/api/ofga/tuple-delete", post(apis::tuples::delete_tuple))
-        .route("/api/ofga/tuple-changes", post(apis::tuples::tuple_changes))
-        .route("/api/auth/list-objs", get(fga::list_objects))
-        .route("/api/auth/list-users", get(fga::list_users))
-        .route("/api/auth/list-tuples", get(fga::list_tuples))
+        // store APIs
         .route("/api/ofga/store", post(apis::stores::create_store))
         .route("/api/ofga/store/{store_id}", get(apis::stores::get_store))
         .route("/api/ofga/store", get(apis::stores::list_stores))
@@ -49,6 +43,7 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
             "/api/ofga/store/{store_id}",
             delete(apis::stores::delete_store),
         )
+        // model APIs
         .route(
             "/api/ofga/model/{store_id}",
             post(apis::auth_model::create_auth_model),
@@ -64,7 +59,17 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route(
             "/api/ofga/model/{store_id}",
             get(apis::auth_model::list_auth_models),
-        );
+        )
+        // tuple APIs
+        .route("/api/ofga/tuple-write", post(apis::tuples::write_tuple))
+        .route("/api/ofga/tuple-read", post(apis::tuples::read_tuple))
+        .route("/api/ofga/tuple-delete", post(apis::tuples::delete_tuple))
+        .route("/api/ofga/tuple-changes", post(apis::tuples::tuple_changes))
+        // tuple query APIs
+        .route("/api/ofga/list-objs", get(fga::list_objects))
+        .route("/api/ofga/list-users", get(fga::list_users))
+        .route("/api/ofga/list-tuples", get(fga::list_tuples))
+        .route("/api/ofga/check", post(apis::query::check));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)
