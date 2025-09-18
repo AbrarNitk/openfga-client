@@ -1,7 +1,7 @@
 use axum::{Json, extract::State, http::StatusCode};
 use openfga_client::{
-    ConsistencyPreference, ReadRequest, ReadRequestTupleKey, TupleKey, TupleKeyWithoutCondition,
-    WriteRequest, WriteRequestDeletes, WriteRequestWrites,
+    ConsistencyPreference, ReadChangesRequest, ReadRequest, ReadRequestTupleKey, TupleKey,
+    TupleKeyWithoutCondition, WriteRequest, WriteRequestDeletes, WriteRequestWrites,
 };
 use serde_json::{Value, json};
 
@@ -93,6 +93,60 @@ pub async fn delete_tuple(
         StatusCode::OK,
         Json(
             json!({ "message": "Tuple deleted", "delete_response": delete_response.into_inner() }),
+        ),
+    ))
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct Timestamp {
+    pub seconds: i64,
+    pub nanos: i32,
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct TupleChangesRequest {
+    pub r#type: String,
+    pub page_size: Option<i32>,
+    pub continuation_token: Option<String>,
+    pub start_time: Option<Timestamp>,
+}
+
+pub async fn tuple_changes(
+    State(ctx): State<Ctx>,
+    Json(tuple): Json<TupleChangesRequest>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    let tuple_changes_request = ReadChangesRequest {
+        store_id: ctx.fga_config.store_id.clone(),
+        r#type: tuple.r#type,
+        page_size: Some(100),
+        continuation_token: String::new(),
+        start_time: tuple
+            .start_time
+            .map(|timestamp| prost_wkt_types::Timestamp {
+                seconds: timestamp.seconds,
+                nanos: timestamp.nanos,
+            }),
+    };
+
+    let tuple_changes_response = match ctx
+        .fga_client
+        .clone()
+        .read_changes(tuple_changes_request)
+        .await
+    {
+        Ok(tuple_changes_response) => tuple_changes_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({ "message": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            json!({ "message": "Tuple changes", "tuple_changes_response": tuple_changes_response.into_inner() }),
         ),
     ))
 }
