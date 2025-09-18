@@ -38,7 +38,12 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/api/auth/list-objs", get(fga::list_objects))
         .route("/api/auth/list-users", get(fga::list_users))
         .route("/api/auth/list-tuples", get(fga::list_tuples))
-        .route("/api/ofga/create-store", post(apis::stores::create_store));
+        .route("/api/ofga/create-store", post(apis::stores::create_store))
+        .route(
+            "/api/ofga/get-store/{store_id}",
+            get(apis::stores::get_store),
+        )
+        .route("/api/ofga/list-stores", get(apis::stores::list_stores));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)

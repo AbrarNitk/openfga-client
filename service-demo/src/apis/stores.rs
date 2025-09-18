@@ -1,5 +1,9 @@
-use axum::{Json, extract::State, http::StatusCode};
-use openfga_client::CreateStoreRequest;
+use axum::{
+    Json,
+    extract::{Path, Query, State},
+    http::StatusCode,
+};
+use openfga_client::{CreateStoreRequest, GetStoreRequest, ListStoresRequest};
 use serde_json::Value;
 
 use crate::context::Ctx;
@@ -35,22 +39,66 @@ pub async fn create_store(
     ))
 }
 
-// pub async fn get_store(
+#[derive(Debug, serde::Deserialize)]
+pub struct GetStoreReq {
+    pub store_id: String,
+}
 
-//     State(ctx): State<Ctx>,
-//     Json(tuple): Json<GetStoreReq>,
-// ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
-//     let get_request = GetStoreRequest {
-//         store_id: ctx.fga_config.store_id.clone(),
-//     };
-// }
+pub async fn get_store(
+    State(ctx): State<Ctx>,
+    Path(store_id): Path<String>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    let get_request = GetStoreRequest { store_id: store_id };
 
-// pub async fn list_stores(
-//     State(ctx): State<Ctx>,
-//     Json(tuple): Json<ListStoresReq>,
-// ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
-//     let list_request = ListStoresRequest {
-//         store_id: ctx.fga_config.store_id.clone(),
-//         authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
-//     };
-// }
+    let get_response = match ctx.fga_client.clone().get_store(get_request).await {
+        Ok(get_response) => get_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "message": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            serde_json::json!({ "message": "Store fetched", "get_response": get_response.into_inner() }),
+        ),
+    ))
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct ListStoresQuery {
+    pub page_size: Option<i32>,
+    pub continuation_token: Option<String>,
+    pub name: Option<String>,
+}
+
+pub async fn list_stores(
+    State(ctx): State<Ctx>,
+    Query(tuple): Query<ListStoresQuery>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    let list_request = ListStoresRequest {
+        page_size: tuple.page_size,
+        continuation_token: tuple.continuation_token.unwrap_or_else(|| String::new()),
+        name: tuple.name.unwrap_or_else(|| String::new()),
+    };
+
+    let list_response = match ctx.fga_client.clone().list_stores(list_request).await {
+        Ok(list_response) => list_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "message": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            serde_json::json!({ "message": "Stores listed", "list_response": list_response.into_inner() }),
+        ),
+    ))
+}
