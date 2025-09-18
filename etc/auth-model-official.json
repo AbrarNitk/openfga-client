@@ -1,0 +1,222 @@
+{
+    "schema_version": "1.1",
+    "type_definitions": [
+      {
+        "type": "user"
+      },
+      {
+        "metadata": {
+          "relations": {
+            "member": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "relation": "member",
+                  "type": "group"
+                }
+              ]
+            }
+          }
+        },
+        "relations": {
+          "member": {
+            "this": {}
+          }
+        },
+        "type": "group"
+      },
+      {
+        "metadata": {
+          "relations": {
+            "admin": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "relation": "admin",
+                  "type": "organisation"
+                }
+              ]
+            },
+            "child": {
+              "directly_related_user_types": [
+                {
+                  "type": "organisation"
+                }
+              ]
+            },
+            "descendant_member": {},
+            "member": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                }
+              ]
+            }
+          }
+        },
+        "relations": {
+          "admin": {
+            "this": {}
+          },
+          "child": {
+            "this": {}
+          },
+          "descendant_member": {
+            "union": {
+              "child": [
+                {
+                  "computedUserset": {
+                    "relation": "member"
+                  }
+                },
+                {
+                  "tupleToUserset": {
+                    "computedUserset": {
+                      "relation": "descendant_member"
+                    },
+                    "tupleset": {
+                      "relation": "child"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "member": {
+            "this": {}
+          }
+        },
+        "type": "organisation"
+      },
+      {
+        "metadata": {
+          "relations": {
+            "admin": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "relation": "member",
+                  "type": "group"
+                },
+                {
+                  "relation": "member",
+                  "type": "organisation"
+                }
+              ]
+            },
+            "editor": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "relation": "member",
+                  "type": "group"
+                },
+                {
+                  "relation": "member",
+                  "type": "organisation"
+                }
+              ]
+            },
+            "owner": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "relation": "member",
+                  "type": "organisation"
+                }
+              ]
+            },
+            "parent_org": {
+              "directly_related_user_types": [
+                {
+                  "type": "organisation"
+                }
+              ]
+            },
+            "viewer": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "relation": "member",
+                  "type": "group"
+                }
+              ]
+            }
+          }
+        },
+        "relations": {
+          "admin": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "relation": "owner"
+                  }
+                }
+              ]
+            }
+          },
+          "editor": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "relation": "admin"
+                  }
+                }
+              ]
+            }
+          },
+          "owner": {
+            "this": {}
+          },
+          "parent_org": {
+            "this": {}
+          },
+          "viewer": {
+            "union": {
+              "child": [
+                {
+                  "this": {}
+                },
+                {
+                  "computedUserset": {
+                    "relation": "editor"
+                  }
+                },
+                {
+                  "tupleToUserset": {
+                    "computedUserset": {
+                      "relation": "descendant_member"
+                    },
+                    "tupleset": {
+                      "relation": "parent_org"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "type": "resource"
+      }
+    ]
+  }

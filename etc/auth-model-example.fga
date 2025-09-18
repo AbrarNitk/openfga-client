@@ -1,0 +1,23 @@
+model
+  schema 1.1
+
+type user
+
+type group
+  relations
+    define member: [user, group#member]
+
+type organisation
+  relations
+    define admin: [user, organisation#admin]
+    define child: [organisation]
+    define descendant_member: member or descendant_member from child
+    define member: [user]
+
+type resource
+  relations
+    define admin: [user, group#member, organisation#member] or owner
+    define editor: [user, group#member, organisation#member] or admin
+    define owner: [user, organisation#member]
+    define parent_org: [organisation]
+    define viewer: [user, group#member] or editor or descendant_member from parent_org

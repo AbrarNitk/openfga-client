@@ -51,6 +51,10 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
             post(apis::auth_model::create_auth_model),
         )
         .route(
+            "/api/ofga/model-json/{store_id}",
+            post(apis::auth_model::create_auth_model_from_json),
+        )
+        .route(
             "/api/ofga/model/{store_id}",
             put(apis::auth_model::update_auth_model),
         );

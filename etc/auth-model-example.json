@@ -9,7 +9,6 @@
       {
         "type": "group",
         "relations": {
-          
           "member": {
             "this": {}
           }
@@ -19,26 +18,23 @@
             "member": {
               "directly_related_user_types": [
                 {
-                  "type": "user",
-                  "condition": ""
+                  "type": "user"
                 },
                 {
                   "type": "group",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             }
-          },
-          "module": "",
-          "source_info": null
+          }
         }
       },
       {
         "type": "organisation",
         "relations": {
+          "admin": {
+            "this": {}
+          },
           "child": {
             "this": {}
           },
@@ -47,19 +43,16 @@
               "child": [
                 {
                   "computedUserset": {
-                    "object": "",
                     "relation": "member"
                   }
                 },
                 {
                   "tupleToUserset": {
-                    "tupleset": {
-                      "object": "",
-                      "relation": "child"
-                    },
                     "computedUserset": {
-                      "object": "",
                       "relation": "descendant_member"
+                    },
+                    "tupleset": {
+                      "relation": "child"
                     }
                   }
                 }
@@ -72,34 +65,35 @@
         },
         "metadata": {
           "relations": {
+            "admin": {
+              "directly_related_user_types": [
+                {
+                  "type": "user"
+                },
+                {
+                  "type": "organisation",
+                  "relation": "admin"
+                }
+              ]
+            },
             "child": {
               "directly_related_user_types": [
                 {
-                  "type": "organisation",
-                  "condition": ""
+                  "type": "organisation"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             },
             "descendant_member": {
-              "directly_related_user_types": [],
-              "module": "",
-              "source_info": null
+              "directly_related_user_types": []
             },
             "member": {
               "directly_related_user_types": [
                 {
-                  "type": "user",
-                  "condition": ""
+                  "type": "user"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             }
-          },
-          "module": "",
-          "source_info": null
+          }
         }
       },
       {
@@ -113,7 +107,6 @@
                 },
                 {
                   "computedUserset": {
-                    "object": "",
                     "relation": "owner"
                   }
                 }
@@ -128,7 +121,6 @@
                 },
                 {
                   "computedUserset": {
-                    "object": "",
                     "relation": "admin"
                   }
                 }
@@ -149,19 +141,16 @@
                 },
                 {
                   "computedUserset": {
-                    "object": "",
                     "relation": "editor"
                   }
                 },
                 {
                   "tupleToUserset": {
-                    "tupleset": {
-                      "object": "",
-                      "relation": "parent_org"
-                    },
                     "computedUserset": {
-                      "object": "",
                       "relation": "descendant_member"
+                    },
+                    "tupleset": {
+                      "relation": "parent_org"
                     }
                   }
                 }
@@ -174,88 +163,64 @@
             "admin": {
               "directly_related_user_types": [
                 {
-                  "type": "user",
-                  "condition": ""
+                  "type": "user"
                 },
                 {
                   "type": "group",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 },
                 {
                   "type": "organisation",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             },
             "editor": {
               "directly_related_user_types": [
                 {
-                  "type": "user",
-                  "condition": ""
+                  "type": "user"
                 },
                 {
                   "type": "group",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 },
                 {
                   "type": "organisation",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             },
             "owner": {
               "directly_related_user_types": [
                 {
-                  "type": "user",
-                  "condition": ""
+                  "type": "user"
                 },
                 {
                   "type": "organisation",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             },
             "parent_org": {
               "directly_related_user_types": [
                 {
-                  "type": "organisation",
-                  "condition": ""
+                  "type": "organisation"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             },
             "viewer": {
               "directly_related_user_types": [
                 {
-                  "type": "user",
-                  "condition": ""
+                  "type": "user"
                 },
                 {
                   "type": "group",
-                  "relation": "member",
-                  "condition": ""
+                  "relation": "member"
                 }
-              ],
-              "module": "",
-              "source_info": null
+              ]
             }
-          },
-          "module": "",
-          "source_info": null
+          }
         }
       }
-    ],
-    "conditions": {}
+    ]
   }
