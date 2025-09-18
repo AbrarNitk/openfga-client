@@ -3,11 +3,12 @@ use std::collections::HashMap;
 use crate::{context::Ctx, json_types::JsonAuthModel};
 use axum::{
     Json,
-    extract::{Path, State},
+    extract::{Path, Query, State},
     http::StatusCode,
 };
 use openfga_client::{
-    Condition, ReadAuthorizationModelRequest, TypeDefinition, WriteAuthorizationModelRequest,
+    Condition, ReadAuthorizationModelRequest, ReadAuthorizationModelsRequest, TypeDefinition,
+    WriteAuthorizationModelRequest,
 };
 use serde_json::Value;
 
@@ -157,6 +158,48 @@ pub async fn get_auth_model(
         StatusCode::OK,
         Json(
             serde_json::json!({ "message": "Auth model fetched", "get_response": get_response.into_inner() }),
+        ),
+    ))
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct ReadAuthorizationModelsQuery {
+    pub page_size: Option<i32>,
+    pub continuation_token: Option<String>,
+}
+
+pub async fn list_auth_models(
+    State(ctx): State<Ctx>,
+    Path(store_id): Path<String>,
+    Query(query): Query<ReadAuthorizationModelsQuery>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    tracing::info!("Listing auth models for store: {}", store_id);
+    let list_request = ReadAuthorizationModelsRequest {
+        store_id: store_id.clone(),
+        page_size: query.page_size,
+        continuation_token: query.continuation_token.unwrap_or_else(|| String::new()),
+    };
+
+    let list_response = match ctx
+        .fga_client
+        .clone()
+        .read_authorization_models(list_request)
+        .await
+    {
+        Ok(list_response) => list_response,
+        Err(e) => {
+            tracing::error!("Failed to list auth models: {}", e);
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "error": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            serde_json::json!({ "message": "Auth models listed", "list_response": list_response.into_inner() }),
         ),
     ))
 }

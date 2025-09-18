@@ -57,6 +57,10 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route(
             "/api/ofga/model/{store_id}/{auth_model_id}",
             get(apis::auth_model::get_auth_model),
+        )
+        .route(
+            "/api/ofga/model/{store_id}",
+            get(apis::auth_model::list_auth_models),
         );
 
     // Merge all routes
