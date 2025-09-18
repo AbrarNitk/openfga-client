@@ -69,7 +69,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/api/ofga/list-objs", get(fga::list_objects))
         .route("/api/ofga/list-users", get(fga::list_users))
         .route("/api/ofga/list-tuples", get(fga::list_tuples))
-        .route("/api/ofga/check", post(apis::query::check));
+        .route("/api/ofga/check", post(apis::query::check))
+        .route("/api/ofga/batch-check", post(apis::query::batch_check));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)
