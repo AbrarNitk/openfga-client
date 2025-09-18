@@ -1,6 +1,6 @@
 use crate::auth;
 use crate::context::Ctx;
-use crate::{controller, fga};
+use crate::{apis, controller, fga};
 use axum::{
     Json, Router,
     http::StatusCode,
@@ -37,7 +37,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/api/auth/create-tuple", post(fga::create_tuple))
         .route("/api/auth/list-objs", get(fga::list_objects))
         .route("/api/auth/list-users", get(fga::list_users))
-        .route("/api/auth/list-tuples", get(fga::list_tuples));
+        .route("/api/auth/list-tuples", get(fga::list_tuples))
+        .route("/api/ofga/create-store", post(apis::stores::create_store));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)
