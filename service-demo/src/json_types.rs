@@ -282,7 +282,7 @@ impl JsonDirectlyRelatedUserType {
     pub fn to_openfga_relation_reference(
         self,
     ) -> Result<openfga_client::RelationReference, String> {
-        use openfga_client::{RelationReference, Wildcard, relation_reference};
+        use openfga_client::{RelationReference, relation_reference};
 
         // Debug log the input
         tracing::debug!(

@@ -1,7 +1,7 @@
 use crate::auth;
 use crate::context::Ctx;
 use crate::{apis, controller, fga};
-use axum::routing::{delete, put};
+use axum::routing::delete;
 use axum::{
     Json, Router,
     http::StatusCode,
@@ -55,8 +55,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
             post(apis::auth_model::create_auth_model_from_json),
         )
         .route(
-            "/api/ofga/model/{store_id}",
-            put(apis::auth_model::update_auth_model),
+            "/api/ofga/model/{store_id}/{auth_model_id}",
+            get(apis::auth_model::get_auth_model),
         );
 
     // Merge all routes

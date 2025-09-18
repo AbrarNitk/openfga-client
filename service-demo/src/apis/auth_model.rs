@@ -6,7 +6,9 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
 };
-use openfga_client::{Condition, TypeDefinition, WriteAuthorizationModelRequest};
+use openfga_client::{
+    Condition, ReadAuthorizationModelRequest, TypeDefinition, WriteAuthorizationModelRequest,
+};
 use serde_json::Value;
 
 #[derive(Debug, serde::Deserialize)]
@@ -125,18 +127,36 @@ pub async fn create_auth_model_from_json(
     ))
 }
 
-#[derive(Debug, serde::Deserialize)]
-pub struct UpdateAuthModelReq {
-    pub type_definitions: Vec<TypeDefinition>,
-    pub schema_version: String,
-}
-
-pub async fn update_auth_model(
-    State(_ctx): State<Ctx>,
-    Path(_store_id): Path<String>,
+pub async fn get_auth_model(
+    State(ctx): State<Ctx>,
+    Path((store_id, auth_model_id)): Path<(String, String)>,
 ) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    tracing::info!("Getting auth model for store: {}", store_id);
+    let get_request = ReadAuthorizationModelRequest {
+        store_id: store_id.clone(),
+        id: auth_model_id.clone(),
+    };
+
+    let get_response = match ctx
+        .fga_client
+        .clone()
+        .read_authorization_model(get_request)
+        .await
+    {
+        Ok(get_response) => get_response,
+        Err(e) => {
+            tracing::error!("Failed to get auth model: {}", e);
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "error": e.to_string() })),
+            ));
+        }
+    };
+
     Ok((
         StatusCode::OK,
-        Json(serde_json::json!({ "message": "Auth model updated" })),
+        Json(
+            serde_json::json!({ "message": "Auth model fetched", "get_response": get_response.into_inner() }),
+        ),
     ))
 }
