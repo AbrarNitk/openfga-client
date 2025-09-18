@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plain JS Excalidraw Render (Fixed)</title>
+    
+    <!-- LZ-String library for Obsidian Excalidraw decompression -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <!-- Obsidian Excalidraw decompressor -->
+    <script src="lz-string-decompressor.js"></script>
+    <!-- React dependencies for Excalidraw -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Excalidraw library -->
+    <script src="https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw.production.min.js" defer></script>
+
+    <style>
+        #excalidraw-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Excalidraw Renderer - Static Data & Obsidian Files</h1>
+
+    <div style="margin-bottom: 20px;">
+        <label for="file-input" style="display: block; margin-bottom: 10px; font-weight: bold;">
+            Load Obsidian Excalidraw File (.excalidraw.md):
+        </label>
+        <input type="file" id="file-input" accept=".md,.excalidraw.md" style="margin-bottom: 10px;">
+        <button id="load-sample" style="margin-left: 10px; padding: 5px 10px;">Load Sample Data</button>
+        <button id="load-excali-md" style="margin-left: 10px; padding: 5px 10px;">Load excali-md.md</button>
+        <div id="file-status" style="margin-top: 10px; font-style: italic; color: #666;"></div>
+    </div>
+
+    <div id="excalidraw-container"></div>
+
+    <script>
+        // Clean and simple function to parse Excalidraw data from Obsidian markdown
+        function parseObsidianExcalidraw(markdownContent) {
+            try {
+                // Use the segregated decompressor
+                return window.ObsidianExcalidrawDecompressor.parseMarkdownForExcalidraw(markdownContent);
+            } catch (error) {
+                console.error("Error parsing Obsidian Excalidraw file:", error);
+                throw error;
+            }
+        }
+
+        // Function to render Excalidraw data
+        function renderExcalidraw(excalidrawData) {
+            const container = document.getElementById("excalidraw-container");
+            
+            // Clear previous content
+            container.innerHTML = "";
+            
+            // Check if dependencies are available
+            if (!window.React || !window.ReactDOM) {
+                console.error("React dependencies not loaded");
+                container.innerHTML = "<p>Error: React dependencies failed to load</p>";
+                return;
+            }
+            
+            if (!window.ExcalidrawLib) {
+                console.error("ExcalidrawLib is not loaded");
+                container.innerHTML = "<p>Error: Excalidraw library failed to load</p>";
+                return;
+            }
+            
+            try {
+                // Method 1: Try React-based Excalidraw component
+                if (window.ExcalidrawLib.Excalidraw && window.React && window.ReactDOM) {
+                    const { createElement } = window.React;
+                    const { createRoot } = window.ReactDOM;
+                    
+                    // Create Excalidraw component
+                    const excalidrawComponent = createElement(window.ExcalidrawLib.Excalidraw, {
+                        initialData: excalidrawData,
+                        viewModeEnabled: true,
+                        zenModeEnabled: false,
+                        gridModeEnabled: false,
+                        theme: "light"
+                    });
+                    
+                    // Render using React 18's createRoot API
+                    const root = createRoot(container);
+                    root.render(excalidrawComponent);
+                    
+                    console.log("Using React-based Excalidraw rendering");
+                    document.getElementById("file-status").textContent = "✅ Successfully rendered Excalidraw diagram";
+                } else {
+                    renderSVGFallback(excalidrawData, container);
+                }
+            } catch (error) {
+                console.error("Error rendering Excalidraw:", error);
+                container.innerHTML = `<p>Error rendering diagram: ${error.message}</p>`;
+                document.getElementById("file-status").textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        // SVG fallback function
+        function renderSVGFallback(excalidrawData, container) {
+            console.log("Using SVG fallback rendering");
+            
+            // Create basic SVG representation from Excalidraw elements
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "100%");
+            svg.setAttribute("viewBox", "0 0 800 600");
+            svg.style.border = "1px solid #ccc";
+            
+            // Create arrowhead marker for arrows
+            const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+            marker.setAttribute("id", "arrowhead");
+            marker.setAttribute("markerWidth", "10");
+            marker.setAttribute("markerHeight", "7");
+            marker.setAttribute("refX", "9");
+            marker.setAttribute("refY", "3.5");
+            marker.setAttribute("orient", "auto");
+            
+            const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            polygon.setAttribute("points", "0 0, 10 3.5, 0 7");
+            polygon.setAttribute("fill", "black");
+            
+            marker.appendChild(polygon);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+            
+            // Render elements from Excalidraw data
+            if (excalidrawData.elements) {
+                excalidrawData.elements.forEach(element => {
+                    if (element.isDeleted) return;
+                    
+                    switch (element.type) {
+                        case "rectangle":
+                            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                            rect.setAttribute("x", element.x);
+                            rect.setAttribute("y", element.y);
+                            rect.setAttribute("width", element.width);
+                            rect.setAttribute("height", element.height);
+                            rect.setAttribute("fill", element.backgroundColor || "white");
+                            rect.setAttribute("stroke", element.strokeColor || "black");
+                            rect.setAttribute("stroke-width", element.strokeWidth || 2);
+                            
+                            if (element.text) {
+                                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                                text.setAttribute("x", element.x + element.width / 2);
+                                text.setAttribute("y", element.y + element.height / 2);
+                                text.setAttribute("text-anchor", "middle");
+                                text.setAttribute("dominant-baseline", "middle");
+                                text.setAttribute("font-family", "Arial");
+                                text.setAttribute("font-size", element.fontSize || 16);
+                                text.textContent = element.text;
+                                svg.appendChild(text);
+                            }
+                            
+                            svg.appendChild(rect);
+                            break;
+                            
+                        case "ellipse":
+                            const ellipse = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+                            ellipse.setAttribute("cx", element.x + element.width / 2);
+                            ellipse.setAttribute("cy", element.y + element.height / 2);
+                            ellipse.setAttribute("rx", element.width / 2);
+                            ellipse.setAttribute("ry", element.height / 2);
+                            ellipse.setAttribute("fill", element.backgroundColor || "white");
+                            ellipse.setAttribute("stroke", element.strokeColor || "black");
+                            ellipse.setAttribute("stroke-width", element.strokeWidth || 2);
+                            
+                            if (element.text) {
+                                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                                text.setAttribute("x", element.x + element.width / 2);
+                                text.setAttribute("y", element.y + element.height / 2);
+                                text.setAttribute("text-anchor", "middle");
+                                text.setAttribute("dominant-baseline", "middle");
+                                text.setAttribute("font-family", "Arial");
+                                text.setAttribute("font-size", element.fontSize || 16);
+                                text.textContent = element.text;
+                                svg.appendChild(text);
+                            }
+                            
+                            svg.appendChild(ellipse);
+                            break;
+                            
+                        case "arrow":
+                            if (element.points && element.points.length >= 2) {
+                                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                                line.setAttribute("x1", element.x + element.points[0][0]);
+                                line.setAttribute("y1", element.y + element.points[0][1]);
+                                line.setAttribute("x2", element.x + element.points[element.points.length - 1][0]);
+                                line.setAttribute("y2", element.y + element.points[element.points.length - 1][1]);
+                                line.setAttribute("stroke", element.strokeColor || "black");
+                                line.setAttribute("stroke-width", element.strokeWidth || 2);
+                                if (element.endArrowhead) {
+                                    line.setAttribute("marker-end", "url(#arrowhead)");
+                                }
+                                svg.appendChild(line);
+                            }
+                            break;
+                            
+                        case "text":
+                            const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                            textElement.setAttribute("x", element.x);
+                            textElement.setAttribute("y", element.y);
+                            textElement.setAttribute("font-family", "Arial");
+                            textElement.setAttribute("font-size", element.fontSize || 16);
+                            textElement.setAttribute("fill", element.strokeColor || "black");
+                            textElement.textContent = element.text || element.originalText || "";
+                            svg.appendChild(textElement);
+                            break;
+                    }
+                });
+            }
+            
+            container.appendChild(svg);
+            document.getElementById("file-status").textContent = "✅ Rendered using SVG fallback";
+        }
+
+        // Wait for all scripts to load
+        window.addEventListener("load", () => {
+            // Check if React and ExcalidrawLib are loaded
+            console.log("React:", window.React);
+            console.log("ReactDOM:", window.ReactDOM);
+            console.log("ExcalidrawLib:", window.ExcalidrawLib);
+            console.log("Available methods:", Object.keys(window.ExcalidrawLib || {}));
+
+            // File input handler
+            const fileInput = document.getElementById("file-input");
+            const loadSampleButton = document.getElementById("load-sample");
+            const loadExcaliMdButton = document.getElementById("load-excali-md");
+            const fileStatus = document.getElementById("file-status");
+
+            fileInput.addEventListener("change", (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    fileStatus.textContent = "📖 Reading file...";
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const markdownContent = e.target.result;
+                            console.log("File content loaded:", markdownContent.substring(0, 200) + "...");
+                            
+                            fileStatus.textContent = "🔄 Parsing Excalidraw data...";
+                            const excalidrawData = parseObsidianExcalidraw(markdownContent);
+                            console.log("Parsed Excalidraw data:", excalidrawData);
+                            
+                            fileStatus.textContent = "🎨 Rendering diagram...";
+                            renderExcalidraw(excalidrawData);
+                            fileStatus.textContent = `✅ Loaded: ${file.name}`;
+                        } catch (error) {
+                            console.error("Error processing file:", error);
+                            fileStatus.textContent = `❌ Error processing ${file.name}: ${error.message}`;
+                            document.getElementById("excalidraw-container").innerHTML = 
+                                `<p>Error: ${error.message}</p><p>Please ensure the file contains valid Excalidraw data in a compressed-json or JSON code block.</p>`;
+                        }
+                    };
+                    reader.onerror = () => {
+                        fileStatus.textContent = "❌ Error reading file";
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            // Load sample data button
+            loadSampleButton.addEventListener("click", () => {
+                fileStatus.textContent = "📊 Loading sample data...";
+                renderExcalidraw(sampleExcalidrawData);
+                fileStatus.textContent = "✅ Sample data loaded";
+            });
+
+            // Load excali-md.md button
+            loadExcaliMdButton.addEventListener("click", async () => {
+                try {
+                    fileStatus.textContent = "📖 Loading excali-md.md...";
+                    const response = await fetch('./excali-md.md');
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to load file: ${response.status}`);
+                    }
+                    
+                    const markdownContent = await response.text();
+                    console.log("Loaded excali-md.md, content length:", markdownContent.length);
+                    
+                    fileStatus.textContent = "🔄 Parsing Excalidraw data...";
+                    const excalidrawData = parseObsidianExcalidraw(markdownContent);
+                    console.log("Parsed Excalidraw data:", excalidrawData);
+                    
+                    fileStatus.textContent = "🎨 Rendering diagram...";
+                    renderExcalidraw(excalidrawData);
+                    fileStatus.textContent = "✅ Loaded excali-md.md successfully";
+                } catch (error) {
+                    console.error("Error loading excali-md.md:", error);
+                    fileStatus.textContent = `❌ Error loading excali-md.md: ${error.message}`;
+                    document.getElementById("excalidraw-container").innerHTML = 
+                        `<p>Error: ${error.message}</p><p>Make sure excali-md.md is in the same directory as this HTML file.</p>`;
+                }
+            });
+
+            // Sample data for testing
+            const sampleExcalidrawData = {
+                type: "excalidraw",
+                version: 2,
+                source: "https://example.com",
+                elements: [
+                    {
+                        "id": "oDVXy8D6rom3H1-LLH2-f",
+                        "type": "rectangle",
+                        "x": 240,
+                        "y": 140,
+                        "width": 180,
+                        "height": 75,
+                        "angle": 0,
+                        "strokeColor": "#1e1e1e",
+                        "backgroundColor": "#ffffff",
+                        "fillStyle": "solid",
+                        "strokeWidth": 2,
+                        "strokeStyle": "solid",
+                        "roughness": 1,
+                        "opacity": 100,
+                        "groupIds": [],
+                        "frameId": null,
+                        "roundness": { "type": 3 },
+                        "seed": 1234567890,
+                        "versionNonce": 123456789,
+                        "isDeleted": false,
+                        "boundElements": [{ "id": "m9a_2s3d4f5g6h7j8k9l", "type": "arrow" }],
+                        "updated": 1,
+                        "link": null,
+                        "locked": false,
+                        "text": "Get JSON Data",
+                        "fontSize": 16,
+                        "fontFamily": 1,
+                        "textAlign": "center",
+                        "verticalAlign": "middle",
+                        "containerId": null,
+                        "originalText": "Get JSON Data",
+                        "lineHeight": 1.25
+                    },
+                    {
+                        "id": "gOM3s_42ba1s_flj4T582",
+                        "type": "ellipse",
+                        "x": 250,
+                        "y": 300,
+                        "width": 160,
+                        "height": 90,
+                        "angle": 0,
+                        "strokeColor": "#1e1e1e",
+                        "backgroundColor": "#ffffff",
+                        "fillStyle": "solid",
+                        "strokeWidth": 2,
+                        "strokeStyle": "solid",
+                        "roughness": 1,
+                        "opacity": 100,
+                        "groupIds": [],
+                        "frameId": null,
+                        "roundness": { "type": 2 },
+                        "seed": 987654321,
+                        "versionNonce": 987654321,
+                        "isDeleted": false,
+                        "boundElements": [{ "id": "m9a_2s3d4f5g6h7j8k9l", "type": "arrow" }],
+                        "updated": 1,
+                        "link": null,
+                        "locked": false,
+                        "text": "Render Canvas",
+                        "fontSize": 16,
+                        "fontFamily": 1,
+                        "textAlign": "center",
+                        "verticalAlign": "middle",
+                        "containerId": null,
+                        "originalText": "Render Canvas",
+                        "lineHeight": 1.25
+                    },
+                    {
+                        "id": "m9a_2s3d4f5g6h7j8k9l",
+                        "type": "arrow",
+                        "x": 330,
+                        "y": 215,
+                        "width": 0,
+                        "height": 85,
+                        "angle": 0,
+                        "strokeColor": "#1e1e1e",
+                        "backgroundColor": "transparent",
+                        "fillStyle": "solid",
+                        "strokeWidth": 2,
+                        "strokeStyle": "solid",
+                        "roughness": 1,
+                        "opacity": 100,
+                        "groupIds": [],
+                        "frameId": null,
+                        "roundness": { "type": 2 },
+                        "seed": 555666777,
+                        "versionNonce": 555666777,
+                        "isDeleted": false,
+                        "boundElements": [],
+                        "updated": 1,
+                        "link": null,
+                        "locked": false,
+                        "points": [[0, 0], [0, 85]],
+                        "lastCommittedPoint": null,
+                        "startBinding": { "elementId": "oDVXy8D6rom3H1-LLH2-f", "focus": 0, "gap": 1 },
+                        "endBinding": { "elementId": "gOM3s_42ba1s_flj4T582", "focus": 0, "gap": 1 },
+                        "startArrowhead": null,
+                        "endArrowhead": "arrow"
+                    }
+                ],
+                appState: {
+                    "viewBackgroundColor": "#FFFFFF",
+                    "gridSize": null
+                }
+            };
+
+            // Initial instructions
+            document.getElementById("file-status").textContent = "👆 Upload an .excalidraw.md file or click 'Load Sample Data' to get started";
+        });
+    </script>
+
+</body>
+</html>
