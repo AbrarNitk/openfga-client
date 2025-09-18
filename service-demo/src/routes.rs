@@ -1,7 +1,7 @@
 use crate::auth;
 use crate::context::Ctx;
 use crate::{apis, controller, fga};
-use axum::routing::delete;
+use axum::routing::{delete, put};
 use axum::{
     Json, Router,
     http::StatusCode,
@@ -39,15 +39,20 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/api/auth/list-objs", get(fga::list_objects))
         .route("/api/auth/list-users", get(fga::list_users))
         .route("/api/auth/list-tuples", get(fga::list_tuples))
-        .route("/api/ofga/create-store", post(apis::stores::create_store))
+        .route("/api/ofga/store", post(apis::stores::create_store))
+        .route("/api/ofga/store/{store_id}", get(apis::stores::get_store))
+        .route("/api/ofga/store", get(apis::stores::list_stores))
         .route(
-            "/api/ofga/get-store/{store_id}",
-            get(apis::stores::get_store),
-        )
-        .route("/api/ofga/list-stores", get(apis::stores::list_stores))
-        .route(
-            "/api/ofga/delete-store/{store_id}",
+            "/api/ofga/store/{store_id}",
             delete(apis::stores::delete_store),
+        )
+        .route(
+            "/api/ofga/model/{store_id}",
+            post(apis::auth_model::create_auth_model),
+        )
+        .route(
+            "/api/ofga/model/{store_id}",
+            put(apis::auth_model::update_auth_model),
         );
 
     // Merge all routes
