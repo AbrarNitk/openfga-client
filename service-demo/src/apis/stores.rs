@@ -3,7 +3,7 @@ use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
 };
-use openfga_client::{CreateStoreRequest, GetStoreRequest, ListStoresRequest};
+use openfga_client::{CreateStoreRequest, DeleteStoreRequest, GetStoreRequest, ListStoresRequest};
 use serde_json::Value;
 
 use crate::context::Ctx;
@@ -99,6 +99,36 @@ pub async fn list_stores(
         StatusCode::OK,
         Json(
             serde_json::json!({ "message": "Stores listed", "list_response": list_response.into_inner() }),
+        ),
+    ))
+}
+
+pub async fn delete_store(
+    State(ctx): State<Ctx>,
+    Path(store_id): Path<String>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    tracing::info!("Deleting store: {}", store_id);
+    let delete_request = DeleteStoreRequest {
+        store_id: store_id.clone(),
+    };
+
+    let delete_response = match ctx.fga_client.clone().delete_store(delete_request).await {
+        Ok(delete_response) => delete_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "message": e.to_string() })),
+            ));
+        }
+    };
+
+    tracing::info!("Delete response: {:?}", delete_response);
+    tracing::info!("Store deleted: {}", store_id);
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            serde_json::json!({ "message": "Store deleted", "delete_response": delete_response.into_inner() }),
         ),
     ))
 }

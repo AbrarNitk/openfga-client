@@ -1,6 +1,7 @@
 use crate::auth;
 use crate::context::Ctx;
 use crate::{apis, controller, fga};
+use axum::routing::delete;
 use axum::{
     Json, Router,
     http::StatusCode,
@@ -43,7 +44,11 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
             "/api/ofga/get-store/{store_id}",
             get(apis::stores::get_store),
         )
-        .route("/api/ofga/list-stores", get(apis::stores::list_stores));
+        .route("/api/ofga/list-stores", get(apis::stores::list_stores))
+        .route(
+            "/api/ofga/delete-store/{store_id}",
+            delete(apis::stores::delete_store),
+        );
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)
