@@ -67,7 +67,7 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/api/ofga/tuple-changes", post(apis::tuples::tuple_changes))
         // tuple query APIs
         .route("/api/ofga/list-objs", get(fga::list_objects))
-        .route("/api/ofga/list-users", get(fga::list_users))
+        .route("/api/ofga/list-users", get(apis::query::list_users))
         .route("/api/ofga/list-tuples", get(fga::list_tuples))
         .route("/api/ofga/check", post(apis::query::check))
         .route("/api/ofga/batch-check", post(apis::query::batch_check))
