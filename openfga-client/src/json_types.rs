@@ -131,9 +131,9 @@ impl JsonAuthModel {
         self,
     ) -> Result<
         (
-            Vec<openfga_client::TypeDefinition>,
+            Vec<crate::TypeDefinition>,
             String,
-            HashMap<String, openfga_client::Condition>,
+            HashMap<String, crate::Condition>,
         ),
         String,
     > {
@@ -152,7 +152,7 @@ impl JsonAuthModel {
 
 impl JsonTypeDefinition {
     /// Convert to OpenFGA TypeDefinition
-    pub fn to_openfga_type(self) -> Result<openfga_client::TypeDefinition, String> {
+    pub fn to_openfga_type(self) -> Result<crate::TypeDefinition, String> {
         let mut relations = HashMap::new();
 
         for (relation_name, json_userset) in self.relations {
@@ -166,7 +166,7 @@ impl JsonTypeDefinition {
             None
         };
 
-        Ok(openfga_client::TypeDefinition {
+        Ok(crate::TypeDefinition {
             r#type: self.type_name,
             relations,
             metadata,
@@ -176,8 +176,8 @@ impl JsonTypeDefinition {
 
 impl JsonUserset {
     /// Convert to OpenFGA Userset
-    pub fn to_openfga_userset(self) -> Result<openfga_client::Userset, String> {
-        use openfga_client::{
+    pub fn to_openfga_userset(self) -> Result<crate::Userset, String> {
+        use crate::{
             Difference, DirectUserset, ObjectRelation, TupleToUserset, Userset, Usersets, userset,
         };
 
@@ -240,7 +240,7 @@ impl JsonUserset {
 
 impl JsonMetadata {
     /// Convert to OpenFGA Metadata
-    pub fn to_openfga_metadata(self) -> Result<openfga_client::Metadata, String> {
+    pub fn to_openfga_metadata(self) -> Result<crate::Metadata, String> {
         let mut relations = HashMap::new();
 
         if let Some(json_relations) = self.relations {
@@ -252,7 +252,7 @@ impl JsonMetadata {
             }
         }
 
-        Ok(openfga_client::Metadata {
+        Ok(crate::Metadata {
             relations,
             module: self.module.unwrap_or_default(),
             source_info: None, // We can implement source_info conversion later if needed
@@ -262,14 +262,14 @@ impl JsonMetadata {
 
 impl JsonRelationMetadata {
     /// Convert to OpenFGA RelationMetadata
-    pub fn to_openfga_relation_metadata(self) -> Result<openfga_client::RelationMetadata, String> {
+    pub fn to_openfga_relation_metadata(self) -> Result<crate::RelationMetadata, String> {
         let mut directly_related_user_types = Vec::new();
 
         for json_user_type in self.directly_related_user_types {
             directly_related_user_types.push(json_user_type.to_openfga_relation_reference()?);
         }
 
-        Ok(openfga_client::RelationMetadata {
+        Ok(crate::RelationMetadata {
             directly_related_user_types,
             module: self.module.unwrap_or_default(),
             source_info: None, // We can implement source_info conversion later if needed
@@ -279,10 +279,8 @@ impl JsonRelationMetadata {
 
 impl JsonDirectlyRelatedUserType {
     /// Convert to OpenFGA RelationReference
-    pub fn to_openfga_relation_reference(
-        self,
-    ) -> Result<openfga_client::RelationReference, String> {
-        use openfga_client::{RelationReference, relation_reference};
+    pub fn to_openfga_relation_reference(self) -> Result<crate::RelationReference, String> {
+        use crate::{RelationReference, relation_reference};
 
         // Debug log the input
         tracing::debug!(
@@ -338,7 +336,7 @@ mod tests {
 
         let openfga_userset = userset.to_openfga_userset().unwrap();
         match openfga_userset.userset {
-            Some(openfga_client::userset::Userset::This(_)) => {}
+            Some(crate::userset::Userset::This(_)) => {}
             _ => panic!("Expected This variant"),
         }
     }
@@ -351,7 +349,7 @@ mod tests {
 
         let openfga_userset = userset.to_openfga_userset().unwrap();
         match openfga_userset.userset {
-            Some(openfga_client::userset::Userset::ComputedUserset(obj_rel)) => {
+            Some(crate::userset::Userset::ComputedUserset(obj_rel)) => {
                 assert_eq!(obj_rel.relation, "member");
             }
             _ => panic!("Expected ComputedUserset variant"),
@@ -366,7 +364,7 @@ mod tests {
 
         let openfga_userset = userset.to_openfga_userset().unwrap();
         match openfga_userset.userset {
-            Some(openfga_client::userset::Userset::Union(usersets)) => {
+            Some(crate::userset::Userset::Union(usersets)) => {
                 assert_eq!(usersets.child.len(), 2);
             }
             _ => panic!("Expected Union variant"),
@@ -407,12 +405,12 @@ mod tests {
             // Show relation details
             for (relation_name, userset) in &type_def.relations {
                 let variant = match &userset.userset {
-                    Some(openfga_client::userset::Userset::This(_)) => "This",
-                    Some(openfga_client::userset::Userset::ComputedUserset(_)) => "ComputedUserset",
-                    Some(openfga_client::userset::Userset::TupleToUserset(_)) => "TupleToUserset",
-                    Some(openfga_client::userset::Userset::Union(_)) => "Union",
-                    Some(openfga_client::userset::Userset::Intersection(_)) => "Intersection",
-                    Some(openfga_client::userset::Userset::Difference(_)) => "Difference",
+                    Some(crate::userset::Userset::This(_)) => "This",
+                    Some(crate::userset::Userset::ComputedUserset(_)) => "ComputedUserset",
+                    Some(crate::userset::Userset::TupleToUserset(_)) => "TupleToUserset",
+                    Some(crate::userset::Userset::Union(_)) => "Union",
+                    Some(crate::userset::Userset::Intersection(_)) => "Intersection",
+                    Some(crate::userset::Userset::Difference(_)) => "Difference",
                     None => "None",
                 };
                 println!("     - {} -> {}", relation_name, variant);
@@ -429,16 +427,12 @@ mod tests {
                     );
                     for user_type in &relation_metadata.directly_related_user_types {
                         let relation_info = match &user_type.relation_or_wildcard {
-                            Some(
-                                openfga_client::relation_reference::RelationOrWildcard::Relation(
-                                    rel,
-                                ),
-                            ) => {
+                            Some(crate::relation_reference::RelationOrWildcard::Relation(rel)) => {
                                 format!("#{}", rel)
                             }
-                            Some(
-                                openfga_client::relation_reference::RelationOrWildcard::Wildcard(_),
-                            ) => "*".to_string(),
+                            Some(crate::relation_reference::RelationOrWildcard::Wildcard(_)) => {
+                                "*".to_string()
+                            }
                             None => "None".to_string(),
                         };
                         println!(
@@ -474,14 +468,10 @@ mod tests {
                         i, user_type.r#type, user_type.condition
                     );
                     match &user_type.relation_or_wildcard {
-                        Some(openfga_client::relation_reference::RelationOrWildcard::Relation(
-                            rel,
-                        )) => {
+                        Some(crate::relation_reference::RelationOrWildcard::Relation(rel)) => {
                             println!("         Relation: '{}'", rel);
                         }
-                        Some(openfga_client::relation_reference::RelationOrWildcard::Wildcard(
-                            _,
-                        )) => {
+                        Some(crate::relation_reference::RelationOrWildcard::Wildcard(_)) => {
                             println!("         Wildcard (any instance of type)");
                         }
                         None => {

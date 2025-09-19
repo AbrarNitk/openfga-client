@@ -1217,7 +1217,10 @@ dependencies = [
  "prost-wkt",
  "prost-wkt-types",
  "serde",
+ "serde_json",
+ "tokio",
  "tonic",
+ "tracing",
 ]
 
 [[package]]

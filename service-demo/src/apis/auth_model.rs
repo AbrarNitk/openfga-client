@@ -1,11 +1,12 @@
 use std::collections::HashMap;
 
-use crate::{context::Ctx, json_types::JsonAuthModel};
+use crate::context::Ctx;
 use axum::{
     Json,
     extract::{Path, Query, State},
     http::StatusCode,
 };
+use openfga_client::JsonAuthModel;
 use openfga_client::{
     Condition, ReadAuthorizationModelRequest, ReadAuthorizationModelsRequest, TypeDefinition,
     WriteAuthorizationModelRequest,
