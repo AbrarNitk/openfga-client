@@ -1,6 +1,7 @@
 use axum::{Json, extract::State, http::StatusCode};
 use openfga_client::{
     BatchCheckItem, BatchCheckRequest, CheckRequest, CheckRequestTupleKey, ConsistencyPreference,
+    ExpandRequest, ExpandRequestTupleKey,
 };
 use serde_json::Value;
 
@@ -103,5 +104,42 @@ pub async fn batch_check(
     Ok((
         StatusCode::OK,
         Json(serde_json::json!({ "batch_check_response": batch_check_response.into_inner() })),
+    ))
+}
+
+#[derive(Debug, serde::Deserialize)]
+pub struct ExpandReq {
+    pub object: String,
+    pub relation: String,
+}
+
+pub async fn expand(
+    State(ctx): State<Ctx>,
+    Json(req): Json<ExpandReq>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    let expand_request = ExpandRequest {
+        store_id: ctx.fga_config.store_id.clone(),
+        authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
+        consistency: ConsistencyPreference::HigherConsistency as i32,
+        contextual_tuples: None,
+        tuple_key: Some(ExpandRequestTupleKey {
+            object: req.object,
+            relation: req.relation,
+        }),
+    };
+
+    let expand_response = match ctx.fga_client.clone().expand(expand_request).await {
+        Ok(expand_response) => expand_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "error": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(serde_json::json!({ "expand_response": expand_response.into_inner() })),
     ))
 }
