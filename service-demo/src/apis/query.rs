@@ -1,7 +1,7 @@
 use axum::{Json, extract::State, http::StatusCode};
 use openfga_client::{
     BatchCheckItem, BatchCheckRequest, CheckRequest, CheckRequestTupleKey, ConsistencyPreference,
-    ExpandRequest, ExpandRequestTupleKey, ListUsersRequest,
+    ExpandRequest, ExpandRequestTupleKey, ListObjectsRequest, ListUsersRequest,
 };
 use serde_json::Value;
 
@@ -204,6 +204,48 @@ pub async fn list_users(
         StatusCode::OK,
         Json(
             serde_json::json!({ "message": "Users listed", "list_response": list_response.into_inner() }),
+        ),
+    ))
+}
+
+// List All the Objects for a given type that user has relation with
+
+#[derive(Debug, serde::Deserialize)]
+pub struct ListObjsRequest {
+    pub r#type: String,
+    pub relation: String,
+    pub user: String,
+}
+
+pub async fn list_objects(
+    State(ctx): State<Ctx>,
+    Json(tuple): Json<ListObjsRequest>,
+) -> Result<(StatusCode, Json<Value>), (StatusCode, Json<Value>)> {
+    let list_request = ListObjectsRequest {
+        store_id: ctx.fga_config.store_id.clone(),
+        authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
+        r#type: tuple.r#type.clone(),
+        relation: tuple.relation.clone(),
+        user: tuple.user.clone(),
+        contextual_tuples: None,
+        context: None,
+        consistency: ConsistencyPreference::MinimizeLatency as i32,
+    };
+
+    let list_response = match ctx.fga_client.clone().list_objects(list_request).await {
+        Ok(list_response) => list_response,
+        Err(e) => {
+            return Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({ "message": e.to_string() })),
+            ));
+        }
+    };
+
+    Ok((
+        StatusCode::OK,
+        Json(
+            serde_json::json!({ "message": "Objects listed", "list_response": list_response.into_inner() }),
         ),
     ))
 }

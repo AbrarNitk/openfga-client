@@ -1,6 +1,6 @@
 use crate::auth;
 use crate::context::Ctx;
-use crate::{apis, controller, fga};
+use crate::{apis, controller};
 use axum::routing::delete;
 use axum::{
     Json, Router,
@@ -66,9 +66,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         .route("/api/ofga/tuple-delete", post(apis::tuples::delete_tuple))
         .route("/api/ofga/tuple-changes", post(apis::tuples::tuple_changes))
         // tuple query APIs
-        .route("/api/ofga/list-objs", get(fga::list_objects))
+        .route("/api/ofga/list-objs", get(apis::query::list_objects))
         .route("/api/ofga/list-users", get(apis::query::list_users))
-        .route("/api/ofga/list-tuples", get(fga::list_tuples))
         .route("/api/ofga/check", post(apis::query::check))
         .route("/api/ofga/batch-check", post(apis::query::batch_check))
         .route("/api/ofga/expand", post(apis::query::expand));
