@@ -6,8 +6,8 @@ use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
 };
-use openfga_client::JsonAuthModel;
-use openfga_client::{
+use openfga_grpc_client::JsonAuthModel;
+use openfga_grpc_client::{
     Condition, ReadAuthorizationModelRequest, ReadAuthorizationModelsRequest, TypeDefinition,
     WriteAuthorizationModelRequest,
 };

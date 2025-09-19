@@ -3,7 +3,9 @@ use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
 };
-use openfga_client::{CreateStoreRequest, DeleteStoreRequest, GetStoreRequest, ListStoresRequest};
+use openfga_grpc_client::{
+    CreateStoreRequest, DeleteStoreRequest, GetStoreRequest, ListStoresRequest,
+};
 use serde_json::Value;
 
 use crate::context::Ctx;

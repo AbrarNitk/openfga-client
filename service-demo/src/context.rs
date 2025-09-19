@@ -1,4 +1,4 @@
-use openfga_client::OpenFgaServiceClient;
+use openfga_grpc_client::OpenFgaServiceClient;
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;
 use std::env;

@@ -1,5 +1,5 @@
 use axum::{Json, extract::State, http::StatusCode};
-use openfga_client::{
+use openfga_grpc_client::{
     BatchCheckItem, BatchCheckRequest, CheckRequest, CheckRequestTupleKey, ConsistencyPreference,
     ExpandRequest, ExpandRequestTupleKey, ListObjectsRequest, ListUsersRequest,
 };
@@ -173,14 +173,14 @@ pub async fn list_users(
         store_id: ctx.fga_config.store_id.clone(),
         authorization_model_id: ctx.fga_config.authorization_model_id.clone(),
         relation: tuple.relation.clone(),
-        object: Some(openfga_client::Object {
+        object: Some(openfga_grpc_client::Object {
             r#type: tuple.object.r#type.clone(),
             id: tuple.object.id.clone(),
         }),
         user_filters: tuple
             .user_filters
             .into_iter()
-            .map(|f| openfga_client::UserTypeFilter {
+            .map(|f| openfga_grpc_client::UserTypeFilter {
                 r#type: f.r#type.clone(),
                 relation: f.relation.clone(),
             })

@@ -5,7 +5,7 @@ use axum::{
     extract::{Json, Path, Query, State},
     http::StatusCode,
 };
-use openfga_client::{
+use openfga_grpc_client::{
     CheckRequest, CheckRequestTupleKey, ListObjectsRequest, TupleKeyWithoutCondition,
 };
 use serde::{Deserialize, Serialize};

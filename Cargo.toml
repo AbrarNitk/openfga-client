@@ -1,5 +1,5 @@
 [workspace]
-members = [ "client-builder","openfga-client", "service-demo"]
+members = ["client-builder","openfga-grpc-client", "service-demo", "openfga-http-client"]
 resolver = "2"
 
 [workspace.package]

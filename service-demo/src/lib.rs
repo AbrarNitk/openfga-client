@@ -6,7 +6,7 @@ pub mod listener;
 pub mod routes;
 
 // Re-export json types from openfga-client for convenience
-pub use openfga_client::{
+pub use openfga_grpc_client::{
     JsonAuthModel, JsonDirectlyRelatedUserType, JsonMetadata, JsonRelationMetadata,
     JsonTypeDefinition, JsonUserset,
 };

@@ -1,5 +1,5 @@
 use axum::{Json, extract::State, http::StatusCode};
-use openfga_client::{
+use openfga_grpc_client::{
     ConsistencyPreference, ReadChangesRequest, ReadRequest, ReadRequestTupleKey, TupleKey,
     TupleKeyWithoutCondition, WriteRequest, WriteRequestDeletes, WriteRequestWrites,
 };
