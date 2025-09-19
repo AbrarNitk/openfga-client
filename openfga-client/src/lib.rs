@@ -1,8 +1,7 @@
-// Include the generated OpenFGA client code
-pub mod generated;
+pub mod grpc;
 
-// JSON types for easier integration
-pub mod json_types;
+pub use grpc::generated;
+pub use grpc::json_types;
 
 // Re-export the generated types and client for convenience
 pub use generated::open_fga_service_client::OpenFgaServiceClient;
