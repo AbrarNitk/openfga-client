@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn copy_generated_files(out_dir: &PathBuf) -> Result<(), Box<dyn std::error::Error>> {
-    let openfga_client_src = PathBuf::from("../openfga-client/src");
+    let openfga_client_src = PathBuf::from("../openfga-grpc-client/src");
 
     // Find the generated openfga.v1.rs file
     let generated_file = out_dir.join("openfga.v1.rs");

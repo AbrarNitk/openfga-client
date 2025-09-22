@@ -35,57 +35,138 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
     let public_routes = Router::new()
         .route("/health", get(health_check))
         .route("/", get(root))
-        // store APIs
-        .route("/api/ofga/store", post(apis::grpc::stores::create_store))
+        // =============================================================================
+        // gRPC-based APIs (existing)
+        // =============================================================================
+        // store APIs (gRPC)
         .route(
-            "/api/ofga/store/{store_id}",
+            "/api/ofga/grpc/store",
+            post(apis::grpc::stores::create_store),
+        )
+        .route(
+            "/api/ofga/grpc/store/{store_id}",
             get(apis::grpc::stores::get_store),
         )
-        .route("/api/ofga/store", get(apis::grpc::stores::list_stores))
+        .route("/api/ofga/grpc/store", get(apis::grpc::stores::list_stores))
         .route(
-            "/api/ofga/store/{store_id}",
+            "/api/ofga/grpc/store/{store_id}",
             delete(apis::grpc::stores::delete_store),
         )
-        // model APIs
+        // model APIs (gRPC)
         .route(
-            "/api/ofga/model/{store_id}",
+            "/api/ofga/grpc/model/{store_id}",
             post(apis::grpc::auth_model::create_auth_model),
         )
         .route(
-            "/api/ofga/model-json/{store_id}",
+            "/api/ofga/grpc/model-json/{store_id}",
             post(apis::grpc::auth_model::create_auth_model_from_json),
         )
         .route(
-            "/api/ofga/model/{store_id}/{auth_model_id}",
+            "/api/ofga/grpc/model/{store_id}/{auth_model_id}",
             get(apis::grpc::auth_model::get_auth_model),
         )
         .route(
-            "/api/ofga/model/{store_id}",
+            "/api/ofga/grpc/model/{store_id}",
             get(apis::grpc::auth_model::list_auth_models),
         )
-        // tuple APIs
+        // tuple APIs (gRPC)
         .route(
-            "/api/ofga/tuple-write",
+            "/api/ofga/grpc/tuple-write",
             post(apis::grpc::tuples::write_tuple),
         )
-        .route("/api/ofga/tuple-read", post(apis::grpc::tuples::read_tuple))
         .route(
-            "/api/ofga/tuple-delete",
+            "/api/ofga/grpc/tuple-read",
+            post(apis::grpc::tuples::read_tuple),
+        )
+        .route(
+            "/api/ofga/grpc/tuple-delete",
             post(apis::grpc::tuples::delete_tuple),
         )
         .route(
-            "/api/ofga/tuple-changes",
+            "/api/ofga/grpc/tuple-changes",
             post(apis::grpc::tuples::tuple_changes),
         )
-        // tuple query APIs
-        .route("/api/ofga/list-objs", get(apis::grpc::query::list_objects))
-        .route("/api/ofga/list-users", get(apis::grpc::query::list_users))
-        .route("/api/ofga/check", post(apis::grpc::query::check))
+        // tuple query APIs (gRPC)
         .route(
-            "/api/ofga/batch-check",
+            "/api/ofga/grpc/list-objs",
+            get(apis::grpc::query::list_objects),
+        )
+        .route(
+            "/api/ofga/grpc/list-users",
+            get(apis::grpc::query::list_users),
+        )
+        .route("/api/ofga/grpc/check", post(apis::grpc::query::check))
+        .route(
+            "/api/ofga/grpc/batch-check",
             post(apis::grpc::query::batch_check),
         )
-        .route("/api/ofga/expand", post(apis::grpc::query::expand));
+        .route("/api/ofga/grpc/expand", post(apis::grpc::query::expand))
+        // =============================================================================
+        // HTTP-based APIs (new - following OpenFGA REST API standards)
+        // =============================================================================
+        // store APIs (HTTP) - following OpenFGA REST API paths
+        .route(
+            "/api/ofga/http/stores",
+            post(apis::http::stores::create_store),
+        )
+        .route(
+            "/api/ofga/http/stores",
+            get(apis::http::stores::list_stores),
+        )
+        .route(
+            "/api/ofga/http/stores/{store_id}",
+            get(apis::http::stores::get_store),
+        )
+        .route(
+            "/api/ofga/http/stores/{store_id}",
+            delete(apis::http::stores::delete_store),
+        )
+        // authorization model APIs (HTTP)
+        .route(
+            "/api/ofga/http/stores/{store_id}/authorization-models",
+            post(apis::http::auth_model::create_auth_model),
+        )
+        .route(
+            "/api/ofga/http/stores/{store_id}/authorization-models",
+            get(apis::http::auth_model::list_auth_models),
+        )
+        .route(
+            "/api/ofga/http/stores/{store_id}/authorization-models/{auth_model_id}",
+            get(apis::http::auth_model::get_auth_model),
+        )
+        .route(
+            "/api/ofga/http/stores/{store_id}/authorization-models/json",
+            post(apis::http::auth_model::create_auth_model_from_json),
+        )
+        // tuple APIs (HTTP)
+        .route(
+            "/api/ofga/http/write",
+            post(apis::http::tuples::write_tuple),
+        )
+        .route("/api/ofga/http/read", post(apis::http::tuples::read_tuple))
+        .route(
+            "/api/ofga/http/delete",
+            post(apis::http::tuples::delete_tuple),
+        )
+        .route(
+            "/api/ofga/http/changes",
+            post(apis::http::tuples::tuple_changes),
+        )
+        // relationship query APIs (HTTP)
+        .route("/api/ofga/http/check", post(apis::http::query::check))
+        .route(
+            "/api/ofga/http/batch-check",
+            post(apis::http::query::batch_check),
+        )
+        .route("/api/ofga/http/expand", post(apis::http::query::expand))
+        .route(
+            "/api/ofga/http/list-objects",
+            post(apis::http::query::list_objects),
+        )
+        .route(
+            "/api/ofga/http/list-users",
+            post(apis::http::query::list_users),
+        );
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)

@@ -1,4 +1,5 @@
 use openfga_grpc_client::OpenFgaServiceClient;
+use openfga_http_client::apis::configuration::Configuration;
 use sqlx::PgPool;
 use sqlx::postgres::PgPoolOptions;
 use std::env;
@@ -21,8 +22,10 @@ pub struct Ctx {
     pub db: PgPool,
     /// Application profile name (e.g., "dev", "prod")
     pub profile: String,
-    /// OpenFGA client
+    /// OpenFGA gRPC client
     pub fga_client: OpenFgaServiceClient<Channel>,
+    /// OpenFGA HTTP client configuration
+    pub fga_http_config: Configuration,
     /// OpenFGA configuration
     pub fga_config: OpenFgaConfig,
 }
@@ -40,8 +43,11 @@ impl Ctx {
         // Create database connection pool
         let db = pg_pool().await?;
 
-        // Initialize OpenFGA client
+        // Initialize OpenFGA gRPC client
         let fga_client = init_fga_client().await?;
+
+        // Initialize OpenFGA HTTP client configuration
+        let fga_http_config = init_fga_http_config();
 
         // Get OpenFGA configuration
         let fga_config = get_fga_config();
@@ -55,6 +61,7 @@ impl Ctx {
             db,
             profile,
             fga_client,
+            fga_http_config,
             fga_config,
         })
     }
@@ -78,18 +85,52 @@ async fn pg_pool() -> Result<PgPool, Box<dyn std::error::Error>> {
     Ok(db)
 }
 
-/// Initialize the OpenFGA client
+/// Initialize the OpenFGA gRPC client
 async fn init_fga_client() -> Result<OpenFgaServiceClient<Channel>, Box<dyn std::error::Error>> {
     // Get OpenFGA client URL from environment, default to localhost
     let fga_url =
         env::var("OPENFGA_CLIENT_URL").unwrap_or_else(|_| "http://localhost:8081".to_string());
-    tracing::info!("Connecting to OpenFGA at {}", fga_url);
+    tracing::info!("Connecting to OpenFGA gRPC at {}", fga_url);
 
     // Create OpenFGA client without authentication
     let client = OpenFgaServiceClient::connect(fga_url).await?;
-    tracing::info!("OpenFGA client initialized successfully");
+    tracing::info!("OpenFGA gRPC client initialized successfully");
 
     Ok(client)
+}
+
+/// Initialize the OpenFGA HTTP client configuration
+fn init_fga_http_config() -> Configuration {
+    // Get OpenFGA HTTP URL from environment, default to localhost:8080
+    let fga_http_url =
+        env::var("OPENFGA_HTTP_URL").unwrap_or_else(|_| "http://localhost:8080".to_string());
+
+    tracing::info!("OpenFGA HTTP client configured for {}", fga_http_url);
+
+    let mut config = Configuration::new();
+    config.base_path = fga_http_url;
+
+    // Configure authentication if provided
+    if let Ok(api_token) = env::var("OPENFGA_API_TOKEN") {
+        tracing::info!("Using OpenFGA API token authentication");
+        config.bearer_access_token = Some(api_token);
+    } else if let Ok(api_key) = env::var("OPENFGA_API_KEY") {
+        tracing::info!("Using OpenFGA API key authentication");
+        config.api_key = Some(openfga_http_client::apis::configuration::ApiKey {
+            prefix: env::var("OPENFGA_API_KEY_PREFIX").ok(),
+            key: api_key,
+        });
+    } else {
+        tracing::info!("No OpenFGA authentication configured, using unauthenticated access");
+    }
+
+    // Configure custom user agent if provided
+    if let Ok(user_agent) = env::var("OPENFGA_USER_AGENT") {
+        config.user_agent = Some(user_agent);
+    }
+
+    tracing::info!("OpenFGA HTTP client configuration initialized successfully");
+    config
 }
 
 /// Get OpenFGA configuration from environment variables

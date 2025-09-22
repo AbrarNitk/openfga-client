@@ -1,6 +1,6 @@
-# OpenFGA CLI
+# OpenFGA Rust Client
 
-A cross-platform CLI to interact with an OpenFGA server
+A comprehensive Rust client library for [OpenFGA](https://openfga.dev) that provides **both gRPC and HTTP client support**
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/openfga/cli.svg)](https://pkg.go.dev/github.com/openfga/cli)
 [![Release](https://img.shields.io/github/v/release/openfga/cli?sort=semver&color=green)](https://github.com/openfga/cli/releases)
