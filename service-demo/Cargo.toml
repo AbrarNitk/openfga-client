@@ -14,6 +14,9 @@ tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 sqlx = { version = "0.8.6", features = ["runtime-tokio", "postgres", "macros", "time", "uuid"] }
 dotenv = "0.15.0"
+oauth2 = "5.0.0"
+lazy_static = "1.4.0"
 prost-wkt-types = { workspace = true }
 openfga-grpc-client = { path = "../openfga-grpc-client" }
 openfga-http-client = { path = "../openfga-http-client" }
+reqwest = "0.12.23"
