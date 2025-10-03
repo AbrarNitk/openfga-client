@@ -20,3 +20,4 @@ prost-wkt-types = { workspace = true }
 openfga-grpc-client = { path = "../openfga-grpc-client" }
 openfga-http-client = { path = "../openfga-http-client" }
 reqwest = "0.12.23"
+base64 = "0.22"
