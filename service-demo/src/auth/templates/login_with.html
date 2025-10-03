@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+        }
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+        .login-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login with</h1>
+        <form id="loginForm" action="/auth/login-with" method="GET">
+            <div class="form-group">
+                <label for="platform">Select Platform:</label>
+                <select id="platform" name="tp" required>
+                    <option value="">Choose a platform...</option>
+                    <option value="google">Google</option>
+                    <option value="github">GitHub</option>
+                    <option value="facebook">Facebook</option>
+                </select>
+            </div>
+            <button type="submit" class="login-btn" id="loginBtn" disabled>
+                Login
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const platformSelect = document.getElementById('platform');
+        const loginBtn = document.getElementById('loginBtn');
+
+        // Enable/disable login button based on platform selection
+        platformSelect.addEventListener('change', function() {
+            loginBtn.disabled = !this.value;
+        });
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedPlatform = platformSelect.value;
+            if (selectedPlatform) {
+                // Redirect to the login endpoint with the selected platform
+                window.location.href = `/auth/login-with?tp=${selectedPlatform}`;
+            }
+        });
+    </script>
+</body>
+</html>

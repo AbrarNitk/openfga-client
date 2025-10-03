@@ -1,6 +1,7 @@
+pub mod dex;
 pub mod fga;
 
-use crate::auth;
+use crate::auth_m;
 use crate::context::Ctx;
 use crate::controller;
 use axum::{
@@ -29,7 +30,7 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         )
         .route_layer(middleware::from_fn_with_state(
             ctx.clone(),
-            auth::auth_middleware,
+            auth_m::auth_middleware,
         ));
 
     // Create public routes that don't require authentication
@@ -40,7 +41,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         // gRPC-based APIs (existing)
         // =============================================================================
         // store APIs (gRPC)
-        .merge(fga::create_fga_routes(ctx.clone()));
+        .merge(fga::create_fga_routes(ctx.clone()))
+        .merge(dex::routes(ctx.clone()));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)

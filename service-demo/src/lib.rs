@@ -1,4 +1,5 @@
 pub mod auth;
+pub mod auth_m;
 pub mod context;
 pub mod controller;
 pub mod fga_apis;

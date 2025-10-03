@@ -1,4 +1,4 @@
-use crate::auth::AuthUser;
+use crate::auth_m::AuthUser;
 use crate::context::Ctx;
 use axum::{
     Extension,
