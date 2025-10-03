@@ -17,10 +17,23 @@ pub struct LoginWithParams {
 }
 
 pub async fn login_with(Query(params): Query<LoginWithParams>) -> axum::response::Response {
+    // redirect to dex idp for different providers
+    // dex is running on port 5556
+    // so we need to redirect to http://localhost:5556/auth/login-with?tp=google
+    // or http://localhost:5556/auth/login-with?tp=github
+    // or http://localhost:5556/auth/login-with?tp=facebook
+    let redirect_url = format!("http://127.0.0.1:5556/auth/login-with?tp={}", params.tp);
     let response = axum::response::Response::builder()
-        .header("Content-Type", "text/html")
-        .body(format!("Login with {} selected", params.tp))
+        .header("Location", redirect_url)
+        .status(axum::http::StatusCode::FOUND)
+        .body(axum::body::Body::empty())
         .unwrap()
         .into_response();
     response
+    // let response = axum::response::Response::builder()
+    //     .header("Content-Type", "text/html")
+    //     .body(format!("Login with {} selected", params.tp))
+    //     .unwrap()
+    //     .into_response();
+    // response
 }
