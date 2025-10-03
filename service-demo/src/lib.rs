@@ -1,7 +1,7 @@
-pub mod apis;
 pub mod auth;
 pub mod context;
 pub mod controller;
+pub mod fga_apis;
 pub mod listener;
 pub mod routes;
 
