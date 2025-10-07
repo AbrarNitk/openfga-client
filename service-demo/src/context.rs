@@ -19,9 +19,10 @@ pub struct OpenFgaConfig {
 pub struct DexConfig {
     pub client_id: String,
     pub client_secret: String,
-    pub auth_url: String,
+    pub issuer_url: String,
     pub token_url: String,
     pub redirect_url: String,
+    pub scopes: Vec<String>,
 }
 
 /// Application context that holds shared resources

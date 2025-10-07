@@ -2,7 +2,7 @@
   {
     "client_id": "example-app",
     "client_secret": "ZXhhbXBsZS1hcHAtc2VjcmV0",
-    "auth_url": "http://127.0.0.1:5556/dex/auth",
+    "issuer_url": "http://127.0.0.1:5556/dex",
     "token_url": "http://127.0.0.1:5556/dex/token",
     "redirect_url": "http://127.0.0.1:5001/auth/callback",
     "scopes": ["openid", "profile", "email", "offline_access"]
