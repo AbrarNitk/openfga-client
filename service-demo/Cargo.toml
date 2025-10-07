@@ -22,4 +22,4 @@ openfga-http-client = { path = "../openfga-http-client" }
 reqwest = "0.12.23"
 base64 = "0.22"
 anyhow = "*"
-openidconnect = "4.0.1"
+openidconnect = { version = "4.0.1", features = ["reqwest"] }

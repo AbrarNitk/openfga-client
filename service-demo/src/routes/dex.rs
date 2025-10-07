@@ -7,7 +7,7 @@ pub fn routes<S: Send + Sync>(ctx: crate::context::Ctx) -> Router<S> {
         .route("/auth/login-with", get(crate::auth::openid::login_with))
         .route(
             "/auth/callback",
-            get(crate::auth::oauth::handle_oauth_callback),
+            get(crate::auth::openid::handle_openid_callback),
         )
         .with_state(ctx)
 }
