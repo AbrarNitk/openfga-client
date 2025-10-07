@@ -15,6 +15,15 @@ pub struct OpenFgaConfig {
     pub authorization_model_id: String,
 }
 
+#[derive(Clone, Debug, serde::Deserialize)]
+pub struct DexConfig {
+    pub client_id: String,
+    pub client_secret: String,
+    pub auth_url: String,
+    pub token_url: String,
+    pub redirect_url: String,
+}
+
 /// Application context that holds shared resources
 #[derive(Clone)]
 pub struct Ctx {
@@ -28,6 +37,8 @@ pub struct Ctx {
     pub fga_http_config: Configuration,
     /// OpenFGA configuration
     pub fga_config: OpenFgaConfig,
+    /// Dex OIDC Apps
+    pub dex: Vec<DexConfig>,
 }
 
 impl Ctx {
@@ -52,6 +63,8 @@ impl Ctx {
         // Get OpenFGA configuration
         let fga_config = get_fga_config();
 
+        let dex = get_dex_config()?;
+
         // Log OpenFGA configuration
         if !fga_config.store_id.is_empty() {
             tracing::info!("Using OpenFGA store ID: {}", fga_config.store_id);
@@ -63,6 +76,7 @@ impl Ctx {
             fga_client,
             fga_http_config,
             fga_config,
+            dex,
         })
     }
 }
@@ -157,4 +171,12 @@ fn get_fga_config() -> OpenFgaConfig {
         store_id,
         authorization_model_id,
     }
+}
+
+pub fn get_dex_config() -> anyhow::Result<Vec<DexConfig>> {
+    let config_path = std::env::var("DEX_CONFIG")?;
+    let config_path = std::env::current_dir()?.join(config_path);
+    let config: Vec<DexConfig> =
+        serde_json::from_str(std::fs::read_to_string(config_path)?.as_str())?;
+    Ok(config)
 }

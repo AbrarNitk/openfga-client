@@ -2172,6 +2172,7 @@ dependencies = [
 name = "service-demo"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "axum 0.8.4",
  "base64",
  "dotenv",

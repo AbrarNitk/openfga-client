@@ -3,3 +3,4 @@ export DATABASE_URL=postgres://openfga_user:password@localhost:5432/openfga?sslm
 export OPENFGA_CLIENT_URL=http://localhost:8081
 export OPENFGA_STORE_ID=01K4A10WAFX0JJMKY4JP660VXB
 export OPENFGA_AUTH_MODEL_ID=01K4M57STKFJD7T1AYG4724B73
+export DEX_CONFIG=etc/dex/config.json
