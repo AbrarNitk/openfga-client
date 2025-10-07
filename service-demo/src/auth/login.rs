@@ -2,13 +2,28 @@ use axum::{extract::Query, response::IntoResponse};
 use base64::Engine as _;
 use base64::engine::general_purpose::URL_SAFE_NO_PAD as BASE64_ENGINE;
 use oauth2::{
-    AuthUrl, ClientId, ClientSecret, CsrfToken, PkceCodeChallenge,
-    RedirectUrl, Scope, TokenUrl, basic::BasicClient,
+    AuthUrl, ClientId, ClientSecret, CsrfToken, PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
+    basic::BasicClient,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::sync::Mutex;
+
+// DexIdP OAuth2 Configuration
+const DEX_CLIENT_ID: &str = "example-app";
+const DEX_CLIENT_SECRET: &str = "ZXhhbXBsZS1hcHAtc2VjcmV0";
+const DEX_AUTH_URL: &str = "http://127.0.0.1:5556/dex/auth";
+const DEX_TOKEN_URL: &str = "http://127.0.0.1:5556/dex/token";
+const DEX_REDIRECT_URL: &str = "http://127.0.0.1:5001/auth/callback";
+
+// OAuth2 scopes for DexIdP
+const OAUTH_SCOPES: &[&str] = &["openid", "profile", "email", "offline_access"];
+
+// Simple in-memory store for PKCE verifiers (in production, use a proper session store)
+lazy_static::lazy_static! {
+    static ref PKCE_STORE: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct IdTokenClaims {
@@ -29,21 +44,6 @@ fn parse_jwt_claims(id_token: &str) -> Option<IdTokenClaims> {
     let payload = parts[1];
     let decoded = BASE64_ENGINE.decode(payload.as_bytes()).ok()?;
     serde_json::from_slice::<IdTokenClaims>(&decoded).ok()
-}
-
-// DexIdP OAuth2 Configuration
-const DEX_CLIENT_ID: &str = "example-app";
-const DEX_CLIENT_SECRET: &str = "ZXhhbXBsZS1hcHAtc2VjcmV0";
-const DEX_AUTH_URL: &str = "http://127.0.0.1:5556/dex/auth";
-const DEX_TOKEN_URL: &str = "http://127.0.0.1:5556/dex/token";
-const DEX_REDIRECT_URL: &str = "http://127.0.0.1:5001/auth/callback";
-
-// OAuth2 scopes for DexIdP
-const OAUTH_SCOPES: &[&str] = &["openid", "profile", "email", "offline_access"];
-
-// Simple in-memory store for PKCE verifiers (in production, use a proper session store)
-lazy_static::lazy_static! {
-    static ref PKCE_STORE: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -172,7 +172,7 @@ pub async fn handle_oauth_callback(
     };
 
     // We don't need the OAuth2 client for token exchange since we're doing it manually
-    
+
     let http_client = reqwest::ClientBuilder::new()
         // Following redirects opens the client up to SSRF vulnerabilities.
         .redirect(reqwest::redirect::Policy::none())
@@ -189,12 +189,8 @@ pub async fn handle_oauth_callback(
         ("client_secret", DEX_CLIENT_SECRET),
         ("code_verifier", &pkce_verifier),
     ];
-    
-    let token_result = http_client
-        .post(DEX_TOKEN_URL)
-        .form(&form)
-        .send()
-        .await;
+
+    let token_result = http_client.post(DEX_TOKEN_URL).form(&form).send().await;
 
     match token_result {
         Ok(response) => {
@@ -204,29 +200,31 @@ pub async fn handle_oauth_callback(
                     println!("Token response: {:?}", json_val);
 
                     // Extract tokens from response
-                    let access_token = json_val.get("access_token")
+                    let access_token = json_val
+                        .get("access_token")
                         .and_then(|v| v.as_str())
                         .unwrap_or("N/A");
-                    
-                    let id_token = json_val.get("id_token")
+
+                    let id_token = json_val
+                        .get("id_token")
                         .and_then(|v| v.as_str())
                         .map(|s| s.to_string());
-                    
+
                     let claims = id_token.as_deref().and_then(parse_jwt_claims);
 
-            // Clean up PKCE verifier from store
-            {
-                let mut store = PKCE_STORE.lock().unwrap();
-                store.remove(&params.state);
-            }
+                    // Clean up PKCE verifier from store
+                    {
+                        let mut store = PKCE_STORE.lock().unwrap();
+                        store.remove(&params.state);
+                    }
 
-            // In production, you would:
-            // 1. Verify the state parameter matches what you stored
-            // 2. Store the access token securely
-            // 3. Use the access token to fetch user information from DexIdP
-            // 4. Create a session for the user
+                    // In production, you would:
+                    // 1. Verify the state parameter matches what you stored
+                    // 2. Store the access token securely
+                    // 3. Use the access token to fetch user information from DexIdP
+                    // 4. Create a session for the user
 
-            let response = axum::response::Response::builder()
+                    let response = axum::response::Response::builder()
                 .header("Content-Type", "text/html")
                 .body(format!(
                     r#"
@@ -260,7 +258,7 @@ pub async fn handle_oauth_callback(
                 ))
                 .unwrap()
                 .into_response();
-            response
+                    response
                 }
                 Err(e) => {
                     println!("Failed to parse token response as JSON: {:?}", e);
