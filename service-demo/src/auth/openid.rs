@@ -11,9 +11,16 @@ use std::sync::Mutex;
 
 use crate::context::Ctx;
 
+// Structure to store state data including nonce
+#[derive(Debug, Clone)]
+struct StateData {
+    connector_id: String,
+    nonce: String,
+}
+
 // Simple in-memory store for state (in production, use a proper session store)
 lazy_static::lazy_static! {
-    static ref STATE_STORE: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
+    static ref STATE_STORE: Mutex<HashMap<String, StateData>> = Mutex::new(HashMap::new());
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -59,10 +66,16 @@ pub async fn login_with(
     let csrf_token = CsrfToken::new_random();
     let nonce = Nonce::new_random();
 
-    // Store state with connector_id for verification
+    // Store state with connector_id and nonce for verification
     {
         let mut store = STATE_STORE.lock().unwrap();
-        store.insert(csrf_token.secret().clone(), params.tp.clone());
+        store.insert(
+            csrf_token.secret().clone(),
+            StateData {
+                connector_id: params.tp.clone(),
+                nonce: nonce.secret().clone(),
+            },
+        );
     }
 
     // Create authorization URL with scopes
@@ -108,16 +121,16 @@ pub async fn handle_openid_callback(
 
     println!("OpenID Connect callback params: {:?}", params);
 
-    // Retrieve connector_id from state store
-    let connector_id = {
+    // Retrieve state data (connector_id and nonce) from state store
+    let state_data = {
         let store = STATE_STORE.lock().unwrap();
         store.get(&params.state).cloned()
     };
 
-    let connector_id = match connector_id {
-        Some(id) => id,
+    let state_data = match state_data {
+        Some(data) => data,
         None => {
-            println!("No connector_id found for state: {}", params.state);
+            println!("No state data found for state: {}", params.state);
             return axum::response::Response::builder()
                 .status(axum::http::StatusCode::BAD_REQUEST)
                 .header("Content-Type", "text/html")
@@ -180,13 +193,11 @@ pub async fn handle_openid_callback(
             let (id_token_str, claims_json) = if let Some(id_token) = id_token {
                 let id_token_str = id_token.to_string();
 
-                // Get ID token verifier and nonce from client
-                // Note: In a real application, you should store and retrieve the nonce from the session
+                // Get ID token verifier from client
                 let id_token_verifier = client.id_token_verifier();
 
-                // For display purposes, we'll create a new nonce
-                // In production, you should use the original nonce from the authorization request
-                let nonce = Nonce::new_random();
+                // Retrieve the stored nonce from the state data
+                let nonce = Nonce::new(state_data.nonce.clone());
 
                 // Try to verify and extract claims
                 match id_token.claims(&id_token_verifier, &nonce) {
@@ -291,7 +302,7 @@ pub async fn handle_openid_callback(
                     "#,
                     params.code,
                     params.state,
-                    connector_id,
+                    state_data.connector_id,
                     access_token,
                     refresh_token,
                     id_token_str,
