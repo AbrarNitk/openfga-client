@@ -1,0 +1,24 @@
+model
+    schema 1.1
+
+type user
+
+type folder
+    relations
+        define parent: [folder]
+        define owner: [user]
+        define editor: [user]
+        define viewer: [user]
+
+        define can_edit: owner or editor or can_edit from parent
+        define can_view: viewer or can_edit
+
+type document
+    relations
+        define parent: [folder]
+        define owner: [user]
+        define editor: [user]
+        define viewer: [user]
+
+        define can_edit: owner or editor or can_edit from parent
+        define can_view: viewer or can_edit

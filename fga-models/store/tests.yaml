@@ -1,0 +1,25 @@
+name: Simple Google Drive
+model_file: ./simple-model.fga
+tuples:
+  - user: user:anne
+    object: folder:root
+    relation: owner
+  - user: folder:root
+    object: document:welcome
+    relation: parent
+  - user: user:bob
+    object: document:welcome
+    relation: viewer
+tests:
+  - name: Test user permissions to document:welcome
+    check:
+      - user: user:anne
+        object: document:welcome
+        assertions:
+          can_edit: true
+          can_view: true
+      - user: user:bob
+        object: document:welcome
+        assertions:
+          can_edit: false
+          can_view: true

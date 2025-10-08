@@ -1,0 +1,44 @@
+model
+    schema 1.1
+
+type user
+
+type group
+    relations
+        define member: [user]
+
+type role
+    relations
+        define assignee: [user, group#member, role#assignee]
+
+type organisation
+    relations
+        define owner: [user]
+        define admin: [group#member, role#assignee] or owner
+        define editor: [group#member, role#assignee] or admin
+        define viewer: [group#member, role#assignee] or editor
+
+        define action_taker: [group#member, role#assignee] or viewer
+
+
+        define child_org: [organisation]
+
+type resource
+    relations
+        define organisation: [organisation]
+        define owner: owner from organisation
+        define editor: owner or editor from organisation
+        define viewer: editor or viewer from organisation
+
+        define can_edit: owner or editor
+        define can_view: can_edit or viewer
+
+        define can_take_action: viewer or action_taker from organisation
+
+        define shared_with_child: [organisation#child_org]
+
+type action
+    relations
+        define resource: [resource]
+
+        define can_perform_action: can_take_action from resource

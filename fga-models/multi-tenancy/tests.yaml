@@ -1,0 +1,20 @@
+name: Multi Tenancy Model Testing
+model_file: ./model.fga
+tuples:
+  - user: user:a1
+    object: organisation:A
+    relation: owner
+  - user: organisation:A
+    object: resource:r1
+    relation: organisation
+tests:
+  - name: Test user is owner
+    check:
+      - user: user:a1
+        object: organisation:A
+        assertions:
+          owner: true
+      - user: user:a1
+        object: resource:r1
+        assertions:
+          can_edit: true
