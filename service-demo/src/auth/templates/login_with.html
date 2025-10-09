@@ -110,7 +110,7 @@
             const selectedPlatform = platformSelect.value;
             if (selectedPlatform) {
                 // Redirect to the login endpoint with the selected platform
-                window.location.href = `/auth/auth0/login?tp=${selectedPlatform}`;
+                window.location.href = `/auth/auth0/login?tp=${selectedPlatform}&screen_hint=login&prompt=login&ui_locales=en`;
             }
         });
     </script>

@@ -47,6 +47,9 @@ lazy_static::lazy_static! {
 #[derive(Debug, serde::Deserialize)]
 pub struct LoginWithParams {
     pub connection: Option<String>, // Auth0 connection parameter (e.g., "google-oauth2", "github", etc.)
+    pub screen_hint: Option<String>, // "signup" or "login" to show specific screen
+    pub prompt: Option<String>,     // "login" to force re-authentication, "none" for silent auth
+    pub ui_locales: Option<String>, // Language preference (e.g., "en", "es", "fr")
 }
 
 pub async fn login_with(
@@ -113,11 +116,31 @@ pub async fn login_with(
         auth_url_builder = auth_url_builder.add_extra_param("connection", connection);
     }
 
+    // Add screen_hint parameter (signup or login)
+    if let Some(ref screen_hint) = params.screen_hint {
+        auth_url_builder = auth_url_builder.add_extra_param("screen_hint", screen_hint);
+    }
+
+    // Add prompt parameter (login, none, consent, etc.)
+    if let Some(ref prompt) = params.prompt {
+        auth_url_builder = auth_url_builder.add_extra_param("prompt", prompt);
+    }
+
+    // Add ui_locales parameter for language preference
+    if let Some(ref ui_locales) = params.ui_locales {
+        auth_url_builder = auth_url_builder.add_extra_param("ui_locales", ui_locales);
+    }
+
     let (auth_url, _csrf_token, _nonce) = auth_url_builder.url();
 
-    println!("Auth0 auth_url: {:?}", auth_url);
+    println!("Auth0 Universal Login URL: {:?}", auth_url);
 
-    // Redirect to Auth0 authorization endpoint
+    // Redirect to Auth0 Universal Login page
+    // This will show Auth0's centralized login page where users can:
+    // - Sign in with username/password
+    // - Sign in with social connections (Google, GitHub, etc.)
+    // - Sign up for a new account
+    // The Universal Login page is fully customizable in your Auth0 dashboard
     axum::response::Response::builder()
         .header("Location", auth_url.to_string())
         .status(axum::http::StatusCode::FOUND)
@@ -405,7 +428,7 @@ fn build_success_response(
                         <div class="claims">{}</div>
                     </div>
 
-                    <a href="/auth" class="back-link">Return to Home</a>
+                    <a href="/auth/auth0" class="back-link">Return to Home</a>
                 </div>
             </body>
             </html>
