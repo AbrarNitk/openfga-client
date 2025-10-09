@@ -42,7 +42,8 @@ pub fn create_routes<S: Send + Sync>(ctx: Ctx) -> Router<S> {
         // =============================================================================
         // store APIs (gRPC)
         .merge(fga::create_fga_routes(ctx.clone()))
-        .merge(dex::routes(ctx.clone()));
+        .merge(dex::routes(ctx.clone()))
+        .merge(dex::routes_auth0(ctx.clone()));
 
     // Merge all routes
     public_routes.merge(protected_routes).with_state(ctx)

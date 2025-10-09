@@ -68,7 +68,7 @@
 <body>
     <div class="login-container">
         <h1>Login with</h1>
-        <form id="loginForm" action="/auth/login-with" method="GET">
+        <form id="loginForm" action="/auth/auth0/login" method="GET">
             <div class="form-group">
                 <label for="platform">Select Platform:</label>
                 <select id="platform" name="tp" required>
@@ -110,7 +110,7 @@
             const selectedPlatform = platformSelect.value;
             if (selectedPlatform) {
                 // Redirect to the login endpoint with the selected platform
-                window.location.href = `/auth/login-with?tp=${selectedPlatform}`;
+                window.location.href = `/auth/auth0/login?tp=${selectedPlatform}`;
             }
         });
     </script>
