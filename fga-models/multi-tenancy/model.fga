@@ -22,14 +22,14 @@ type organisation
         # Viewer used to get and list the resource
         define viewer: [group#member, role#assignee] or editor
 
-        define action_performer: [group#member, role#assignee] or viewer
-
-        define child_org: [organisation]
-
 type resource
     relations
         # resource belongs to an organisation
         define organisation: [organisation]
+
+        # resource have actions
+        define action: [action]
+
         define owner: owner from organisation
         define editor: owner or editor from organisation or admin from organisation
         define viewer: editor or viewer from organisation
@@ -37,14 +37,7 @@ type resource
         define can_edit: owner or editor
         define can_view: can_edit or viewer
 
-        define can_perform_action: editor or action_performer from organisation
-
-        define shared_with_child: [organisation#child_org]
+        define can_perform_action: editor or perfomer from action
 
 type action
-    relations
-
-        # resource have different actions with their types
-        define resource: [resource]
-
-        define can_perform_action: can_perform_action from resource
+    define perfomer: [group#member, role#assignee]
