@@ -5,10 +5,12 @@ type user
 
 type group
     relations
+        define organisation: [organisation]
         define member: [user, group#member]
 
 type role
     relations
+        define organisation: [organisation]
         define assignee: [user, group#member, role#assignee]
 
 type organisation
