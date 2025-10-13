@@ -1,15 +1,37 @@
 model
     schema 1.1
 
+# ==============================================================================
+# MULTI-TENANCY AUTHORIZATION MODEL
+# ==============================================================================
+#
+# This model implements organisation-scoped multi-tenancy with:
+# - Groups and roles scoped to organisations
+# - Resources belonging to organisations
+# - Fine-grained CRUD permissions with hierarchy
+# - Resource-specific permission overrides
+#
+# CRITICAL: This model relies on APPLICATION-LEVEL validation to enforce
+# multi-tenancy isolation. See comments on group, role, and resource types.
+#
+# Permission Hierarchy:
+#   Organisation: owner → admin → resource_manager → editor → viewer
+#   CRUD: can_delete → can_update → can_get → can_list
+# ==============================================================================
+
 type user
 
 type group
     relations
+        # APPLICATION MUST: Ensure groups are assigned to their org during creation
+        # Write: group:G1#organisation@organisation:ORG1 when creating group G1 in ORG1
         define organisation: [organisation]
         define member: [user, group#member]
 
 type role
     relations
+        # APPLICATION MUST: Ensure roles are assigned to their org during creation
+        # Write: role:R1#organisation@organisation:ORG1 when creating role R1 in ORG1
         define organisation: [organisation]
         define assignee: [user, group#member, role#assignee]
 
@@ -18,27 +40,68 @@ type organisation
         define owner: [user]
         define admin: [group#member, role#assignee] or owner
 
-        # Editor used to create/update/delete resource
-        define editor: [group#member, role#assignee] or admin
+        # Resource manager can manage resources (create, update, delete)
+        define resource_manager: [group#member, role#assignee] or admin
 
-        # Viewer used to get and list the resource
+        # Editor can create and update resources
+        define editor: [group#member, role#assignee] or resource_manager
+
+        # Viewer can list resources
         define viewer: [group#member, role#assignee] or editor
 
 type resource
     relations
-        # resource belongs to an organisation
+        # Resource belongs to an organisation
         define organisation: [organisation]
 
-        # resource have actions
+        # Resource have actions
         define action: [action]
 
-        define owner: owner from organisation
-        define editor: owner or editor from organisation or admin from organisation
-        define viewer: editor or viewer from organisation
+        # Resource-level role assignments (allows resource-specific permissions)
+        # These can override or extend org-level defaults
+        #
+        # CRITICAL - APPLICATION-LEVEL VALIDATION REQUIRED:
+        # The model allows direct assignment of users/groups/roles to resources,
+        # but CANNOT enforce that they belong to the same organisation.
+        #
+        # YOUR APPLICATION MUST:
+        # 1. Before writing tuples like resource:R1#editor@group:G1#member
+        #    Check that: group:G1#organisation@organisation:ORG exists
+        #    Where ORG is the organisation that resource R1 belongs to
+        #
+        # 2. Before writing tuples like resource:R1#editor@user:alice
+        #    Check that: user:alice has at least viewer permission in ORG
+        #    (Check: user:alice -> organisation:ORG#viewer)
+        #
+        # 3. Same validation applies for role#assignee assignments
+        #
+        # Failure to validate will break multi-tenancy isolation!
+        define owner: [user] or owner from organisation
+        define admin: [user, group#member, role#assignee] or admin from organisation
+        define resource_manager: [user, group#member, role#assignee] or resource_manager from organisation
+        define editor: [user, group#member, role#assignee] or editor from organisation
+        define viewer: [user, group#member, role#assignee] or viewer from organisation
 
-        define can_edit: owner or editor
-        define can_view: can_edit or viewer
+        # CRUD Operations with proper hierarchy
+        # Delete is most restrictive (only owner and admin)
+        define can_delete: owner or admin
 
+        # Update is less restrictive than delete
+        define can_update: can_delete or resource_manager or editor
+
+        # Get is more restrictive than list (shows credentials and sensitive data)
+        # Requires editor level or explicit grant
+        # Direct assignments must belong to same org (see validation notes above)
+        define can_get: [user, group#member, role#assignee] or can_update
+
+        # List is least restrictive (shows basic info only)
+        # Viewer can list resources
+        define can_list: viewer or can_get
+
+        # Create is checked at organisation level in application logic
+        # (resource doesn't exist yet, so check org.editor or org.resource_manager)
+
+        # Custom actions
         define can_perform_action: editor or performer from action
 
 
