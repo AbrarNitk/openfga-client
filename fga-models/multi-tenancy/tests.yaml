@@ -1,20 +1,36 @@
 name: Multi Tenancy Model Testing
 model_file: ./model.fga
 tuples:
-  - user: user:a1
+  # User u1 is an owner in org A
+  - user: user:A-u1
     object: organisation:A
     relation: owner
+  # resource r1 belongs to the org A
   - user: organisation:A
-    object: resource:r1
+    object: resource:A-r1
     relation: organisation
+
+  # resource r1 has an http-action
+  - user: action:http
+    object: resource:A-r1
+    relation: action
+
 tests:
   - name: Test user is owner
     check:
-      - user: user:a1
+      # Basic Test Cases for a single user
+      ## is user u1 is an owner in the org A1
+      - user: user:A-u1
         object: organisation:A
         assertions:
           owner: true
-      - user: user:a1
-        object: resource:r1
+      ## is user u1 can edit a resource r1
+      - user: user:A-u1
+        object: resource:A-r1
         assertions:
           can_edit: true
+      ## is user u1 can perform an action on resource r1
+      - user: user:A-u1
+        object: resource:A-r1
+        assertions:
+          can_perform_action: true # REASON: user u1 is an owner in A1

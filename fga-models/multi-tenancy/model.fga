@@ -37,7 +37,9 @@ type resource
         define can_edit: owner or editor
         define can_view: can_edit or viewer
 
-        define can_perform_action: editor or perfomer from action
+        define can_perform_action: editor or performer from action
+
 
 type action
-    define perfomer: [group#member, role#assignee]
+    relations
+        define performer: [group#member, role#assignee]

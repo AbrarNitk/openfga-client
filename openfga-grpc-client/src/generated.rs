@@ -13,7 +13,10 @@ pub struct AuthorizationModel {
     #[prost(message, repeated, tag = "3")]
     pub type_definitions: ::prost::alloc::vec::Vec<TypeDefinition>,
     #[prost(map = "string, message", tag = "4")]
-    pub conditions: ::std::collections::HashMap<::prost::alloc::string::String, Condition>,
+    pub conditions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        Condition,
+    >,
 }
 #[derive(serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -52,7 +55,10 @@ pub struct RelationTypeInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     #[prost(map = "string, message", tag = "1")]
-    pub relations: ::std::collections::HashMap<::prost::alloc::string::String, RelationMetadata>,
+    pub relations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        RelationMetadata,
+    >,
     #[prost(string, tag = "2")]
     pub module: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "3")]
@@ -87,7 +93,9 @@ pub struct RelationReference {
     #[prost(string, tag = "4")]
     pub condition: ::prost::alloc::string::String,
     #[prost(oneof = "relation_reference::RelationOrWildcard", tags = "2, 3")]
-    pub relation_or_wildcard: ::core::option::Option<relation_reference::RelationOrWildcard>,
+    pub relation_or_wildcard: ::core::option::Option<
+        relation_reference::RelationOrWildcard,
+    >,
 }
 /// Nested message and enum types in `RelationReference`.
 pub mod relation_reference {
@@ -192,8 +200,10 @@ pub struct Condition {
     pub expression: ::prost::alloc::string::String,
     /// A map of parameter names to the parameter's defined type reference.
     #[prost(map = "string, message", tag = "3")]
-    pub parameters:
-        ::std::collections::HashMap<::prost::alloc::string::String, ConditionParamTypeRef>,
+    pub parameters: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ConditionParamTypeRef,
+    >,
     #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<ConditionMetadata>,
 }
@@ -219,7 +229,17 @@ pub struct ConditionParamTypeRef {
 pub mod condition_param_type_ref {
     #[derive(serde::Serialize, serde::Deserialize)]
     #[serde(rename_all = "camelCase")]
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TypeName {
         Unspecified = 0,
@@ -384,7 +404,9 @@ impl AuthErrorCode {
             "auth_failed_invalid_audience" => Some(Self::AuthFailedInvalidAudience),
             "auth_failed_invalid_issuer" => Some(Self::AuthFailedInvalidIssuer),
             "invalid_claims" => Some(Self::InvalidClaims),
-            "auth_failed_invalid_bearer_token" => Some(Self::AuthFailedInvalidBearerToken),
+            "auth_failed_invalid_bearer_token" => {
+                Some(Self::AuthFailedInvalidBearerToken)
+            }
             "bearer_token_missing" => Some(Self::BearerTokenMissing),
             "unauthenticated" => Some(Self::Unauthenticated),
             "forbidden" => Some(Self::Forbidden),
@@ -481,7 +503,9 @@ impl ErrorCode {
             Self::AuthorizationModelAssertionsNotFound => {
                 "authorization_model_assertions_not_found"
             }
-            Self::LatestAuthorizationModelNotFound => "latest_authorization_model_not_found",
+            Self::LatestAuthorizationModelNotFound => {
+                "latest_authorization_model_not_found"
+            }
             Self::TypeNotFound => "type_not_found",
             Self::RelationNotFound => "relation_not_found",
             Self::EmptyRelationDefinition => "empty_relation_definition",
@@ -544,11 +568,15 @@ impl ErrorCode {
             "invalid_expand_input" => Some(Self::InvalidExpandInput),
             "unsupported_user_set" => Some(Self::UnsupportedUserSet),
             "invalid_object_format" => Some(Self::InvalidObjectFormat),
-            "write_failed_due_to_invalid_input" => Some(Self::WriteFailedDueToInvalidInput),
+            "write_failed_due_to_invalid_input" => {
+                Some(Self::WriteFailedDueToInvalidInput)
+            }
             "authorization_model_assertions_not_found" => {
                 Some(Self::AuthorizationModelAssertionsNotFound)
             }
-            "latest_authorization_model_not_found" => Some(Self::LatestAuthorizationModelNotFound),
+            "latest_authorization_model_not_found" => {
+                Some(Self::LatestAuthorizationModelNotFound)
+            }
             "type_not_found" => Some(Self::TypeNotFound),
             "relation_not_found" => Some(Self::RelationNotFound),
             "empty_relation_definition" => Some(Self::EmptyRelationDefinition),
@@ -560,7 +588,9 @@ impl ErrorCode {
             "id_too_long" => Some(Self::IdTooLong),
             "authorization_model_id_too_long" => Some(Self::AuthorizationModelIdTooLong),
             "tuple_key_value_not_specified" => Some(Self::TupleKeyValueNotSpecified),
-            "tuple_keys_too_many_or_too_few_items" => Some(Self::TupleKeysTooManyOrTooFewItems),
+            "tuple_keys_too_many_or_too_few_items" => {
+                Some(Self::TupleKeysTooManyOrTooFewItems)
+            }
             "page_size_invalid" => Some(Self::PageSizeInvalid),
             "param_missing_value" => Some(Self::ParamMissingValue),
             "difference_base_missing_value" => Some(Self::DifferenceBaseMissingValue),
@@ -1279,7 +1309,10 @@ pub struct BatchCheckItem {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCheckResponse {
     #[prost(map = "string, message", tag = "1")]
-    pub result: ::std::collections::HashMap<::prost::alloc::string::String, BatchCheckSingleResult>,
+    pub result: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        BatchCheckSingleResult,
+    >,
 }
 #[derive(serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -1380,7 +1413,10 @@ pub struct WriteAuthorizationModelRequest {
     #[prost(string, tag = "3")]
     pub schema_version: ::prost::alloc::string::String,
     #[prost(map = "string, message", tag = "4")]
-    pub conditions: ::std::collections::HashMap<::prost::alloc::string::String, Condition>,
+    pub conditions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        Condition,
+    >,
 }
 #[derive(serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -1601,10 +1637,10 @@ pub mod open_fga_service_client {
         dead_code,
         missing_docs,
         clippy::wildcard_imports,
-        clippy::let_unit_value
+        clippy::let_unit_value,
     )]
-    use tonic::codegen::http::Uri;
     use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
     pub struct OpenFgaServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1643,13 +1679,14 @@ pub mod open_fga_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                    http::Request<tonic::body::BoxBody>,
-                    Response = http::Response<
-                        <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                    >,
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + std::marker::Send + std::marker::Sync,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             OpenFgaServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1688,11 +1725,18 @@ pub mod open_fga_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::ReadRequest>,
         ) -> std::result::Result<tonic::Response<super::ReadResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/Read");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/Read",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "Read"));
@@ -1702,11 +1746,18 @@ pub mod open_fga_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::WriteRequest>,
         ) -> std::result::Result<tonic::Response<super::WriteResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/Write");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/Write",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "Write"));
@@ -1716,11 +1767,18 @@ pub mod open_fga_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::CheckRequest>,
         ) -> std::result::Result<tonic::Response<super::CheckResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/Check");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/Check",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "Check"));
@@ -1729,14 +1787,22 @@ pub mod open_fga_service_client {
         pub async fn batch_check(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCheckRequest>,
-        ) -> std::result::Result<tonic::Response<super::BatchCheckResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::BatchCheckResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/BatchCheck");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/BatchCheck",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "BatchCheck"));
@@ -1746,11 +1812,18 @@ pub mod open_fga_service_client {
             &mut self,
             request: impl tonic::IntoRequest<super::ExpandRequest>,
         ) -> std::result::Result<tonic::Response<super::ExpandResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/Expand");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/Expand",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "Expand"));
@@ -1763,18 +1836,26 @@ pub mod open_fga_service_client {
             tonic::Response<super::ReadAuthorizationModelsResponse>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/openfga.v1.OpenFGAService/ReadAuthorizationModels",
             );
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new(
-                "openfga.v1.OpenFGAService",
-                "ReadAuthorizationModels",
-            ));
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "openfga.v1.OpenFGAService",
+                        "ReadAuthorizationModels",
+                    ),
+                );
             self.inner.unary(req, path, codec).await
         }
         pub async fn read_authorization_model(
@@ -1784,18 +1865,26 @@ pub mod open_fga_service_client {
             tonic::Response<super::ReadAuthorizationModelResponse>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/openfga.v1.OpenFGAService/ReadAuthorizationModel",
             );
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new(
-                "openfga.v1.OpenFGAService",
-                "ReadAuthorizationModel",
-            ));
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "openfga.v1.OpenFGAService",
+                        "ReadAuthorizationModel",
+                    ),
+                );
             self.inner.unary(req, path, codec).await
         }
         pub async fn write_authorization_model(
@@ -1805,67 +1894,95 @@ pub mod open_fga_service_client {
             tonic::Response<super::WriteAuthorizationModelResponse>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/openfga.v1.OpenFGAService/WriteAuthorizationModel",
             );
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new(
-                "openfga.v1.OpenFGAService",
-                "WriteAuthorizationModel",
-            ));
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "openfga.v1.OpenFGAService",
+                        "WriteAuthorizationModel",
+                    ),
+                );
             self.inner.unary(req, path, codec).await
         }
         pub async fn write_assertions(
             &mut self,
             request: impl tonic::IntoRequest<super::WriteAssertionsRequest>,
-        ) -> std::result::Result<tonic::Response<super::WriteAssertionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::WriteAssertionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/WriteAssertions");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/WriteAssertions",
+            );
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new(
-                "openfga.v1.OpenFGAService",
-                "WriteAssertions",
-            ));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "WriteAssertions"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn read_assertions(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadAssertionsRequest>,
-        ) -> std::result::Result<tonic::Response<super::ReadAssertionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ReadAssertionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/ReadAssertions");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/ReadAssertions",
+            );
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new(
-                "openfga.v1.OpenFGAService",
-                "ReadAssertions",
-            ));
+            req.extensions_mut()
+                .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "ReadAssertions"));
             self.inner.unary(req, path, codec).await
         }
         pub async fn read_changes(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadChangesRequest>,
-        ) -> std::result::Result<tonic::Response<super::ReadChangesResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ReadChangesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/ReadChanges");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/ReadChanges",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "ReadChanges"));
@@ -1874,14 +1991,22 @@ pub mod open_fga_service_client {
         pub async fn create_store(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateStoreRequest>,
-        ) -> std::result::Result<tonic::Response<super::CreateStoreResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::CreateStoreResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/CreateStore");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/CreateStore",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "CreateStore"));
@@ -1890,14 +2015,22 @@ pub mod open_fga_service_client {
         pub async fn update_store(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateStoreRequest>,
-        ) -> std::result::Result<tonic::Response<super::UpdateStoreResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::UpdateStoreResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/UpdateStore");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/UpdateStore",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "UpdateStore"));
@@ -1906,14 +2039,22 @@ pub mod open_fga_service_client {
         pub async fn delete_store(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteStoreRequest>,
-        ) -> std::result::Result<tonic::Response<super::DeleteStoreResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::DeleteStoreResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/DeleteStore");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/DeleteStore",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "DeleteStore"));
@@ -1922,12 +2063,22 @@ pub mod open_fga_service_client {
         pub async fn get_store(
             &mut self,
             request: impl tonic::IntoRequest<super::GetStoreRequest>,
-        ) -> std::result::Result<tonic::Response<super::GetStoreResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::GetStoreResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/GetStore");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/GetStore",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "GetStore"));
@@ -1936,14 +2087,22 @@ pub mod open_fga_service_client {
         pub async fn list_stores(
             &mut self,
             request: impl tonic::IntoRequest<super::ListStoresRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListStoresResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ListStoresResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/ListStores");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/ListStores",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "ListStores"));
@@ -1956,31 +2115,44 @@ pub mod open_fga_service_client {
             tonic::Response<tonic::codec::Streaming<super::StreamedListObjectsResponse>>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/openfga.v1.OpenFGAService/StreamedListObjects",
             );
             let mut req = request.into_request();
-            req.extensions_mut().insert(GrpcMethod::new(
-                "openfga.v1.OpenFGAService",
-                "StreamedListObjects",
-            ));
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("openfga.v1.OpenFGAService", "StreamedListObjects"),
+                );
             self.inner.server_streaming(req, path, codec).await
         }
         pub async fn list_objects(
             &mut self,
             request: impl tonic::IntoRequest<super::ListObjectsRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListObjectsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ListObjectsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/ListObjects");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/ListObjects",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "ListObjects"));
@@ -1989,12 +2161,22 @@ pub mod open_fga_service_client {
         pub async fn list_users(
             &mut self,
             request: impl tonic::IntoRequest<super::ListUsersRequest>,
-        ) -> std::result::Result<tonic::Response<super::ListUsersResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::unknown(format!("Service was not ready: {}", e.into()))
-            })?;
+        ) -> std::result::Result<
+            tonic::Response<super::ListUsersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/openfga.v1.OpenFGAService/ListUsers");
+            let path = http::uri::PathAndQuery::from_static(
+                "/openfga.v1.OpenFGAService/ListUsers",
+            );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("openfga.v1.OpenFGAService", "ListUsers"));
@@ -2003,3692 +2185,182 @@ pub mod open_fga_service_client {
     }
 }
 
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.AuthorizationModel")]
-    impl ::prost_wkt::MessageSerde for AuthorizationModel {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "AuthorizationModel"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.AuthorizationModel"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.AuthorizationModel" , decoder : | buf : & [u8] | { let msg : AuthorizationModel = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for AuthorizationModel {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "AuthorizationModel";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.AuthorizationModel".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TypeDefinition")]
-    impl ::prost_wkt::MessageSerde for TypeDefinition {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TypeDefinition"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TypeDefinition"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TypeDefinition" , decoder : | buf : & [u8] | { let msg : TypeDefinition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TypeDefinition {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TypeDefinition";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TypeDefinition".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Relation")]
-    impl ::prost_wkt::MessageSerde for Relation {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Relation"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Relation"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Relation" , decoder : | buf : & [u8] | { let msg : Relation = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Relation {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Relation";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Relation".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.RelationTypeInfo")]
-    impl ::prost_wkt::MessageSerde for RelationTypeInfo {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "RelationTypeInfo"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.RelationTypeInfo"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationTypeInfo" , decoder : | buf : & [u8] | { let msg : RelationTypeInfo = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for RelationTypeInfo {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "RelationTypeInfo";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.RelationTypeInfo".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Metadata")]
-    impl ::prost_wkt::MessageSerde for Metadata {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Metadata"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Metadata"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Metadata" , decoder : | buf : & [u8] | { let msg : Metadata = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Metadata {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Metadata";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Metadata".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.SourceInfo")]
-    impl ::prost_wkt::MessageSerde for SourceInfo {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "SourceInfo"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.SourceInfo"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.SourceInfo" , decoder : | buf : & [u8] | { let msg : SourceInfo = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for SourceInfo {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "SourceInfo";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.SourceInfo".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.RelationMetadata")]
-    impl ::prost_wkt::MessageSerde for RelationMetadata {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "RelationMetadata"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.RelationMetadata"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationMetadata" , decoder : | buf : & [u8] | { let msg : RelationMetadata = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for RelationMetadata {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "RelationMetadata";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.RelationMetadata".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.RelationReference")]
-    impl ::prost_wkt::MessageSerde for RelationReference {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "RelationReference"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.RelationReference"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationReference" , decoder : | buf : & [u8] | { let msg : RelationReference = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for RelationReference {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "RelationReference";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.RelationReference".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Wildcard")]
-    impl ::prost_wkt::MessageSerde for Wildcard {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Wildcard"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Wildcard"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Wildcard" , decoder : | buf : & [u8] | { let msg : Wildcard = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Wildcard {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Wildcard";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Wildcard".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Usersets")]
-    impl ::prost_wkt::MessageSerde for Usersets {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Usersets"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Usersets"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Usersets" , decoder : | buf : & [u8] | { let msg : Usersets = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Usersets {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Usersets";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Usersets".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Difference")]
-    impl ::prost_wkt::MessageSerde for Difference {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Difference"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Difference"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Difference" , decoder : | buf : & [u8] | { let msg : Difference = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Difference {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Difference";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Difference".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Userset")]
-    impl ::prost_wkt::MessageSerde for Userset {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Userset"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Userset"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Userset" , decoder : | buf : & [u8] | { let msg : Userset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Userset {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Userset";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Userset".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.DirectUserset")]
-    impl ::prost_wkt::MessageSerde for DirectUserset {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "DirectUserset"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.DirectUserset"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.DirectUserset" , decoder : | buf : & [u8] | { let msg : DirectUserset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for DirectUserset {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "DirectUserset";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.DirectUserset".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ObjectRelation")]
-    impl ::prost_wkt::MessageSerde for ObjectRelation {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ObjectRelation"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ObjectRelation"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ObjectRelation" , decoder : | buf : & [u8] | { let msg : ObjectRelation = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ObjectRelation {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ObjectRelation";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ObjectRelation".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ComputedUserset")]
-    impl ::prost_wkt::MessageSerde for ComputedUserset {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ComputedUserset"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ComputedUserset"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ComputedUserset" , decoder : | buf : & [u8] | { let msg : ComputedUserset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ComputedUserset {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ComputedUserset";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ComputedUserset".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TupleToUserset")]
-    impl ::prost_wkt::MessageSerde for TupleToUserset {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TupleToUserset"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TupleToUserset"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleToUserset" , decoder : | buf : & [u8] | { let msg : TupleToUserset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TupleToUserset {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TupleToUserset";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TupleToUserset".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Condition")]
-    impl ::prost_wkt::MessageSerde for Condition {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Condition"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Condition"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Condition" , decoder : | buf : & [u8] | { let msg : Condition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Condition {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Condition";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Condition".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ConditionMetadata")]
-    impl ::prost_wkt::MessageSerde for ConditionMetadata {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ConditionMetadata"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ConditionMetadata"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ConditionMetadata" , decoder : | buf : & [u8] | { let msg : ConditionMetadata = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ConditionMetadata {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ConditionMetadata";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ConditionMetadata".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ConditionParamTypeRef")]
-    impl ::prost_wkt::MessageSerde for ConditionParamTypeRef {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ConditionParamTypeRef"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ConditionParamTypeRef"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ConditionParamTypeRef" , decoder : | buf : & [u8] | { let msg : ConditionParamTypeRef = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ConditionParamTypeRef {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ConditionParamTypeRef";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ConditionParamTypeRef".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse")]
-    impl ::prost_wkt::MessageSerde for ValidationErrorMessageResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ValidationErrorMessageResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse" , decoder : | buf : & [u8] | { let msg : ValidationErrorMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ValidationErrorMessageResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ValidationErrorMessageResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UnauthenticatedResponse")]
-    impl ::prost_wkt::MessageSerde for UnauthenticatedResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UnauthenticatedResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UnauthenticatedResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UnauthenticatedResponse" , decoder : | buf : & [u8] | { let msg : UnauthenticatedResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UnauthenticatedResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UnauthenticatedResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UnauthenticatedResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse")]
-    impl ::prost_wkt::MessageSerde for UnprocessableContentMessageResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UnprocessableContentMessageResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse" , decoder : | buf : & [u8] | { let msg : UnprocessableContentMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UnprocessableContentMessageResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UnprocessableContentMessageResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.InternalErrorMessageResponse")]
-    impl ::prost_wkt::MessageSerde for InternalErrorMessageResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "InternalErrorMessageResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.InternalErrorMessageResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.InternalErrorMessageResponse" , decoder : | buf : & [u8] | { let msg : InternalErrorMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for InternalErrorMessageResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "InternalErrorMessageResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.InternalErrorMessageResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse")]
-    impl ::prost_wkt::MessageSerde for PathUnknownErrorMessageResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "PathUnknownErrorMessageResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse" , decoder : | buf : & [u8] | { let msg : PathUnknownErrorMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for PathUnknownErrorMessageResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "PathUnknownErrorMessageResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.AbortedMessageResponse")]
-    impl ::prost_wkt::MessageSerde for AbortedMessageResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "AbortedMessageResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.AbortedMessageResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.AbortedMessageResponse" , decoder : | buf : & [u8] | { let msg : AbortedMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for AbortedMessageResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "AbortedMessageResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.AbortedMessageResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ErrorMessageRequest")]
-    impl ::prost_wkt::MessageSerde for ErrorMessageRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ErrorMessageRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ErrorMessageRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ErrorMessageRequest" , decoder : | buf : & [u8] | { let msg : ErrorMessageRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ErrorMessageRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ErrorMessageRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ErrorMessageRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ForbiddenResponse")]
-    impl ::prost_wkt::MessageSerde for ForbiddenResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ForbiddenResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ForbiddenResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ForbiddenResponse" , decoder : | buf : & [u8] | { let msg : ForbiddenResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ForbiddenResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ForbiddenResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ForbiddenResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Object")]
-    impl ::prost_wkt::MessageSerde for Object {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Object"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Object"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Object" , decoder : | buf : & [u8] | { let msg : Object = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Object {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Object";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Object".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.User")]
-    impl ::prost_wkt::MessageSerde for User {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "User"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.User"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.User" , decoder : | buf : & [u8] | { let msg : User = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for User {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "User";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.User".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UsersetUser")]
-    impl ::prost_wkt::MessageSerde for UsersetUser {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UsersetUser"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UsersetUser"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UsersetUser" , decoder : | buf : & [u8] | { let msg : UsersetUser = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UsersetUser {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UsersetUser";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UsersetUser".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.RelationshipCondition")]
-    impl ::prost_wkt::MessageSerde for RelationshipCondition {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "RelationshipCondition"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.RelationshipCondition"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationshipCondition" , decoder : | buf : & [u8] | { let msg : RelationshipCondition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for RelationshipCondition {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "RelationshipCondition";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.RelationshipCondition".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition")]
-    impl ::prost_wkt::MessageSerde for TupleKeyWithoutCondition {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TupleKeyWithoutCondition"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition" , decoder : | buf : & [u8] | { let msg : TupleKeyWithoutCondition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TupleKeyWithoutCondition {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TupleKeyWithoutCondition";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TypedWildcard")]
-    impl ::prost_wkt::MessageSerde for TypedWildcard {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TypedWildcard"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TypedWildcard"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TypedWildcard" , decoder : | buf : & [u8] | { let msg : TypedWildcard = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TypedWildcard {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TypedWildcard";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TypedWildcard".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TupleKey")]
-    impl ::prost_wkt::MessageSerde for TupleKey {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TupleKey"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TupleKey"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleKey" , decoder : | buf : & [u8] | { let msg : TupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TupleKey {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TupleKey";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TupleKey".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Tuple")]
-    impl ::prost_wkt::MessageSerde for Tuple {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Tuple"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Tuple"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Tuple" , decoder : | buf : & [u8] | { let msg : Tuple = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Tuple {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Tuple";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Tuple".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TupleKeys")]
-    impl ::prost_wkt::MessageSerde for TupleKeys {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TupleKeys"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TupleKeys"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleKeys" , decoder : | buf : & [u8] | { let msg : TupleKeys = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TupleKeys {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TupleKeys";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TupleKeys".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ContextualTupleKeys")]
-    impl ::prost_wkt::MessageSerde for ContextualTupleKeys {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ContextualTupleKeys"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ContextualTupleKeys"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ContextualTupleKeys" , decoder : | buf : & [u8] | { let msg : ContextualTupleKeys = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ContextualTupleKeys {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ContextualTupleKeys";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ContextualTupleKeys".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UsersetTree")]
-    impl ::prost_wkt::MessageSerde for UsersetTree {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UsersetTree"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UsersetTree"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UsersetTree" , decoder : | buf : & [u8] | { let msg : UsersetTree = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UsersetTree {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UsersetTree";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UsersetTree".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.TupleChange")]
-    impl ::prost_wkt::MessageSerde for TupleChange {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "TupleChange"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.TupleChange"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleChange" , decoder : | buf : & [u8] | { let msg : TupleChange = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for TupleChange {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "TupleChange";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.TupleChange".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Store")]
-    impl ::prost_wkt::MessageSerde for Store {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Store"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Store"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Store" , decoder : | buf : & [u8] | { let msg : Store = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Store {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Store";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Store".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UserTypeFilter")]
-    impl ::prost_wkt::MessageSerde for UserTypeFilter {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UserTypeFilter"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UserTypeFilter"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UserTypeFilter" , decoder : | buf : & [u8] | { let msg : UserTypeFilter = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UserTypeFilter {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UserTypeFilter";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UserTypeFilter".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ListObjectsRequest")]
-    impl ::prost_wkt::MessageSerde for ListObjectsRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ListObjectsRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ListObjectsRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListObjectsRequest" , decoder : | buf : & [u8] | { let msg : ListObjectsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ListObjectsRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ListObjectsRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ListObjectsRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ListObjectsResponse")]
-    impl ::prost_wkt::MessageSerde for ListObjectsResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ListObjectsResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ListObjectsResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListObjectsResponse" , decoder : | buf : & [u8] | { let msg : ListObjectsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ListObjectsResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ListObjectsResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ListObjectsResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ListUsersRequest")]
-    impl ::prost_wkt::MessageSerde for ListUsersRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ListUsersRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ListUsersRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListUsersRequest" , decoder : | buf : & [u8] | { let msg : ListUsersRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ListUsersRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ListUsersRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ListUsersRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ListUsersResponse")]
-    impl ::prost_wkt::MessageSerde for ListUsersResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ListUsersResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ListUsersResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListUsersResponse" , decoder : | buf : & [u8] | { let msg : ListUsersResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ListUsersResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ListUsersResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ListUsersResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.StreamedListObjectsRequest")]
-    impl ::prost_wkt::MessageSerde for StreamedListObjectsRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "StreamedListObjectsRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.StreamedListObjectsRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.StreamedListObjectsRequest" , decoder : | buf : & [u8] | { let msg : StreamedListObjectsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for StreamedListObjectsRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "StreamedListObjectsRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.StreamedListObjectsRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.StreamedListObjectsResponse")]
-    impl ::prost_wkt::MessageSerde for StreamedListObjectsResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "StreamedListObjectsResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.StreamedListObjectsResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.StreamedListObjectsResponse" , decoder : | buf : & [u8] | { let msg : StreamedListObjectsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for StreamedListObjectsResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "StreamedListObjectsResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.StreamedListObjectsResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadRequest")]
-    impl ::prost_wkt::MessageSerde for ReadRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadRequest" , decoder : | buf : & [u8] | { let msg : ReadRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadRequestTupleKey")]
-    impl ::prost_wkt::MessageSerde for ReadRequestTupleKey {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadRequestTupleKey"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadRequestTupleKey"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadRequestTupleKey" , decoder : | buf : & [u8] | { let msg : ReadRequestTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadRequestTupleKey {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadRequestTupleKey";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadRequestTupleKey".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadResponse")]
-    impl ::prost_wkt::MessageSerde for ReadResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadResponse" , decoder : | buf : & [u8] | { let msg : ReadResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteRequestWrites")]
-    impl ::prost_wkt::MessageSerde for WriteRequestWrites {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteRequestWrites"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteRequestWrites"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteRequestWrites" , decoder : | buf : & [u8] | { let msg : WriteRequestWrites = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteRequestWrites {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteRequestWrites";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteRequestWrites".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteRequestDeletes")]
-    impl ::prost_wkt::MessageSerde for WriteRequestDeletes {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteRequestDeletes"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteRequestDeletes"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteRequestDeletes" , decoder : | buf : & [u8] | { let msg : WriteRequestDeletes = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteRequestDeletes {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteRequestDeletes";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteRequestDeletes".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteRequest")]
-    impl ::prost_wkt::MessageSerde for WriteRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteRequest" , decoder : | buf : & [u8] | { let msg : WriteRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteResponse")]
-    impl ::prost_wkt::MessageSerde for WriteResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteResponse" , decoder : | buf : & [u8] | { let msg : WriteResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.CheckRequest")]
-    impl ::prost_wkt::MessageSerde for CheckRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "CheckRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.CheckRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckRequest" , decoder : | buf : & [u8] | { let msg : CheckRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for CheckRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "CheckRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.CheckRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.CheckRequestTupleKey")]
-    impl ::prost_wkt::MessageSerde for CheckRequestTupleKey {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "CheckRequestTupleKey"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.CheckRequestTupleKey"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckRequestTupleKey" , decoder : | buf : & [u8] | { let msg : CheckRequestTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for CheckRequestTupleKey {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "CheckRequestTupleKey";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.CheckRequestTupleKey".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.CheckResponse")]
-    impl ::prost_wkt::MessageSerde for CheckResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "CheckResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.CheckResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckResponse" , decoder : | buf : & [u8] | { let msg : CheckResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for CheckResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "CheckResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.CheckResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.BatchCheckRequest")]
-    impl ::prost_wkt::MessageSerde for BatchCheckRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "BatchCheckRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.BatchCheckRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckRequest" , decoder : | buf : & [u8] | { let msg : BatchCheckRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for BatchCheckRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "BatchCheckRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.BatchCheckRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.BatchCheckItem")]
-    impl ::prost_wkt::MessageSerde for BatchCheckItem {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "BatchCheckItem"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.BatchCheckItem"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckItem" , decoder : | buf : & [u8] | { let msg : BatchCheckItem = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for BatchCheckItem {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "BatchCheckItem";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.BatchCheckItem".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.BatchCheckResponse")]
-    impl ::prost_wkt::MessageSerde for BatchCheckResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "BatchCheckResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.BatchCheckResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckResponse" , decoder : | buf : & [u8] | { let msg : BatchCheckResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for BatchCheckResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "BatchCheckResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.BatchCheckResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.BatchCheckSingleResult")]
-    impl ::prost_wkt::MessageSerde for BatchCheckSingleResult {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "BatchCheckSingleResult"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.BatchCheckSingleResult"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckSingleResult" , decoder : | buf : & [u8] | { let msg : BatchCheckSingleResult = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for BatchCheckSingleResult {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "BatchCheckSingleResult";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.BatchCheckSingleResult".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.CheckError")]
-    impl ::prost_wkt::MessageSerde for CheckError {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "CheckError"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.CheckError"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckError" , decoder : | buf : & [u8] | { let msg : CheckError = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for CheckError {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "CheckError";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.CheckError".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ExpandRequest")]
-    impl ::prost_wkt::MessageSerde for ExpandRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ExpandRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ExpandRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ExpandRequest" , decoder : | buf : & [u8] | { let msg : ExpandRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ExpandRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ExpandRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ExpandRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ExpandRequestTupleKey")]
-    impl ::prost_wkt::MessageSerde for ExpandRequestTupleKey {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ExpandRequestTupleKey"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ExpandRequestTupleKey"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ExpandRequestTupleKey" , decoder : | buf : & [u8] | { let msg : ExpandRequestTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ExpandRequestTupleKey {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ExpandRequestTupleKey";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ExpandRequestTupleKey".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ExpandResponse")]
-    impl ::prost_wkt::MessageSerde for ExpandResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ExpandResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ExpandResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ExpandResponse" , decoder : | buf : & [u8] | { let msg : ExpandResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ExpandResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ExpandResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ExpandResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest")]
-    impl ::prost_wkt::MessageSerde for ReadAuthorizationModelRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadAuthorizationModelRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadAuthorizationModelRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadAuthorizationModelRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse")]
-    impl ::prost_wkt::MessageSerde for ReadAuthorizationModelResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadAuthorizationModelResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadAuthorizationModelResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadAuthorizationModelResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest")]
-    impl ::prost_wkt::MessageSerde for WriteAuthorizationModelRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteAuthorizationModelRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest" , decoder : | buf : & [u8] | { let msg : WriteAuthorizationModelRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteAuthorizationModelRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteAuthorizationModelRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse")]
-    impl ::prost_wkt::MessageSerde for WriteAuthorizationModelResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteAuthorizationModelResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse" , decoder : | buf : & [u8] | { let msg : WriteAuthorizationModelResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteAuthorizationModelResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteAuthorizationModelResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest")]
-    impl ::prost_wkt::MessageSerde for ReadAuthorizationModelsRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadAuthorizationModelsRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadAuthorizationModelsRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadAuthorizationModelsRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse")]
-    impl ::prost_wkt::MessageSerde for ReadAuthorizationModelsResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadAuthorizationModelsResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadAuthorizationModelsResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadAuthorizationModelsResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteAssertionsRequest")]
-    impl ::prost_wkt::MessageSerde for WriteAssertionsRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteAssertionsRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteAssertionsRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAssertionsRequest" , decoder : | buf : & [u8] | { let msg : WriteAssertionsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteAssertionsRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteAssertionsRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteAssertionsRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.WriteAssertionsResponse")]
-    impl ::prost_wkt::MessageSerde for WriteAssertionsResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "WriteAssertionsResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.WriteAssertionsResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAssertionsResponse" , decoder : | buf : & [u8] | { let msg : WriteAssertionsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for WriteAssertionsResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "WriteAssertionsResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.WriteAssertionsResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadAssertionsRequest")]
-    impl ::prost_wkt::MessageSerde for ReadAssertionsRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadAssertionsRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadAssertionsRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAssertionsRequest" , decoder : | buf : & [u8] | { let msg : ReadAssertionsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadAssertionsRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadAssertionsRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadAssertionsRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadAssertionsResponse")]
-    impl ::prost_wkt::MessageSerde for ReadAssertionsResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadAssertionsResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadAssertionsResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAssertionsResponse" , decoder : | buf : & [u8] | { let msg : ReadAssertionsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadAssertionsResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadAssertionsResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadAssertionsResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadChangesRequest")]
-    impl ::prost_wkt::MessageSerde for ReadChangesRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadChangesRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadChangesRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadChangesRequest" , decoder : | buf : & [u8] | { let msg : ReadChangesRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadChangesRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadChangesRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadChangesRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ReadChangesResponse")]
-    impl ::prost_wkt::MessageSerde for ReadChangesResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ReadChangesResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ReadChangesResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadChangesResponse" , decoder : | buf : & [u8] | { let msg : ReadChangesResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ReadChangesResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ReadChangesResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ReadChangesResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.CreateStoreRequest")]
-    impl ::prost_wkt::MessageSerde for CreateStoreRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "CreateStoreRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.CreateStoreRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CreateStoreRequest" , decoder : | buf : & [u8] | { let msg : CreateStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for CreateStoreRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "CreateStoreRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.CreateStoreRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.CreateStoreResponse")]
-    impl ::prost_wkt::MessageSerde for CreateStoreResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "CreateStoreResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.CreateStoreResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CreateStoreResponse" , decoder : | buf : & [u8] | { let msg : CreateStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for CreateStoreResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "CreateStoreResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.CreateStoreResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UpdateStoreRequest")]
-    impl ::prost_wkt::MessageSerde for UpdateStoreRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UpdateStoreRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UpdateStoreRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UpdateStoreRequest" , decoder : | buf : & [u8] | { let msg : UpdateStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UpdateStoreRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UpdateStoreRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UpdateStoreRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.UpdateStoreResponse")]
-    impl ::prost_wkt::MessageSerde for UpdateStoreResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "UpdateStoreResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.UpdateStoreResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UpdateStoreResponse" , decoder : | buf : & [u8] | { let msg : UpdateStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for UpdateStoreResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "UpdateStoreResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.UpdateStoreResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.DeleteStoreRequest")]
-    impl ::prost_wkt::MessageSerde for DeleteStoreRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "DeleteStoreRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.DeleteStoreRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.DeleteStoreRequest" , decoder : | buf : & [u8] | { let msg : DeleteStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for DeleteStoreRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "DeleteStoreRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.DeleteStoreRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.DeleteStoreResponse")]
-    impl ::prost_wkt::MessageSerde for DeleteStoreResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "DeleteStoreResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.DeleteStoreResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.DeleteStoreResponse" , decoder : | buf : & [u8] | { let msg : DeleteStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for DeleteStoreResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "DeleteStoreResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.DeleteStoreResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.GetStoreRequest")]
-    impl ::prost_wkt::MessageSerde for GetStoreRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "GetStoreRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.GetStoreRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.GetStoreRequest" , decoder : | buf : & [u8] | { let msg : GetStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for GetStoreRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "GetStoreRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.GetStoreRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.GetStoreResponse")]
-    impl ::prost_wkt::MessageSerde for GetStoreResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "GetStoreResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.GetStoreResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.GetStoreResponse" , decoder : | buf : & [u8] | { let msg : GetStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for GetStoreResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "GetStoreResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.GetStoreResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ListStoresRequest")]
-    impl ::prost_wkt::MessageSerde for ListStoresRequest {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ListStoresRequest"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ListStoresRequest"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListStoresRequest" , decoder : | buf : & [u8] | { let msg : ListStoresRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ListStoresRequest {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ListStoresRequest";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ListStoresRequest".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.ListStoresResponse")]
-    impl ::prost_wkt::MessageSerde for ListStoresResponse {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "ListStoresResponse"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.ListStoresResponse"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListStoresResponse" , decoder : | buf : & [u8] | { let msg : ListStoresResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for ListStoresResponse {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "ListStoresResponse";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.ListStoresResponse".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.AssertionTupleKey")]
-    impl ::prost_wkt::MessageSerde for AssertionTupleKey {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "AssertionTupleKey"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.AssertionTupleKey"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.AssertionTupleKey" , decoder : | buf : & [u8] | { let msg : AssertionTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for AssertionTupleKey {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "AssertionTupleKey";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.AssertionTupleKey".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Assertion")]
-    impl ::prost_wkt::MessageSerde for Assertion {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Assertion"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Assertion"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Assertion" , decoder : | buf : & [u8] | { let msg : Assertion = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Assertion {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Assertion";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Assertion".to_string()
-        }
-    }
-};
-
-#[allow(dead_code)]
-const _: () = {
-    use ::prost_wkt::typetag;
-    #[typetag::serde(name = "type.googleapis.com/openfga.v1.Assertions")]
-    impl ::prost_wkt::MessageSerde for Assertions {
-        fn package_name(&self) -> &'static str {
-            "openfga.v1"
-        }
-        fn message_name(&self) -> &'static str {
-            "Assertions"
-        }
-        fn type_url(&self) -> &'static str {
-            "type.googleapis.com/openfga.v1.Assertions"
-        }
-        fn new_instance(
-            &self,
-            data: Vec<u8>,
-        ) -> ::std::result::Result<Box<dyn ::prost_wkt::MessageSerde>, ::prost::DecodeError>
-        {
-            let mut target = Self::default();
-            ::prost::Message::merge(&mut target, data.as_slice())?;
-            let erased: ::std::boxed::Box<dyn ::prost_wkt::MessageSerde> =
-                ::std::boxed::Box::new(target);
-            Ok(erased)
-        }
-        fn try_encoded(&self) -> ::std::result::Result<::std::vec::Vec<u8>, ::prost::EncodeError> {
-            let mut buf = ::std::vec::Vec::with_capacity(::prost::Message::encoded_len(self));
-            ::prost::Message::encode(self, &mut buf)?;
-            Ok(buf)
-        }
-    }
-    ::prost_wkt::inventory::submit! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Assertions" , decoder : | buf : & [u8] | { let msg : Assertions = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } }
-    impl ::prost::Name for Assertions {
-        const PACKAGE: &'static str = "openfga.v1";
-        const NAME: &'static str = "Assertions";
-        fn type_url() -> String {
-            "type.googleapis.com/openfga.v1.Assertions".to_string()
-        }
-    }
-};
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.AuthorizationModel")] impl :: prost_wkt :: MessageSerde for AuthorizationModel { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "AuthorizationModel" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.AuthorizationModel" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.AuthorizationModel" , decoder : | buf : & [u8] | { let msg : AuthorizationModel = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for AuthorizationModel { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "AuthorizationModel" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.AuthorizationModel" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TypeDefinition")] impl :: prost_wkt :: MessageSerde for TypeDefinition { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TypeDefinition" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TypeDefinition" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TypeDefinition" , decoder : | buf : & [u8] | { let msg : TypeDefinition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TypeDefinition { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TypeDefinition" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TypeDefinition" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Relation")] impl :: prost_wkt :: MessageSerde for Relation { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Relation" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Relation" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Relation" , decoder : | buf : & [u8] | { let msg : Relation = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Relation { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Relation" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Relation" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.RelationTypeInfo")] impl :: prost_wkt :: MessageSerde for RelationTypeInfo { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "RelationTypeInfo" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.RelationTypeInfo" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationTypeInfo" , decoder : | buf : & [u8] | { let msg : RelationTypeInfo = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for RelationTypeInfo { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "RelationTypeInfo" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.RelationTypeInfo" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Metadata")] impl :: prost_wkt :: MessageSerde for Metadata { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Metadata" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Metadata" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Metadata" , decoder : | buf : & [u8] | { let msg : Metadata = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Metadata { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Metadata" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Metadata" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.SourceInfo")] impl :: prost_wkt :: MessageSerde for SourceInfo { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "SourceInfo" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.SourceInfo" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.SourceInfo" , decoder : | buf : & [u8] | { let msg : SourceInfo = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for SourceInfo { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "SourceInfo" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.SourceInfo" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.RelationMetadata")] impl :: prost_wkt :: MessageSerde for RelationMetadata { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "RelationMetadata" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.RelationMetadata" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationMetadata" , decoder : | buf : & [u8] | { let msg : RelationMetadata = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for RelationMetadata { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "RelationMetadata" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.RelationMetadata" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.RelationReference")] impl :: prost_wkt :: MessageSerde for RelationReference { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "RelationReference" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.RelationReference" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationReference" , decoder : | buf : & [u8] | { let msg : RelationReference = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for RelationReference { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "RelationReference" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.RelationReference" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Wildcard")] impl :: prost_wkt :: MessageSerde for Wildcard { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Wildcard" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Wildcard" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Wildcard" , decoder : | buf : & [u8] | { let msg : Wildcard = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Wildcard { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Wildcard" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Wildcard" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Usersets")] impl :: prost_wkt :: MessageSerde for Usersets { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Usersets" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Usersets" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Usersets" , decoder : | buf : & [u8] | { let msg : Usersets = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Usersets { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Usersets" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Usersets" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Difference")] impl :: prost_wkt :: MessageSerde for Difference { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Difference" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Difference" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Difference" , decoder : | buf : & [u8] | { let msg : Difference = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Difference { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Difference" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Difference" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Userset")] impl :: prost_wkt :: MessageSerde for Userset { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Userset" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Userset" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Userset" , decoder : | buf : & [u8] | { let msg : Userset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Userset { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Userset" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Userset" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.DirectUserset")] impl :: prost_wkt :: MessageSerde for DirectUserset { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "DirectUserset" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.DirectUserset" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.DirectUserset" , decoder : | buf : & [u8] | { let msg : DirectUserset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for DirectUserset { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "DirectUserset" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.DirectUserset" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ObjectRelation")] impl :: prost_wkt :: MessageSerde for ObjectRelation { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ObjectRelation" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ObjectRelation" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ObjectRelation" , decoder : | buf : & [u8] | { let msg : ObjectRelation = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ObjectRelation { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ObjectRelation" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ObjectRelation" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ComputedUserset")] impl :: prost_wkt :: MessageSerde for ComputedUserset { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ComputedUserset" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ComputedUserset" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ComputedUserset" , decoder : | buf : & [u8] | { let msg : ComputedUserset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ComputedUserset { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ComputedUserset" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ComputedUserset" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TupleToUserset")] impl :: prost_wkt :: MessageSerde for TupleToUserset { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TupleToUserset" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TupleToUserset" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleToUserset" , decoder : | buf : & [u8] | { let msg : TupleToUserset = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TupleToUserset { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TupleToUserset" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TupleToUserset" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Condition")] impl :: prost_wkt :: MessageSerde for Condition { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Condition" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Condition" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Condition" , decoder : | buf : & [u8] | { let msg : Condition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Condition { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Condition" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Condition" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ConditionMetadata")] impl :: prost_wkt :: MessageSerde for ConditionMetadata { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ConditionMetadata" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ConditionMetadata" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ConditionMetadata" , decoder : | buf : & [u8] | { let msg : ConditionMetadata = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ConditionMetadata { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ConditionMetadata" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ConditionMetadata" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ConditionParamTypeRef")] impl :: prost_wkt :: MessageSerde for ConditionParamTypeRef { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ConditionParamTypeRef" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ConditionParamTypeRef" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ConditionParamTypeRef" , decoder : | buf : & [u8] | { let msg : ConditionParamTypeRef = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ConditionParamTypeRef { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ConditionParamTypeRef" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ConditionParamTypeRef" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse")] impl :: prost_wkt :: MessageSerde for ValidationErrorMessageResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ValidationErrorMessageResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse" , decoder : | buf : & [u8] | { let msg : ValidationErrorMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ValidationErrorMessageResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ValidationErrorMessageResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ValidationErrorMessageResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UnauthenticatedResponse")] impl :: prost_wkt :: MessageSerde for UnauthenticatedResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UnauthenticatedResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UnauthenticatedResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UnauthenticatedResponse" , decoder : | buf : & [u8] | { let msg : UnauthenticatedResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UnauthenticatedResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UnauthenticatedResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UnauthenticatedResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse")] impl :: prost_wkt :: MessageSerde for UnprocessableContentMessageResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UnprocessableContentMessageResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse" , decoder : | buf : & [u8] | { let msg : UnprocessableContentMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UnprocessableContentMessageResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UnprocessableContentMessageResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UnprocessableContentMessageResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.InternalErrorMessageResponse")] impl :: prost_wkt :: MessageSerde for InternalErrorMessageResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "InternalErrorMessageResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.InternalErrorMessageResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.InternalErrorMessageResponse" , decoder : | buf : & [u8] | { let msg : InternalErrorMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for InternalErrorMessageResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "InternalErrorMessageResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.InternalErrorMessageResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse")] impl :: prost_wkt :: MessageSerde for PathUnknownErrorMessageResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "PathUnknownErrorMessageResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse" , decoder : | buf : & [u8] | { let msg : PathUnknownErrorMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for PathUnknownErrorMessageResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "PathUnknownErrorMessageResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.PathUnknownErrorMessageResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.AbortedMessageResponse")] impl :: prost_wkt :: MessageSerde for AbortedMessageResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "AbortedMessageResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.AbortedMessageResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.AbortedMessageResponse" , decoder : | buf : & [u8] | { let msg : AbortedMessageResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for AbortedMessageResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "AbortedMessageResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.AbortedMessageResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ErrorMessageRequest")] impl :: prost_wkt :: MessageSerde for ErrorMessageRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ErrorMessageRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ErrorMessageRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ErrorMessageRequest" , decoder : | buf : & [u8] | { let msg : ErrorMessageRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ErrorMessageRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ErrorMessageRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ErrorMessageRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ForbiddenResponse")] impl :: prost_wkt :: MessageSerde for ForbiddenResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ForbiddenResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ForbiddenResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ForbiddenResponse" , decoder : | buf : & [u8] | { let msg : ForbiddenResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ForbiddenResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ForbiddenResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ForbiddenResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Object")] impl :: prost_wkt :: MessageSerde for Object { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Object" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Object" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Object" , decoder : | buf : & [u8] | { let msg : Object = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Object { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Object" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Object" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.User")] impl :: prost_wkt :: MessageSerde for User { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "User" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.User" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.User" , decoder : | buf : & [u8] | { let msg : User = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for User { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "User" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.User" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UsersetUser")] impl :: prost_wkt :: MessageSerde for UsersetUser { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UsersetUser" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UsersetUser" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UsersetUser" , decoder : | buf : & [u8] | { let msg : UsersetUser = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UsersetUser { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UsersetUser" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UsersetUser" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.RelationshipCondition")] impl :: prost_wkt :: MessageSerde for RelationshipCondition { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "RelationshipCondition" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.RelationshipCondition" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.RelationshipCondition" , decoder : | buf : & [u8] | { let msg : RelationshipCondition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for RelationshipCondition { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "RelationshipCondition" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.RelationshipCondition" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition")] impl :: prost_wkt :: MessageSerde for TupleKeyWithoutCondition { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TupleKeyWithoutCondition" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition" , decoder : | buf : & [u8] | { let msg : TupleKeyWithoutCondition = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TupleKeyWithoutCondition { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TupleKeyWithoutCondition" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TupleKeyWithoutCondition" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TypedWildcard")] impl :: prost_wkt :: MessageSerde for TypedWildcard { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TypedWildcard" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TypedWildcard" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TypedWildcard" , decoder : | buf : & [u8] | { let msg : TypedWildcard = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TypedWildcard { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TypedWildcard" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TypedWildcard" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TupleKey")] impl :: prost_wkt :: MessageSerde for TupleKey { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TupleKey" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TupleKey" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleKey" , decoder : | buf : & [u8] | { let msg : TupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TupleKey { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TupleKey" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TupleKey" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Tuple")] impl :: prost_wkt :: MessageSerde for Tuple { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Tuple" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Tuple" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Tuple" , decoder : | buf : & [u8] | { let msg : Tuple = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Tuple { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Tuple" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Tuple" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TupleKeys")] impl :: prost_wkt :: MessageSerde for TupleKeys { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TupleKeys" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TupleKeys" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleKeys" , decoder : | buf : & [u8] | { let msg : TupleKeys = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TupleKeys { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TupleKeys" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TupleKeys" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ContextualTupleKeys")] impl :: prost_wkt :: MessageSerde for ContextualTupleKeys { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ContextualTupleKeys" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ContextualTupleKeys" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ContextualTupleKeys" , decoder : | buf : & [u8] | { let msg : ContextualTupleKeys = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ContextualTupleKeys { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ContextualTupleKeys" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ContextualTupleKeys" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UsersetTree")] impl :: prost_wkt :: MessageSerde for UsersetTree { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UsersetTree" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UsersetTree" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UsersetTree" , decoder : | buf : & [u8] | { let msg : UsersetTree = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UsersetTree { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UsersetTree" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UsersetTree" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.TupleChange")] impl :: prost_wkt :: MessageSerde for TupleChange { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "TupleChange" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.TupleChange" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.TupleChange" , decoder : | buf : & [u8] | { let msg : TupleChange = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for TupleChange { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "TupleChange" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.TupleChange" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Store")] impl :: prost_wkt :: MessageSerde for Store { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Store" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Store" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Store" , decoder : | buf : & [u8] | { let msg : Store = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Store { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Store" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Store" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UserTypeFilter")] impl :: prost_wkt :: MessageSerde for UserTypeFilter { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UserTypeFilter" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UserTypeFilter" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UserTypeFilter" , decoder : | buf : & [u8] | { let msg : UserTypeFilter = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UserTypeFilter { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UserTypeFilter" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UserTypeFilter" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ListObjectsRequest")] impl :: prost_wkt :: MessageSerde for ListObjectsRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ListObjectsRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ListObjectsRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListObjectsRequest" , decoder : | buf : & [u8] | { let msg : ListObjectsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ListObjectsRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ListObjectsRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ListObjectsRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ListObjectsResponse")] impl :: prost_wkt :: MessageSerde for ListObjectsResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ListObjectsResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ListObjectsResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListObjectsResponse" , decoder : | buf : & [u8] | { let msg : ListObjectsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ListObjectsResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ListObjectsResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ListObjectsResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ListUsersRequest")] impl :: prost_wkt :: MessageSerde for ListUsersRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ListUsersRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ListUsersRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListUsersRequest" , decoder : | buf : & [u8] | { let msg : ListUsersRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ListUsersRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ListUsersRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ListUsersRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ListUsersResponse")] impl :: prost_wkt :: MessageSerde for ListUsersResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ListUsersResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ListUsersResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListUsersResponse" , decoder : | buf : & [u8] | { let msg : ListUsersResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ListUsersResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ListUsersResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ListUsersResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.StreamedListObjectsRequest")] impl :: prost_wkt :: MessageSerde for StreamedListObjectsRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "StreamedListObjectsRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.StreamedListObjectsRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.StreamedListObjectsRequest" , decoder : | buf : & [u8] | { let msg : StreamedListObjectsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for StreamedListObjectsRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "StreamedListObjectsRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.StreamedListObjectsRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.StreamedListObjectsResponse")] impl :: prost_wkt :: MessageSerde for StreamedListObjectsResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "StreamedListObjectsResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.StreamedListObjectsResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.StreamedListObjectsResponse" , decoder : | buf : & [u8] | { let msg : StreamedListObjectsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for StreamedListObjectsResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "StreamedListObjectsResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.StreamedListObjectsResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadRequest")] impl :: prost_wkt :: MessageSerde for ReadRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadRequest" , decoder : | buf : & [u8] | { let msg : ReadRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadRequestTupleKey")] impl :: prost_wkt :: MessageSerde for ReadRequestTupleKey { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadRequestTupleKey" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadRequestTupleKey" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadRequestTupleKey" , decoder : | buf : & [u8] | { let msg : ReadRequestTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadRequestTupleKey { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadRequestTupleKey" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadRequestTupleKey" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadResponse")] impl :: prost_wkt :: MessageSerde for ReadResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadResponse" , decoder : | buf : & [u8] | { let msg : ReadResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteRequestWrites")] impl :: prost_wkt :: MessageSerde for WriteRequestWrites { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteRequestWrites" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteRequestWrites" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteRequestWrites" , decoder : | buf : & [u8] | { let msg : WriteRequestWrites = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteRequestWrites { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteRequestWrites" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteRequestWrites" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteRequestDeletes")] impl :: prost_wkt :: MessageSerde for WriteRequestDeletes { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteRequestDeletes" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteRequestDeletes" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteRequestDeletes" , decoder : | buf : & [u8] | { let msg : WriteRequestDeletes = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteRequestDeletes { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteRequestDeletes" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteRequestDeletes" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteRequest")] impl :: prost_wkt :: MessageSerde for WriteRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteRequest" , decoder : | buf : & [u8] | { let msg : WriteRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteResponse")] impl :: prost_wkt :: MessageSerde for WriteResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteResponse" , decoder : | buf : & [u8] | { let msg : WriteResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.CheckRequest")] impl :: prost_wkt :: MessageSerde for CheckRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "CheckRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.CheckRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckRequest" , decoder : | buf : & [u8] | { let msg : CheckRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for CheckRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "CheckRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.CheckRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.CheckRequestTupleKey")] impl :: prost_wkt :: MessageSerde for CheckRequestTupleKey { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "CheckRequestTupleKey" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.CheckRequestTupleKey" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckRequestTupleKey" , decoder : | buf : & [u8] | { let msg : CheckRequestTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for CheckRequestTupleKey { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "CheckRequestTupleKey" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.CheckRequestTupleKey" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.CheckResponse")] impl :: prost_wkt :: MessageSerde for CheckResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "CheckResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.CheckResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckResponse" , decoder : | buf : & [u8] | { let msg : CheckResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for CheckResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "CheckResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.CheckResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.BatchCheckRequest")] impl :: prost_wkt :: MessageSerde for BatchCheckRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "BatchCheckRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.BatchCheckRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckRequest" , decoder : | buf : & [u8] | { let msg : BatchCheckRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for BatchCheckRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "BatchCheckRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.BatchCheckRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.BatchCheckItem")] impl :: prost_wkt :: MessageSerde for BatchCheckItem { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "BatchCheckItem" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.BatchCheckItem" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckItem" , decoder : | buf : & [u8] | { let msg : BatchCheckItem = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for BatchCheckItem { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "BatchCheckItem" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.BatchCheckItem" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.BatchCheckResponse")] impl :: prost_wkt :: MessageSerde for BatchCheckResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "BatchCheckResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.BatchCheckResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckResponse" , decoder : | buf : & [u8] | { let msg : BatchCheckResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for BatchCheckResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "BatchCheckResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.BatchCheckResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.BatchCheckSingleResult")] impl :: prost_wkt :: MessageSerde for BatchCheckSingleResult { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "BatchCheckSingleResult" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.BatchCheckSingleResult" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.BatchCheckSingleResult" , decoder : | buf : & [u8] | { let msg : BatchCheckSingleResult = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for BatchCheckSingleResult { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "BatchCheckSingleResult" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.BatchCheckSingleResult" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.CheckError")] impl :: prost_wkt :: MessageSerde for CheckError { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "CheckError" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.CheckError" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CheckError" , decoder : | buf : & [u8] | { let msg : CheckError = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for CheckError { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "CheckError" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.CheckError" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ExpandRequest")] impl :: prost_wkt :: MessageSerde for ExpandRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ExpandRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ExpandRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ExpandRequest" , decoder : | buf : & [u8] | { let msg : ExpandRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ExpandRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ExpandRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ExpandRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ExpandRequestTupleKey")] impl :: prost_wkt :: MessageSerde for ExpandRequestTupleKey { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ExpandRequestTupleKey" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ExpandRequestTupleKey" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ExpandRequestTupleKey" , decoder : | buf : & [u8] | { let msg : ExpandRequestTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ExpandRequestTupleKey { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ExpandRequestTupleKey" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ExpandRequestTupleKey" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ExpandResponse")] impl :: prost_wkt :: MessageSerde for ExpandResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ExpandResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ExpandResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ExpandResponse" , decoder : | buf : & [u8] | { let msg : ExpandResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ExpandResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ExpandResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ExpandResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest")] impl :: prost_wkt :: MessageSerde for ReadAuthorizationModelRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadAuthorizationModelRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadAuthorizationModelRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadAuthorizationModelRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadAuthorizationModelRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse")] impl :: prost_wkt :: MessageSerde for ReadAuthorizationModelResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadAuthorizationModelResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadAuthorizationModelResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadAuthorizationModelResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadAuthorizationModelResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest")] impl :: prost_wkt :: MessageSerde for WriteAuthorizationModelRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteAuthorizationModelRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest" , decoder : | buf : & [u8] | { let msg : WriteAuthorizationModelRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteAuthorizationModelRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteAuthorizationModelRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteAuthorizationModelRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse")] impl :: prost_wkt :: MessageSerde for WriteAuthorizationModelResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteAuthorizationModelResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse" , decoder : | buf : & [u8] | { let msg : WriteAuthorizationModelResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteAuthorizationModelResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteAuthorizationModelResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteAuthorizationModelResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest")] impl :: prost_wkt :: MessageSerde for ReadAuthorizationModelsRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadAuthorizationModelsRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadAuthorizationModelsRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadAuthorizationModelsRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadAuthorizationModelsRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse")] impl :: prost_wkt :: MessageSerde for ReadAuthorizationModelsResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadAuthorizationModelsResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse" , decoder : | buf : & [u8] | { let msg : ReadAuthorizationModelsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadAuthorizationModelsResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadAuthorizationModelsResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadAuthorizationModelsResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteAssertionsRequest")] impl :: prost_wkt :: MessageSerde for WriteAssertionsRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteAssertionsRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteAssertionsRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAssertionsRequest" , decoder : | buf : & [u8] | { let msg : WriteAssertionsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteAssertionsRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteAssertionsRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteAssertionsRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.WriteAssertionsResponse")] impl :: prost_wkt :: MessageSerde for WriteAssertionsResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "WriteAssertionsResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.WriteAssertionsResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.WriteAssertionsResponse" , decoder : | buf : & [u8] | { let msg : WriteAssertionsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for WriteAssertionsResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "WriteAssertionsResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.WriteAssertionsResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadAssertionsRequest")] impl :: prost_wkt :: MessageSerde for ReadAssertionsRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadAssertionsRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadAssertionsRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAssertionsRequest" , decoder : | buf : & [u8] | { let msg : ReadAssertionsRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadAssertionsRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadAssertionsRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadAssertionsRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadAssertionsResponse")] impl :: prost_wkt :: MessageSerde for ReadAssertionsResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadAssertionsResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadAssertionsResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadAssertionsResponse" , decoder : | buf : & [u8] | { let msg : ReadAssertionsResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadAssertionsResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadAssertionsResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadAssertionsResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadChangesRequest")] impl :: prost_wkt :: MessageSerde for ReadChangesRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadChangesRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadChangesRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadChangesRequest" , decoder : | buf : & [u8] | { let msg : ReadChangesRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadChangesRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadChangesRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadChangesRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ReadChangesResponse")] impl :: prost_wkt :: MessageSerde for ReadChangesResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ReadChangesResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ReadChangesResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ReadChangesResponse" , decoder : | buf : & [u8] | { let msg : ReadChangesResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ReadChangesResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ReadChangesResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ReadChangesResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.CreateStoreRequest")] impl :: prost_wkt :: MessageSerde for CreateStoreRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "CreateStoreRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.CreateStoreRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CreateStoreRequest" , decoder : | buf : & [u8] | { let msg : CreateStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for CreateStoreRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "CreateStoreRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.CreateStoreRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.CreateStoreResponse")] impl :: prost_wkt :: MessageSerde for CreateStoreResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "CreateStoreResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.CreateStoreResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.CreateStoreResponse" , decoder : | buf : & [u8] | { let msg : CreateStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for CreateStoreResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "CreateStoreResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.CreateStoreResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UpdateStoreRequest")] impl :: prost_wkt :: MessageSerde for UpdateStoreRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UpdateStoreRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UpdateStoreRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UpdateStoreRequest" , decoder : | buf : & [u8] | { let msg : UpdateStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UpdateStoreRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UpdateStoreRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UpdateStoreRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.UpdateStoreResponse")] impl :: prost_wkt :: MessageSerde for UpdateStoreResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "UpdateStoreResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.UpdateStoreResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.UpdateStoreResponse" , decoder : | buf : & [u8] | { let msg : UpdateStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for UpdateStoreResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "UpdateStoreResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.UpdateStoreResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.DeleteStoreRequest")] impl :: prost_wkt :: MessageSerde for DeleteStoreRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "DeleteStoreRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.DeleteStoreRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.DeleteStoreRequest" , decoder : | buf : & [u8] | { let msg : DeleteStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for DeleteStoreRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "DeleteStoreRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.DeleteStoreRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.DeleteStoreResponse")] impl :: prost_wkt :: MessageSerde for DeleteStoreResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "DeleteStoreResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.DeleteStoreResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.DeleteStoreResponse" , decoder : | buf : & [u8] | { let msg : DeleteStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for DeleteStoreResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "DeleteStoreResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.DeleteStoreResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.GetStoreRequest")] impl :: prost_wkt :: MessageSerde for GetStoreRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "GetStoreRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.GetStoreRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.GetStoreRequest" , decoder : | buf : & [u8] | { let msg : GetStoreRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for GetStoreRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "GetStoreRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.GetStoreRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.GetStoreResponse")] impl :: prost_wkt :: MessageSerde for GetStoreResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "GetStoreResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.GetStoreResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.GetStoreResponse" , decoder : | buf : & [u8] | { let msg : GetStoreResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for GetStoreResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "GetStoreResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.GetStoreResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ListStoresRequest")] impl :: prost_wkt :: MessageSerde for ListStoresRequest { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ListStoresRequest" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ListStoresRequest" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListStoresRequest" , decoder : | buf : & [u8] | { let msg : ListStoresRequest = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ListStoresRequest { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ListStoresRequest" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ListStoresRequest" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.ListStoresResponse")] impl :: prost_wkt :: MessageSerde for ListStoresResponse { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "ListStoresResponse" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.ListStoresResponse" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.ListStoresResponse" , decoder : | buf : & [u8] | { let msg : ListStoresResponse = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for ListStoresResponse { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "ListStoresResponse" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.ListStoresResponse" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.AssertionTupleKey")] impl :: prost_wkt :: MessageSerde for AssertionTupleKey { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "AssertionTupleKey" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.AssertionTupleKey" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.AssertionTupleKey" , decoder : | buf : & [u8] | { let msg : AssertionTupleKey = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for AssertionTupleKey { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "AssertionTupleKey" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.AssertionTupleKey" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Assertion")] impl :: prost_wkt :: MessageSerde for Assertion { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Assertion" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Assertion" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Assertion" , decoder : | buf : & [u8] | { let msg : Assertion = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Assertion { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Assertion" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Assertion" . to_string () } } } ;
+
+# [allow (dead_code)] const _ : () = { use :: prost_wkt :: typetag ; # [typetag :: serde (name = "type.googleapis.com/openfga.v1.Assertions")] impl :: prost_wkt :: MessageSerde for Assertions { fn package_name (& self) -> & 'static str { "openfga.v1" } fn message_name (& self) -> & 'static str { "Assertions" } fn type_url (& self) -> & 'static str { "type.googleapis.com/openfga.v1.Assertions" } fn new_instance (& self , data : Vec < u8 >) -> :: std :: result :: Result < Box < dyn :: prost_wkt :: MessageSerde > , :: prost :: DecodeError > { let mut target = Self :: default () ; :: prost :: Message :: merge (& mut target , data . as_slice ()) ? ; let erased : :: std :: boxed :: Box < dyn :: prost_wkt :: MessageSerde > = :: std :: boxed :: Box :: new (target) ; Ok (erased) } fn try_encoded (& self) -> :: std :: result :: Result < :: std :: vec :: Vec < u8 > , :: prost :: EncodeError > { let mut buf = :: std :: vec :: Vec :: with_capacity (:: prost :: Message :: encoded_len (self)) ; :: prost :: Message :: encode (self , & mut buf) ? ; Ok (buf) } } :: prost_wkt :: inventory :: submit ! { :: prost_wkt :: MessageSerdeDecoderEntry { type_url : "type.googleapis.com/openfga.v1.Assertions" , decoder : | buf : & [u8] | { let msg : Assertions = :: prost :: Message :: decode (buf) ? ; Ok (:: std :: boxed :: Box :: new (msg)) } } } impl :: prost :: Name for Assertions { const PACKAGE : & 'static str = "openfga.v1" ; const NAME : & 'static str = "Assertions" ; fn type_url () -> String { "type.googleapis.com/openfga.v1.Assertions" . to_string () } } } ;
