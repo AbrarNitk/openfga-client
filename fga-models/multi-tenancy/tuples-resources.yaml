@@ -1,0 +1,61 @@
+# ==============================================================================
+# RESOURCES TUPLES
+# ==============================================================================
+# This file contains basic resource definitions for both organisations
+# Can be imported by test files using: tuple_file: ./tuples-resources.yaml
+# ==============================================================================
+
+# ==============================================================================
+# ORGANISATION A1 RESOURCES
+# ==============================================================================
+
+# --- Basic Resources for Organisation A1 ---
+- user: organisation:A1
+  object: resource:A1-api-service
+  relation: organisation
+
+- user: organisation:A1
+  object: resource:A1-database
+  relation: organisation
+
+- user: organisation:A1
+  object: resource:A1-api-gateway
+  relation: organisation
+
+- user: organisation:A1
+  object: resource:A1-database-prod
+  relation: organisation
+
+- user: organisation:A1
+  object: resource:A1-cache-server
+  relation: organisation
+
+- user: organisation:A1
+  object: resource:A1-secret-vault
+  relation: organisation
+
+# ==============================================================================
+# ORGANISATION A2 RESOURCES
+# ==============================================================================
+
+# --- Basic Resources for Organisation A2 ---
+- user: organisation:A2
+  object: resource:A2-api-service
+  relation: organisation
+
+- user: organisation:A2
+  object: resource:A2-database
+  relation: organisation
+
+- user: organisation:A2
+  object: resource:A2-api-gateway
+  relation: organisation
+
+- user: organisation:A2
+  object: resource:A2-database-prod
+  relation: organisation
+
+- user: organisation:A2
+  object: resource:A2-cache-server
+  relation: organisation
+

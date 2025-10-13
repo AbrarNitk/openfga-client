@@ -1,219 +1,10 @@
-name: Multi Tenancy Model Testing
+name: User Groups and Organisation Testing
 model_file: ./model.fga
-tuples:
-  # ==============================================================================
-  # ORGANISATION A1
-  # ==============================================================================
 
-  # --- Organisation A1 Setup ---
-  - user: user:A1-owner
-    object: organisation:A1
-    relation: owner
-
-  # --- Groups for Organisation A1 ---
-  # Engineering department parent group
-  - user: organisation:A1
-    object: group:A1-eng
-    relation: organisation
-
-  # Platform group
-  - user: organisation:A1
-    object: group:A1-platform
-    relation: organisation
-
-  # DevOps group
-  - user: organisation:A1
-    object: group:A1-devops
-    relation: organisation
-
-  # Solution group
-  - user: organisation:A1
-    object: group:A1-solution
-    relation: organisation
-
-  # --- Group Hierarchy for A1 (nested groups under engineering) ---
-  - user: group:A1-platform#member
-    object: group:A1-eng
-    relation: member
-
-  - user: group:A1-devops#member
-    object: group:A1-eng
-    relation: member
-
-  - user: group:A1-solution#member
-    object: group:A1-eng
-    relation: member
-
-  # --- Platform Team Users (A1) ---
-  - user: user:A1-plt-u1
-    object: group:A1-platform
-    relation: member
-
-  - user: user:A1-plt-u2
-    object: group:A1-platform
-    relation: member
-
-  - user: user:A1-plt-u3
-    object: group:A1-platform
-    relation: member
-
-  # --- DevOps Team Users (A1) ---
-  - user: user:A1-dev-u1
-    object: group:A1-devops
-    relation: member
-
-  - user: user:A1-dev-u2
-    object: group:A1-devops
-    relation: member
-
-  - user: user:A1-dev-u3
-    object: group:A1-devops
-    relation: member
-
-  # --- Solution Team Users (A1) ---
-  - user: user:A1-sol-u1
-    object: group:A1-solution
-    relation: member
-
-  - user: user:A1-sol-u2
-    object: group:A1-solution
-    relation: member
-
-  - user: user:A1-sol-u3
-    object: group:A1-solution
-    relation: member
-
-  # --- Assign Engineering group to Organisation A1 as editors ---
-  - user: group:A1-eng#member
-    object: organisation:A1
-    relation: editor
-
-  # ==============================================================================
-  # ORGANISATION A2
-  # ==============================================================================
-
-  # --- Organisation A2 Setup ---
-  - user: user:A2-owner
-    object: organisation:A2
-    relation: owner
-
-  # --- Groups for Organisation A2 ---
-  # Engineering department parent group
-  - user: organisation:A2
-    object: group:A2-eng
-    relation: organisation
-
-  # Platform group
-  - user: organisation:A2
-    object: group:A2-platform
-    relation: organisation
-
-  # DevOps group
-  - user: organisation:A2
-    object: group:A2-devops
-    relation: organisation
-
-  # Solution group
-  - user: organisation:A2
-    object: group:A2-solution
-    relation: organisation
-
-  # --- Group Hierarchy for A2 (nested groups under engineering) ---
-  - user: group:A2-platform#member
-    object: group:A2-eng
-    relation: member
-
-  - user: group:A2-devops#member
-    object: group:A2-eng
-    relation: member
-
-  - user: group:A2-solution#member
-    object: group:A2-eng
-    relation: member
-
-  # --- Platform Team Users (A2) ---
-  - user: user:A2-plt-u1
-    object: group:A2-platform
-    relation: member
-
-  - user: user:A2-plt-u2
-    object: group:A2-platform
-    relation: member
-
-  - user: user:A2-plt-u3
-    object: group:A2-platform
-    relation: member
-
-  # --- DevOps Team Users (A2) ---
-  - user: user:A2-dev-u1
-    object: group:A2-devops
-    relation: member
-
-  - user: user:A2-dev-u2
-    object: group:A2-devops
-    relation: member
-
-  - user: user:A2-dev-u3
-    object: group:A2-devops
-    relation: member
-
-  # --- Solution Team Users (A2) ---
-  - user: user:A2-sol-u1
-    object: group:A2-solution
-    relation: member
-
-  - user: user:A2-sol-u2
-    object: group:A2-solution
-    relation: member
-
-  - user: user:A2-sol-u3
-    object: group:A2-solution
-    relation: member
-
-  # --- Assign Engineering group to Organisation A2 as editors ---
-  - user: group:A2-eng#member
-    object: organisation:A2
-    relation: editor
-
-  # ==============================================================================
-  # RESOURCES
-  # ==============================================================================
-
-  # --- Resources for Organisation A1 ---
-  - user: organisation:A1
-    object: resource:A1-api-service
-    relation: organisation
-
-  - user: organisation:A1
-    object: resource:A1-database
-    relation: organisation
-
-  # --- Resources for Organisation A2 ---
-  - user: organisation:A2
-    object: resource:A2-api-service
-    relation: organisation
-
-  - user: organisation:A2
-    object: resource:A2-database
-    relation: organisation
-
-  # ==============================================================================
-  # ACTIONS
-  # ==============================================================================
-
-  # --- Actions for A1 resources ---
-  - user: action:execute
-    object: resource:A1-api-service
-    relation: action
-
-  - user: action:proxy
-    object: resource:A1-database
-    relation: action
-
-  # --- Actions for A2 resources ---
-  - user: action:execute
-    object: resource:A2-api-service
-    relation: action
+# Import organisations, users, and groups
+tuple_files:
+  - ./tuples-org-users-groups.yaml
+  - ./tuples-resources.yaml
 
 tests:
   - name: Organisation A1 Tests
@@ -261,21 +52,17 @@ tests:
       - user: user:A1-plt-u1
         object: resource:A1-api-service
         assertions:
-          can_edit: true
-          can_view: true
+          can_update: true
+          can_get: true
+          can_list: true
           editor: true
 
       - user: user:A1-dev-u2
         object: resource:A1-database
         assertions:
-          can_edit: true
-          can_view: true
-
-      # --- Action Permission Tests ---
-      - user: user:A1-plt-u1
-        object: resource:A1-api-service
-        assertions:
-          can_perform_action: true # editor can perform actions
+          can_update: true
+          can_get: true
+          can_list: true
 
   - name: Organisation A2 Tests
     check:
@@ -301,14 +88,16 @@ tests:
       - user: user:A2-plt-u2
         object: resource:A2-api-service
         assertions:
-          can_edit: true
-          can_view: true
+          can_update: true
+          can_get: true
+          can_list: true
 
       - user: user:A2-sol-u3
         object: resource:A2-database
         assertions:
-          can_edit: true
-          can_view: true
+          can_update: true
+          can_get: true
+          can_list: true
 
   - name: Multi-Tenancy Isolation Tests
     check:
@@ -325,14 +114,16 @@ tests:
       - user: user:A1-plt-u1
         object: resource:A2-api-service
         assertions:
-          can_edit: false
-          can_view: false
+          can_update: false
+          can_get: false
+          can_list: false
 
       - user: user:A1-dev-u2
         object: resource:A2-database
         assertions:
-          can_edit: false
-          can_view: false
+          can_update: false
+          can_get: false
+          can_list: false
 
       # A2 users should NOT have access to A1 resources
       - user: user:A2-plt-u1
@@ -346,14 +137,16 @@ tests:
       - user: user:A2-dev-u1
         object: resource:A1-api-service
         assertions:
-          can_edit: false
-          can_view: false
+          can_update: false
+          can_get: false
+          can_list: false
 
       - user: user:A2-sol-u2
         object: resource:A1-database
         assertions:
-          can_edit: false
-          can_view: false
+          can_update: false
+          can_get: false
+          can_list: false
 
   - name: Group Hierarchy Tests
     check:

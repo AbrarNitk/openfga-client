@@ -1,0 +1,329 @@
+name: Resource CRUD Operations Testing
+model_file: ./model.fga
+
+# Import organisations, users, groups, and resources
+tuple_files:
+  - ./tuples-org-users-groups.yaml
+  - ./tuples-resources.yaml
+
+# CRUD-specific tuples
+tuples:
+  # ==============================================================================
+  # ADDITIONAL USERS AND GROUPS FOR CRUD TESTING
+  # ==============================================================================
+  
+  # --- Create viewer-only group for A1 (to test viewer restrictions) ---
+  - user: organisation:A1
+    object: group:A1-viewers
+    relation: organisation
+
+  # Add viewer-only user
+  - user: user:A1-viewer-u1
+    object: group:A1-viewers
+    relation: member
+
+  # Assign viewer group as viewer to org
+  - user: group:A1-viewers#member
+    object: organisation:A1
+    relation: viewer
+
+  # ==============================================================================
+  # RESOURCE-SPECIFIC PERMISSIONS (Fine-grained Access Control)
+  # ==============================================================================
+  
+  # --- A1: DevOps team has resource_manager access to database ---
+  - user: group:A1-devops#member
+    object: resource:A1-database-prod
+    relation: resource_manager
+
+  # --- A1: Specific user gets explicit can_get on cache (but not update) ---
+  # Note: This user is NOT in eng group, so doesn't have org-level editor
+  - user: user:A1-viewer-u1
+    object: resource:A1-cache-server
+    relation: can_get
+
+  # --- A2: Platform team is resource manager for API gateway ---
+  - user: group:A2-platform#member
+    object: resource:A2-api-gateway
+    relation: resource_manager
+
+tests:
+  # ==============================================================================
+  # TEST 1: CRUD Permission Hierarchy
+  # ==============================================================================
+  - name: CRUD Permission Hierarchy Tests
+    description: Verify that CRUD permissions follow the correct hierarchy (delete > update > get > list)
+    check:
+      # --- Owner has ALL CRUD permissions ---
+      - user: user:A1-owner
+        object: resource:A1-api-gateway
+        assertions:
+          can_delete: true
+          can_update: true
+          can_get: true
+          can_list: true
+          owner: true
+
+      # --- Editor can update and get, but NOT delete ---
+      - user: user:A1-plt-u2  # editor via eng group
+        object: resource:A1-api-gateway
+        assertions:
+          can_delete: false  # Only owner/admin can delete
+          can_update: true   # Editor can update
+          can_get: true      # Editor can get
+          can_list: true     # Editor can list
+
+      # --- Viewer can ONLY list, not get/update/delete ---
+      - user: user:A1-viewer-u1  # Viewer-only user
+        object: resource:A1-secret-vault
+        assertions:
+          can_delete: false
+          can_update: false
+          can_get: false     # Can't view credentials
+          can_list: true     # Can list basic info
+
+  # ==============================================================================
+  # TEST 2: Resource-Specific Permissions (Same Org, Different Access)
+  # ==============================================================================
+  - name: Resource-Specific Permission Tests
+    description: Users in same org have different permissions on different resources
+    check:
+      # --- Platform team: Editor on all resources via org ---
+      - user: user:A1-plt-u1
+        object: resource:A1-api-gateway
+        assertions:
+          can_update: true   # Editor via org
+          can_get: true
+          can_list: true
+          editor: true
+
+      # --- Note: Platform team is editor at org level, so they're editor on ALL A1 resources ---
+      # This demonstrates that org-level permissions apply to all resources
+      - user: user:A1-plt-u1
+        object: resource:A1-secret-vault
+        assertions:
+          can_update: true   # Editor from org (can't be downgraded)
+          can_get: true      # Editor from org
+          can_list: true
+          editor: true
+
+      # --- DevOps team: Resource manager on database (resource-specific UPGRADE) ---
+      - user: user:A1-dev-u1
+        object: resource:A1-database-prod
+        assertions:
+          can_delete: false  # Still can't delete (only admin/owner)
+          can_update: true   # Resource manager can update
+          can_get: true
+          can_list: true
+          resource_manager: true
+          editor: true       # Also editor from org
+
+      # --- Viewer-only user with explicit can_get on cache (resource-specific permission) ---
+      - user: user:A1-viewer-u1
+        object: resource:A1-cache-server
+        assertions:
+          can_get: true      # Explicit can_get permission
+          can_update: false  # Viewer can't update
+          can_delete: false
+          can_list: true     # Derived from can_get
+
+      # --- Viewer-only user WITHOUT explicit can_get on other resources ---
+      - user: user:A1-viewer-u1
+        object: resource:A1-api-gateway
+        assertions:
+          can_get: false     # Viewer can't get credentials
+          can_update: false  # Viewer can't update
+          can_delete: false
+          can_list: true     # Viewer can list
+
+  # ==============================================================================
+  # TEST 3: Multi-Tenancy CRUD Isolation
+  # ==============================================================================
+  - name: Multi-Tenancy CRUD Isolation Tests
+    description: Users from one org cannot perform CRUD on another org's resources
+    check:
+      # --- A1 users have NO access to A2 resources ---
+      - user: user:A1-owner  # Even owner of A1
+        object: resource:A2-api-gateway
+        assertions:
+          can_delete: false
+          can_update: false
+          can_get: false
+          can_list: false
+
+      - user: user:A1-plt-u1
+        object: resource:A2-database-prod
+        assertions:
+          can_delete: false
+          can_update: false
+          can_get: false
+          can_list: false
+
+      # --- A2 users have NO access to A1 resources ---
+      - user: user:A2-owner  # Even owner of A2
+        object: resource:A1-api-gateway
+        assertions:
+          can_delete: false
+          can_update: false
+          can_get: false
+          can_list: false
+
+      - user: user:A2-plt-u1
+        objects:
+          - resource:A1-database-prod
+          - resource:A1-cache-server
+          - resource:A1-secret-vault
+        assertions:
+          can_delete: false
+          can_update: false
+          can_get: false
+          can_list: false
+
+  # ==============================================================================
+  # TEST 4: DELETE Permission (Most Restrictive)
+  # ==============================================================================
+  - name: Delete Permission Tests
+    description: Verify that only owner and admin can delete resources
+    check:
+      # --- Owner can delete ---
+      - user: user:A1-owner
+        objects:
+          - resource:A1-api-gateway
+          - resource:A1-database-prod
+          - resource:A1-cache-server
+        assertions:
+          can_delete: true
+
+      # --- Resource manager CANNOT delete ---
+      - user: user:A1-dev-u1  # Has resource_manager on database
+        object: resource:A1-database-prod
+        assertions:
+          can_delete: false  # Only owner/admin can delete
+          can_update: true   # But can update
+
+      # --- Editor CANNOT delete ---
+      - user: user:A1-plt-u1  # Editor via group
+        object: resource:A1-api-gateway
+        assertions:
+          can_delete: false
+          can_update: true
+
+      # --- Viewer definitely CANNOT delete ---
+      - user: user:A1-viewer-u1
+        object: resource:A1-secret-vault
+        assertions:
+          can_delete: false
+
+  # ==============================================================================
+  # TEST 5: GET vs LIST (Credentials Access)
+  # ==============================================================================
+  - name: GET vs LIST Permission Tests
+    description: Verify GET is more restrictive than LIST (credentials access)
+    check:
+      # --- Editor can both GET and LIST ---
+      - user: user:A1-plt-u2
+        object: resource:A1-api-gateway
+        assertions:
+          can_get: true      # Editor can view credentials
+          can_list: true
+
+      # --- Viewer can LIST but NOT GET (without explicit can_get) ---
+      - user: user:A1-viewer-u1  # Viewer-only user
+        object: resource:A1-secret-vault
+        assertions:
+          can_get: false     # Viewer can't view credentials
+          can_list: true     # Can see basic info
+
+      # --- Viewer with explicit can_get grant (resource-specific upgrade) ---
+      - user: user:A1-viewer-u1  # Has explicit can_get on cache
+        object: resource:A1-cache-server
+        assertions:
+          can_get: true      # Explicit permission
+          can_list: true     # Derived from can_get
+          can_update: false  # Still can't update (only has can_get)
+
+  # ==============================================================================
+  # TEST 6: Organisation A2 CRUD Tests
+  # ==============================================================================
+  - name: Organisation A2 CRUD Tests
+    description: Verify CRUD permissions work correctly for Organisation A2
+    check:
+      # --- Owner has full access ---
+      - user: user:A2-owner
+        objects:
+          - resource:A2-api-gateway
+          - resource:A2-database-prod
+          - resource:A2-cache-server
+        assertions:
+          can_delete: true
+          can_update: true
+          can_get: true
+          can_list: true
+
+      # --- Platform team: Resource manager on API gateway ---
+      - user: user:A2-plt-u1
+        object: resource:A2-api-gateway
+        assertions:
+          can_delete: false  # Still need admin for delete
+          can_update: true   # Resource manager can update
+          can_get: true
+          can_list: true
+          resource_manager: true
+
+      # --- Platform team: Editor on other resources ---
+      - user: user:A2-plt-u1
+        objects:
+          - resource:A2-database-prod
+          - resource:A2-cache-server
+        assertions:
+          can_delete: false
+          can_update: true   # Editor via org
+          can_get: true
+          can_list: true
+
+      # --- DevOps team: Editor on all resources ---
+      - user: user:A2-dev-u2
+        objects:
+          - resource:A2-api-gateway
+          - resource:A2-database-prod
+        assertions:
+          can_update: true
+          can_get: true
+          can_list: true
+
+  # ==============================================================================
+  # TEST 7: CREATE Permission (Organisation Level)
+  # ==============================================================================
+  - name: Create Permission Tests
+    description: Verify who can create resources in organisations
+    check:
+      # Note: CREATE is checked at organisation level since resource doesn't exist yet
+      
+      # --- Owner can create (via admin -> resource_manager -> editor) ---
+      - user: user:A1-owner
+        object: organisation:A1
+        assertions:
+          owner: true
+          admin: true
+          resource_manager: true
+          editor: true
+
+      # --- Engineers can create (they are editors) ---
+      - user: user:A1-plt-u1
+        object: organisation:A1
+        assertions:
+          editor: true       # Can create resources
+          resource_manager: false
+
+      - user: user:A1-dev-u2
+        object: organisation:A1
+        assertions:
+          editor: true       # Can create resources
+
+      # --- A2 users CANNOT create in A1 ---
+      - user: user:A2-owner
+        object: organisation:A1
+        assertions:
+          owner: false
+          admin: false
+          editor: false      # Cannot create resources in A1
