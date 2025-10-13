@@ -1,10 +1,10 @@
 name: Resource CRUD Operations Testing
-model_file: ./model.fga
+model_file: ../model.fga
 
 # Import organisations, users, groups, and resources
 tuple_files:
-  - ./tuples-org-users-groups.yaml
-  - ./tuples-resources.yaml
+  - ../tuples/org-users-groups.yaml
+  - ../tuples/resources.yaml
 
 # CRUD-specific tuples
 tuples:
