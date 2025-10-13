@@ -10,13 +10,15 @@ model
 # - Resources belonging to organisations
 # - Fine-grained CRUD permissions with hierarchy
 # - Resource-specific permission overrides
+# - Dynamic custom actions per resource (generate-pdf, generate-analytics, etc.)
 #
 # CRITICAL: This model relies on APPLICATION-LEVEL validation to enforce
-# multi-tenancy isolation. See comments on group, role, and resource types.
+# multi-tenancy isolation. See comments on group, role, resource, and action types.
 #
 # Permission Hierarchy:
 #   Organisation: owner → admin → resource_manager → editor → viewer
 #   CRUD: can_delete → can_update → can_get → can_list
+#   Actions: resource_manager, editor, or custom performers
 # ==============================================================================
 
 type user
@@ -53,9 +55,6 @@ type resource
     relations
         # Resource belongs to an organisation
         define organisation: [organisation]
-
-        # Resource have actions
-        define action: [action]
 
         # Resource-level role assignments (allows resource-specific permissions)
         # These can override or extend org-level defaults
@@ -101,10 +100,36 @@ type resource
         # Create is checked at organisation level in application logic
         # (resource doesn't exist yet, so check org.editor or org.resource_manager)
 
-        # Custom actions
-        define can_perform_action: editor or performer from action
-
 
 type action
     relations
-        define performer: [group#member, role#assignee]
+        # ACTION MUST: Be scoped to an organisation for multi-tenancy isolation
+        # Write: action:generate-pdf#organisation@organisation:ORG1
+        define organisation: [organisation]
+
+        # ACTION MUST: Be linked to the resource it operates on
+        # Write: action:res1-generate-pdf#resource@resource:res1
+        define resource: [resource]
+
+        # Action-specific performers (users, groups, or roles)
+        #
+        # CRITICAL - APPLICATION-LEVEL VALIDATION REQUIRED:
+        # Before writing tuples like action:A1#performer@group:G1#member or @user:alice
+        # YOUR APPLICATION MUST verify that the group/user belongs to the same
+        # organisation as the action:
+        #
+        # 1. For groups: Verify group:G1#organisation@organisation:ORG exists
+        #    Where ORG is the organisation of the action
+        #
+        # 2. For users: Verify user:alice has at least viewer permission in ORG
+        #    (Check: user:alice -> organisation:ORG#viewer)
+        #
+        # 3. For roles: Verify role:R1#organisation@organisation:ORG exists
+        #
+        # Failure to validate will break multi-tenancy isolation!
+        define performer: [user, group#member, role#assignee]
+
+        # Custom actions (dynamic per resource: generate-pdf, generate-analytics, etc.)
+        # Resource managers and editors of the resource can perform actions by default
+        # Additional performers can be assigned at action level
+        define can_perform_action: resource_manager from resource or editor from resource or performer

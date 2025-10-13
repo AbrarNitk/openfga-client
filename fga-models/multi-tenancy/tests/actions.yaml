@@ -1,0 +1,539 @@
+name: Action Permission Testing
+model_file: ../model.fga
+
+# Import organisations, users, groups, and resources
+tuple_files:
+  - ../tuples/org-users-groups.yaml
+  - ../tuples/resources.yaml
+
+# Action-specific tuples
+tuples:
+  # ==============================================================================
+  # ADDITIONAL USERS AND GROUPS FOR ACTION TESTING
+  # ==============================================================================
+  
+  # --- Create viewer-only group for A1 (to test viewer restrictions) ---
+  - user: organisation:A1
+    object: group:A1-viewers
+    relation: organisation
+
+  - user: user:A1-viewer-u1
+    object: group:A1-viewers
+    relation: member
+
+  - user: group:A1-viewers#member
+    object: organisation:A1
+    relation: viewer
+
+  # --- Create analytics group for A1 (for specific action permissions) ---
+  - user: organisation:A1
+    object: group:A1-analytics
+    relation: organisation
+
+  - user: user:A1-analytics-u1
+    object: group:A1-analytics
+    relation: member
+
+  - user: user:A1-analytics-u2
+    object: group:A1-analytics
+    relation: member
+
+  # Note: Analytics group is NOT assigned to org (not editor/viewer)
+  # They only get permissions through action-specific grants
+
+  # --- Create report-generator role for A1 ---
+  - user: organisation:A1
+    object: role:A1-report-generator
+    relation: organisation
+
+  - user: user:A1-report-u1
+    object: role:A1-report-generator
+    relation: assignee
+
+  # ==============================================================================
+  # ACTIONS FOR ORGANISATION A1
+  # ==============================================================================
+  
+  # --- Action: generate-pdf for resource A1-database ---
+  - user: organisation:A1
+    object: action:A1-db-generate-pdf
+    relation: organisation
+
+  - user: resource:A1-database
+    object: action:A1-db-generate-pdf
+    relation: resource
+
+  # Assign analytics group as performers
+  - user: group:A1-analytics#member
+    object: action:A1-db-generate-pdf
+    relation: performer
+
+  # --- Action: generate-analytics for resource A1-database ---
+  - user: organisation:A1
+    object: action:A1-db-generate-analytics
+    relation: organisation
+
+  - user: resource:A1-database
+    object: action:A1-db-generate-analytics
+    relation: resource
+
+  # Assign specific user as performer
+  - user: user:A1-analytics-u1
+    object: action:A1-db-generate-analytics
+    relation: performer
+
+  # --- Action: call-proxy for resource A1-api-gateway ---
+  - user: organisation:A1
+    object: action:A1-gw-call-proxy
+    relation: organisation
+
+  - user: resource:A1-api-gateway
+    object: action:A1-gw-call-proxy
+    relation: resource
+
+  # Assign platform group as performers
+  - user: group:A1-platform#member
+    object: action:A1-gw-call-proxy
+    relation: performer
+
+  # --- Action: generate-signed-url for resource A1-secret-vault ---
+  - user: organisation:A1
+    object: action:A1-vault-signed-url
+    relation: organisation
+
+  - user: resource:A1-secret-vault
+    object: action:A1-vault-signed-url
+    relation: resource
+
+  # Assign role as performer
+  - user: role:A1-report-generator#assignee
+    object: action:A1-vault-signed-url
+    relation: performer
+
+  # --- Action: export-data for resource A1-cache-server (no custom performers) ---
+  - user: organisation:A1
+    object: action:A1-cache-export-data
+    relation: organisation
+
+  - user: resource:A1-cache-server
+    object: action:A1-cache-export-data
+    relation: resource
+
+  # No custom performers - only resource_manager and editor can perform
+
+  # ==============================================================================
+  # ACTIONS FOR ORGANISATION A2
+  # ==============================================================================
+  
+  # --- Action: generate-pdf for resource A2-database ---
+  - user: organisation:A2
+    object: action:A2-db-generate-pdf
+    relation: organisation
+
+  - user: resource:A2-database
+    object: action:A2-db-generate-pdf
+    relation: resource
+
+  # Assign devops group as performers
+  - user: group:A2-devops#member
+    object: action:A2-db-generate-pdf
+    relation: performer
+
+  # --- Action: backup-database for resource A2-database-prod ---
+  - user: organisation:A2
+    object: action:A2-db-backup
+    relation: organisation
+
+  - user: resource:A2-database-prod
+    object: action:A2-db-backup
+    relation: resource
+
+  # Assign specific user as performer
+  - user: user:A2-dev-u1
+    object: action:A2-db-backup
+    relation: performer
+
+  # ==============================================================================
+  # RESOURCE-SPECIFIC PERMISSIONS FOR ACTION TESTING
+  # ==============================================================================
+  
+  # --- A1: DevOps team has resource_manager access to database ---
+  - user: group:A1-devops#member
+    object: resource:A1-database
+    relation: resource_manager
+
+  # --- A2: Platform team has resource_manager access to api-gateway ---
+  - user: group:A2-platform#member
+    object: resource:A2-api-gateway
+    relation: resource_manager
+
+tests:
+  # ==============================================================================
+  # TEST 1: Default Action Permissions (Resource Managers & Editors)
+  # ==============================================================================
+  - name: Default Action Permissions - Resource Managers and Editors
+    description: Verify that resource managers and editors can perform actions by default
+    check:
+      # --- Resource Manager can perform actions ---
+      - user: user:A1-dev-u1  # resource_manager on A1-database
+        object: action:A1-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-dev-u2  # resource_manager on A1-database
+        object: action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: true
+
+      # --- Editors can perform actions ---
+      - user: user:A1-plt-u1  # editor via org
+        object: action:A1-gw-call-proxy
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-sol-u2  # editor via org
+        object: action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      # --- Owner can perform all actions ---
+      - user: user:A1-owner
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+          - action:A1-gw-call-proxy
+          - action:A1-vault-signed-url
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+  # ==============================================================================
+  # TEST 2: Custom Action Performers (Users, Groups, Roles)
+  # ==============================================================================
+  - name: Custom Action Performers - Users
+    description: Verify that users assigned as performers can perform actions
+    check:
+      # --- User assigned as performer for generate-analytics ---
+      - user: user:A1-analytics-u1  # assigned as performer
+        object: action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: true
+
+      # --- User NOT assigned as performer CANNOT perform (unless editor/manager) ---
+      - user: user:A1-analytics-u2  # NOT assigned to this action
+        object: action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: false
+
+      # --- User can perform via group membership in editor ---
+      - user: user:A1-plt-u1  # editor, not custom performer
+        object: action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: true
+
+  - name: Custom Action Performers - Groups
+    description: Verify that group members assigned as performers can perform actions
+    check:
+      # --- Group members can perform actions via group assignment ---
+      - user: user:A1-analytics-u1  # member of A1-analytics group
+        object: action:A1-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-analytics-u2  # member of A1-analytics group
+        object: action:A1-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      # --- Platform group members can perform proxy action ---
+      - user: user:A1-plt-u1  # member of A1-platform group
+        object: action:A1-gw-call-proxy
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-plt-u2  # member of A1-platform group
+        object: action:A1-gw-call-proxy
+        assertions:
+          can_perform_action: true
+
+      # --- Non-group members CANNOT perform (unless editor/manager) ---
+      - user: user:A1-analytics-u1  # NOT in platform group
+        object: action:A1-gw-call-proxy
+        assertions:
+          can_perform_action: false
+
+  - name: Custom Action Performers - Roles
+    description: Verify that role assignees can perform actions
+    check:
+      # --- Role assignee can perform action ---
+      - user: user:A1-report-u1  # assignee of report-generator role
+        object: action:A1-vault-signed-url
+        assertions:
+          can_perform_action: true
+
+      # --- Non-role assignee CANNOT perform (unless editor/manager) ---
+      - user: user:A1-analytics-u1  # NOT assignee of role
+        object: action:A1-vault-signed-url
+        assertions:
+          can_perform_action: false
+
+      # --- Editor can still perform even without role ---
+      - user: user:A1-plt-u1  # editor via org
+        object: action:A1-vault-signed-url
+        assertions:
+          can_perform_action: true
+
+  # ==============================================================================
+  # TEST 3: Multi-Tenancy Isolation for Actions
+  # ==============================================================================
+  - name: Multi-Tenancy Action Isolation Tests
+    description: Users from one org cannot perform actions on another org's resources
+    check:
+      # --- A1 users CANNOT perform A2 actions ---
+      - user: user:A1-owner  # Even owner of A1
+        objects:
+          - action:A2-db-generate-pdf
+          - action:A2-db-backup
+        assertions:
+          can_perform_action: false
+
+      - user: user:A1-plt-u1
+        objects:
+          - action:A2-db-generate-pdf
+          - action:A2-db-backup
+        assertions:
+          can_perform_action: false
+
+      - user: user:A1-analytics-u1
+        object: action:A2-db-generate-pdf
+        assertions:
+          can_perform_action: false
+
+      # --- A2 users CANNOT perform A1 actions ---
+      - user: user:A2-owner  # Even owner of A2
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+          - action:A1-gw-call-proxy
+        assertions:
+          can_perform_action: false
+
+      - user: user:A2-plt-u1
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: false
+
+  # ==============================================================================
+  # TEST 4: Viewer Restrictions on Actions
+  # ==============================================================================
+  - name: Viewer Restrictions on Actions
+    description: Verify that viewers CANNOT perform actions (unless explicitly assigned)
+    check:
+      # --- Viewer-only users CANNOT perform actions ---
+      - user: user:A1-viewer-u1  # viewer only
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+          - action:A1-gw-call-proxy
+          - action:A1-vault-signed-url
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: false
+
+  # ==============================================================================
+  # TEST 5: Actions Without Custom Performers
+  # ==============================================================================
+  - name: Actions Without Custom Performers
+    description: Verify actions work correctly when no custom performers are assigned
+    check:
+      # --- Only editors and resource_managers can perform ---
+      - user: user:A1-plt-u1  # editor
+        object: action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-dev-u2  # editor
+        object: action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-owner  # owner (via admin -> editor)
+        object: action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      # --- Non-editors CANNOT perform ---
+      - user: user:A1-viewer-u1  # viewer only
+        object: action:A1-cache-export-data
+        assertions:
+          can_perform_action: false
+
+      - user: user:A1-analytics-u1  # not editor, not custom performer
+        object: action:A1-cache-export-data
+        assertions:
+          can_perform_action: false
+
+  # ==============================================================================
+  # TEST 6: Resource-Specific Action Permissions
+  # ==============================================================================
+  - name: Resource-Specific Action Permissions
+    description: Verify that resource-level permissions affect action permissions
+    check:
+      # --- Resource manager on database can perform database actions ---
+      - user: user:A1-dev-u1  # resource_manager on A1-database
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: true
+
+      # --- Resource manager on one resource CANNOT perform actions on other resources ---
+      - user: user:A1-dev-u1  # resource_manager on A1-database only
+        objects:
+          - action:A1-gw-call-proxy  # action on api-gateway
+          - action:A1-cache-export-data  # action on cache-server
+        assertions:
+          can_perform_action: true  # Still true because they're editor at org level
+
+  # ==============================================================================
+  # TEST 7: Organisation A2 Action Tests
+  # ==============================================================================
+  - name: Organisation A2 Action Tests
+    description: Verify actions work correctly for Organisation A2
+    check:
+      # --- Owner can perform all actions ---
+      - user: user:A2-owner
+        objects:
+          - action:A2-db-generate-pdf
+          - action:A2-db-backup
+        assertions:
+          can_perform_action: true
+
+      # --- DevOps group members can perform generate-pdf ---
+      - user: user:A2-dev-u1  # member of A2-devops
+        object: action:A2-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      - user: user:A2-dev-u2  # member of A2-devops
+        object: action:A2-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      # --- User assigned as performer for backup ---
+      - user: user:A2-dev-u1  # assigned as performer
+        object: action:A2-db-backup
+        assertions:
+          can_perform_action: true
+
+      # --- User NOT assigned as performer (but editor can still perform) ---
+      - user: user:A2-dev-u2  # NOT assigned but is editor
+        object: action:A2-db-backup
+        assertions:
+          can_perform_action: true
+
+      # --- Platform team (editor) can perform all actions ---
+      - user: user:A2-plt-u1  # editor via org
+        objects:
+          - action:A2-db-generate-pdf
+          - action:A2-db-backup
+        assertions:
+          can_perform_action: true
+
+  # ==============================================================================
+  # TEST 8: Combined Permissions (Group + Direct Assignment)
+  # ==============================================================================
+  - name: Combined Permissions - Multiple Assignment Paths
+    description: Verify that users can have action permissions through multiple paths
+    check:
+      # --- User gets permission via both group AND org-level editor ---
+      - user: user:A1-plt-u1  # 1) member of A1-platform (custom performer)
+                               # 2) editor via org (default permission)
+        object: action:A1-gw-call-proxy
+        assertions:
+          can_perform_action: true
+
+      # --- User gets permission ONLY via custom group assignment ---
+      - user: user:A1-analytics-u1  # 1) member of A1-analytics (custom performer)
+                                     # 2) NOT editor at org level
+        object: action:A1-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      # --- Same user CANNOT perform other actions (no custom assignment + not editor) ---
+      - user: user:A1-analytics-u1
+        objects:
+          - action:A1-gw-call-proxy
+          - action:A1-vault-signed-url
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: false
+
+  # ==============================================================================
+  # TEST 9: Action Hierarchy Through Organisation Roles
+  # ==============================================================================
+  - name: Action Hierarchy Through Organisation Roles
+    description: Verify that organisation role hierarchy affects action permissions
+    check:
+      # --- Owner (highest) can perform all actions ---
+      - user: user:A1-owner
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+          - action:A1-gw-call-proxy
+          - action:A1-vault-signed-url
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      # --- Editors can perform actions ---
+      - user: user:A1-plt-u2  # editor via group
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      # --- Resource managers can perform actions on their resources ---
+      - user: user:A1-dev-u1  # resource_manager on database
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: true
+
+  # ==============================================================================
+  # TEST 10: Dynamic Action Names
+  # ==============================================================================
+  - name: Dynamic Action Names Support
+    description: Verify that various action types (pdf, analytics, proxy, signed-url) work correctly
+    check:
+      # --- Different action types for same org ---
+      - user: user:A1-plt-u1  # editor
+        objects:
+          - action:A1-db-generate-pdf
+          - action:A1-db-generate-analytics
+          - action:A1-gw-call-proxy
+          - action:A1-vault-signed-url
+          - action:A1-cache-export-data
+        assertions:
+          can_perform_action: true
+
+      # --- Custom performers for different action types ---
+      - user: user:A1-analytics-u1  # custom performer for generate-pdf
+        object: action:A1-db-generate-pdf
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-analytics-u1  # custom performer for generate-analytics
+        object: action:A1-db-generate-analytics
+        assertions:
+          can_perform_action: true
+
+      - user: user:A1-report-u1  # custom performer (role) for signed-url
+        object: action:A1-vault-signed-url
+        assertions:
+          can_perform_action: true
+
