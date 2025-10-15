@@ -3,8 +3,8 @@ use serde_json::{Value, json};
 
 pub fn routes<S: Send + Sync>(ctx: crate::context::Ctx) -> Router<S> {
     Router::new()
-        .route("/auth", get(crate::auth::home::serve_login_template))
-        .route("/auth/login-with", get(crate::auth::openid::login_with))
+        .route("/auth", get(crate::auth::home::dex_serve_login_template))
+        .route("/auth/login", get(crate::auth::openid::login_with))
         .route(
             "/auth/callback",
             get(crate::auth::openid::handle_openid_callback),
