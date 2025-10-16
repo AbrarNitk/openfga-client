@@ -94,6 +94,7 @@ pub async fn login_with(
         )
         .add_scopes(scopes)
         .add_extra_param("connector_id", &params.tp) // Add connector_id for DexIdP
+        .add_extra_param("organization", "conversight")
         .url();
 
     println!("OpenID Connect auth_url: {:?}", auth_url);
@@ -180,7 +181,9 @@ pub async fn handle_openid_callback(
 
     match token_result {
         Ok(token_response) => {
-            // Extract tokens
+            let tr = serde_json::to_value(token_response.clone());
+            println!("token response: {:?}", tr);
+
             let access_token = token_response.access_token().secret();
             let refresh_token = token_response
                 .refresh_token()
@@ -202,6 +205,10 @@ pub async fn handle_openid_callback(
                 // Try to verify and extract claims
                 match id_token.claims(&id_token_verifier, &nonce) {
                     Ok(claims) => {
+                        let claims_response = serde_json::to_value(claims.clone());
+
+                        println!("token-claims: {:?}", claims_response);
+
                         let claims_json = serde_json::json!({
                             "sub": claims.subject().as_str(),
                             "email": claims.email().map(|e| e.as_str()),
