@@ -13,6 +13,10 @@ use std::sync::Mutex;
 use crate::context::Ctx;
 
 // Auth0 Configuration (Static for now - replace with your Auth0 tenant details)
+// IMPORTANT: To use Organizations feature, ensure your Auth0 tenant is configured with:
+// 1. New Universal Login enabled (Branding → Universal Login → New Experience)
+// 2. Organizations feature enabled in your Auth0 plan
+// 3. The organization is created and configured in Auth0 Dashboard
 const AUTH0_DOMAIN: &str = "genai-157672027117145.jp.auth0.com";
 const AUTH0_CLIENT_ID: &str = "LnlvbZ4nYVqvceavKfrcgKS506Us4ze5";
 const AUTH0_CLIENT_SECRET: &str =
@@ -50,6 +54,7 @@ pub struct LoginWithParams {
     pub screen_hint: Option<String>, // "signup" or "login" to show specific screen
     pub prompt: Option<String>,     // "login" to force re-authentication, "none" for silent auth
     pub ui_locales: Option<String>, // Language preference (e.g., "en", "es", "fr")
+    pub organization: Option<String>, // Auth0 organization parameter for multi-tenant flows
 }
 
 pub async fn login_with(
@@ -131,6 +136,16 @@ pub async fn login_with(
         auth_url_builder = auth_url_builder.add_extra_param("ui_locales", ui_locales);
     }
 
+    // Add organization parameter for Auth0 multi-tenant flows
+    // IMPORTANT: Organizations require "New Universal Login" in Auth0 Dashboard
+    // (Branding → Universal Login → New Experience)
+    // Classic Universal Login does NOT support organization parameters
+    if let Some(ref organization) = params.organization {
+        auth_url_builder = auth_url_builder.add_extra_param("organization", organization);
+    } else {
+        auth_url_builder = auth_url_builder.add_extra_param("organization", "org_eAZQLB5R2udB63jQ");
+    }
+
     let (auth_url, _csrf_token, _nonce) = auth_url_builder.url();
 
     println!("Auth0 Universal Login URL: {:?}", auth_url);
@@ -151,8 +166,10 @@ pub async fn login_with(
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Auth0CallbackParams {
-    pub code: String,
+    pub code: Option<String>,
     pub state: String,
+    pub error: Option<String>,
+    pub error_description: Option<String>,
 }
 
 pub async fn handle_auth0_callback(
@@ -160,6 +177,35 @@ pub async fn handle_auth0_callback(
     Query(params): Query<Auth0CallbackParams>,
 ) -> axum::response::Response {
     println!("Auth0 callback params: {:?}", params);
+
+    // Check if Auth0 returned an error
+    if let Some(error) = &params.error {
+        let error_description = params
+            .error_description
+            .as_deref()
+            .unwrap_or("No additional error description provided");
+
+        let error_msg = format!("Auth0 Error: {}\nDescription: {}", error, error_description);
+
+        println!("Auth0 returned error: {}", error_msg);
+
+        // Clean up state from store if present
+        {
+            let mut store = STATE_STORE.lock().unwrap();
+            store.remove(&params.state);
+        }
+
+        return build_auth0_error_response(error, error_description);
+    }
+
+    // Extract authorization code (required if no error)
+    let code = match &params.code {
+        Some(c) => c,
+        None => {
+            println!("No authorization code provided in callback");
+            return build_error_response("No authorization code received from Auth0");
+        }
+    };
 
     // Retrieve state data (nonce) from state store to validate the state
     let _state_data = {
@@ -190,8 +236,9 @@ pub async fn handle_auth0_callback(
         ("grant_type", "authorization_code"),
         ("client_id", AUTH0_CLIENT_ID),
         ("client_secret", AUTH0_CLIENT_SECRET),
-        ("code", &params.code),
+        ("code", code),
         ("redirect_uri", AUTH0_REDIRECT_URL),
+        ("organization", "org_eAZQLB5R2udB63jQ"),
     ];
 
     let token_response_result = http_client
@@ -284,7 +331,7 @@ pub async fn handle_auth0_callback(
 
     // Return success response with all token details
     build_success_response(
-        &params.code,
+        code,
         &params.state,
         &auth0_token.access_token,
         &auth0_token.refresh_token.as_deref().unwrap_or("N/A"),
@@ -324,16 +371,84 @@ fn verify_id_token(id_token_str: &str) -> Result<String, String> {
     }
 }
 
-// Helper function to build error response
-fn build_error_response(error_msg: &str) -> axum::response::Response {
+// Helper function to build Auth0 error response with error code and description
+fn build_auth0_error_response(error: &str, error_description: &str) -> axum::response::Response {
     axum::response::Response::builder()
         .status(axum::http::StatusCode::BAD_REQUEST)
-        .header("Content-Type", "text/html")
+        .header("Content-Type", "text/html; charset=utf-8")
         .body(axum::body::Body::from(format!(
             r#"
             <!DOCTYPE html>
             <html>
             <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Auth0 Authentication Error</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f5f5f5; }}
+                    .container {{ max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+                    .error {{ color: #f44336; font-size: 18px; }}
+                    .error-icon {{ font-size: 48px; color: #f44336; margin-bottom: 20px; }}
+                    .error-code {{ margin: 20px 0; padding: 15px; background: #ffebee; border-radius: 4px; border-left: 4px solid #f44336; text-align: left; }}
+                    .error-code-title {{ font-weight: bold; color: #c62828; margin-bottom: 10px; font-size: 16px; }}
+                    .error-code-value {{ font-family: monospace; color: #d32f2f; margin-bottom: 15px; }}
+                    .error-description {{ color: #555; line-height: 1.6; }}
+                    .error-details {{ margin: 20px 0; padding: 15px; background: #fff3e0; border-radius: 4px; text-align: left; word-wrap: break-word; }}
+                    .back-link {{ display: inline-block; margin-top: 20px; padding: 10px 20px; background: #2196F3; color: white; text-decoration: none; border-radius: 4px; }}
+                    .back-link:hover {{ background: #1976D2; }}
+                    .info-box {{ margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 4px; border-left: 4px solid #2196F3; text-align: left; }}
+                    .info-title {{ font-weight: bold; color: #1565c0; margin-bottom: 8px; }}
+                    .info-text {{ color: #424242; font-size: 14px; line-height: 1.5; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="error-icon">⚠️</div>
+                    <div class="error">
+                        <h1>Auth0 Authentication Failed</h1>
+                    </div>
+                    
+                    <div class="error-code">
+                        <div class="error-code-title">Error Code:</div>
+                        <div class="error-code-value">{}</div>
+                        <div class="error-code-title">Error Description:</div>
+                        <div class="error-description">{}</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">Common Causes:</div>
+                        <div class="info-text">
+                            • <strong>access_denied:</strong> User cancelled the login or doesn't have access to the organization<br>
+                            • <strong>unauthorized:</strong> Invalid organization or missing permissions<br>
+                            • <strong>invalid_request:</strong> Malformed request parameters<br>
+                            • <strong>organization_required:</strong> Organization parameter is required but not provided
+                        </div>
+                    </div>
+
+                    <a href="/auth/auth0" class="back-link">← Return to Login</a>
+                </div>
+            </body>
+            </html>
+            "#,
+            error,
+            error_description
+        )))
+        .unwrap()
+        .into_response()
+}
+
+// Helper function to build error response
+fn build_error_response(error_msg: &str) -> axum::response::Response {
+    axum::response::Response::builder()
+        .status(axum::http::StatusCode::BAD_REQUEST)
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(axum::body::Body::from(format!(
+            r#"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Auth0 Error</title>
                 <style>
                     body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f5f5f5; }}
@@ -374,12 +489,14 @@ fn build_success_response(
     claims_json: &str,
 ) -> axum::response::Response {
     axum::response::Response::builder()
-        .header("Content-Type", "text/html")
+        .header("Content-Type", "text/html; charset=utf-8")
         .body(axum::body::Body::from(format!(
             r#"
             <!DOCTYPE html>
             <html>
             <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Auth0 Success</title>
                 <style>
                     body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}

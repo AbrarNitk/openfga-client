@@ -110,8 +110,10 @@ pub async fn login_with(
 
 #[derive(Debug, serde::Deserialize)]
 pub struct OpenIDCallbackParams {
-    pub code: String,
+    pub code: Option<String>,
     pub state: String,
+    pub error: Option<String>,
+    pub error_description: Option<String>,
 }
 
 pub async fn handle_openid_callback(
@@ -121,6 +123,40 @@ pub async fn handle_openid_callback(
     use openidconnect::{AuthorizationCode, OAuth2TokenResponse, TokenResponse};
 
     println!("OpenID Connect callback params: {:?}", params);
+
+    // Check if Dex/IdP returned an error
+    if let Some(error) = &params.error {
+        let error_description = params
+            .error_description
+            .as_deref()
+            .unwrap_or("No additional error description provided");
+
+        let error_msg = format!(
+            "OpenID Connect Error: {}\nDescription: {}",
+            error, error_description
+        );
+
+        println!("IdP returned error: {}", error_msg);
+
+        // Clean up state from store if present
+        {
+            let mut store = STATE_STORE.lock().unwrap();
+            store.remove(&params.state);
+        }
+
+        return build_openid_error_response(error, error_description);
+    }
+
+    // Extract authorization code (required if no error)
+    let code = match &params.code {
+        Some(c) => c,
+        None => {
+            println!("No authorization code provided in callback");
+            return build_generic_error_response(
+                "No authorization code received from identity provider",
+            );
+        }
+    };
 
     // Retrieve state data (connector_id and nonce) from state store
     let state_data = {
@@ -132,12 +168,9 @@ pub async fn handle_openid_callback(
         Some(data) => data,
         None => {
             println!("No state data found for state: {}", params.state);
-            return axum::response::Response::builder()
-                .status(axum::http::StatusCode::BAD_REQUEST)
-                .header("Content-Type", "text/html")
-                .body(axum::body::Body::from("Invalid state parameter"))
-                .unwrap()
-                .into_response();
+            return build_generic_error_response(
+                "Invalid state parameter. The session may have expired or the request is invalid.",
+            );
         }
     };
 
@@ -174,7 +207,7 @@ pub async fn handle_openid_callback(
 
     // Exchange authorization code for tokens
     let token_result = client
-        .exchange_code(AuthorizationCode::new(params.code.clone()))
+        .exchange_code(AuthorizationCode::new(code.clone()))
         .expect("Failed to exchange code")
         .request_async(&http_client)
         .await;
@@ -246,12 +279,14 @@ pub async fn handle_openid_callback(
 
             // Return success response with all token details
             let response = axum::response::Response::builder()
-                .header("Content-Type", "text/html")
+                .header("Content-Type", "text/html; charset=utf-8")
                 .body(format!(
                     r#"
                     <!DOCTYPE html>
                     <html>
                     <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <title>OpenID Connect Success</title>
                         <style>
                             body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
@@ -307,7 +342,7 @@ pub async fn handle_openid_callback(
                     </body>
                     </html>
                     "#,
-                    params.code,
+                    code,
                     params.state,
                     state_data.connector_id,
                     access_token,
@@ -330,12 +365,14 @@ pub async fn handle_openid_callback(
 
             let response = axum::response::Response::builder()
                 .status(axum::http::StatusCode::BAD_REQUEST)
-                .header("Content-Type", "text/html")
+                .header("Content-Type", "text/html; charset=utf-8")
                 .body(format!(
                     r#"
                     <!DOCTYPE html>
                     <html>
                     <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <title>OpenID Connect Error</title>
                         <style>
                             body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f5f5f5; }}
@@ -367,4 +404,111 @@ pub async fn handle_openid_callback(
             response
         }
     }
+}
+
+// Helper function to build OpenID Connect error response with error code and description
+fn build_openid_error_response(error: &str, error_description: &str) -> axum::response::Response {
+    axum::response::Response::builder()
+        .status(axum::http::StatusCode::BAD_REQUEST)
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(axum::body::Body::from(format!(
+            r#"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>OpenID Connect Authentication Error</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f5f5f5; }}
+                    .container {{ max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+                    .error {{ color: #f44336; font-size: 18px; }}
+                    .error-icon {{ font-size: 48px; color: #f44336; margin-bottom: 20px; }}
+                    .error-code {{ margin: 20px 0; padding: 15px; background: #ffebee; border-radius: 4px; border-left: 4px solid #f44336; text-align: left; }}
+                    .error-code-title {{ font-weight: bold; color: #c62828; margin-bottom: 10px; font-size: 16px; }}
+                    .error-code-value {{ font-family: monospace; color: #d32f2f; margin-bottom: 15px; }}
+                    .error-description {{ color: #555; line-height: 1.6; }}
+                    .back-link {{ display: inline-block; margin-top: 20px; padding: 10px 20px; background: #2196F3; color: white; text-decoration: none; border-radius: 4px; }}
+                    .back-link:hover {{ background: #1976D2; }}
+                    .info-box {{ margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 4px; border-left: 4px solid #2196F3; text-align: left; }}
+                    .info-title {{ font-weight: bold; color: #1565c0; margin-bottom: 8px; }}
+                    .info-text {{ color: #424242; font-size: 14px; line-height: 1.5; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="error-icon">⚠️</div>
+                    <div class="error">
+                        <h1>Authentication Failed</h1>
+                    </div>
+                    
+                    <div class="error-code">
+                        <div class="error-code-title">Error Code:</div>
+                        <div class="error-code-value">{}</div>
+                        <div class="error-code-title">Error Description:</div>
+                        <div class="error-description">{}</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-title">Common Causes:</div>
+                        <div class="info-text">
+                            • <strong>access_denied:</strong> User cancelled the login or doesn't have access<br>
+                            • <strong>unauthorized:</strong> Invalid organization or missing permissions<br>
+                            • <strong>invalid_request:</strong> Malformed request parameters<br>
+                            • <strong>server_error:</strong> Issue with the identity provider
+                        </div>
+                    </div>
+
+                    <a href="/auth" class="back-link">← Return to Login</a>
+                </div>
+            </body>
+            </html>
+            "#,
+            error,
+            error_description
+        )))
+        .unwrap()
+        .into_response()
+}
+
+// Helper function to build generic error response
+fn build_generic_error_response(error_msg: &str) -> axum::response::Response {
+    axum::response::Response::builder()
+        .status(axum::http::StatusCode::BAD_REQUEST)
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(axum::body::Body::from(format!(
+            r#"
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Authentication Error</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f5f5f5; }}
+                    .container {{ max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+                    .error {{ color: #f44336; font-size: 18px; }}
+                    .error-details {{ margin: 20px 0; padding: 15px; background: #ffebee; border-radius: 4px; text-align: left; word-wrap: break-word; }}
+                    .back-link {{ display: inline-block; margin-top: 20px; padding: 10px 20px; background: #2196F3; color: white; text-decoration: none; border-radius: 4px; }}
+                    .back-link:hover {{ background: #1976D2; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="error">
+                        <h1>✗ Authentication Failed!</h1>
+                    </div>
+                    <div class="error-details">
+                        <strong>Error Details:</strong><br>
+                        {}
+                    </div>
+                    <a href="/auth" class="back-link">Try Again</a>
+                </div>
+            </body>
+            </html>
+            "#,
+            error_msg
+        )))
+        .unwrap()
+        .into_response()
 }
