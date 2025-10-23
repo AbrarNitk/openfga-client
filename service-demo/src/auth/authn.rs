@@ -78,6 +78,9 @@ pub struct OrgAuthConfig {
     /// In production, this should be encrypted at rest
     pub session_secret: String,
     
+    /// Session configuration for this organization
+    pub session_config: crate::auth::models::SessionConfig,
+    
     /// Whether PKCE is required (should always be true for security)
     #[serde(default = "default_pkce_required")]
     pub pkce_required: bool,

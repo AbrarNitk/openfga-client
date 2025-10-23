@@ -18,10 +18,83 @@ use axum::{
 // Route Handlers
 // ============================================================================
 
-/// Placeholder for OAuth callback handler
-/// This will be implemented separately to handle the full token exchange
-async fn callback_handler_placeholder() -> &'static str {
-    "OAuth callback - implementation coming soon"
+/// OAuth callback handler
+/// 
+/// # Example Request
+/// GET /auth/callback?code=AUTH_CODE&state=SIGNED_STATE
+/// Host: acme.example.com
+/// Cookie: ...
+/// 
+/// # Response
+/// 302 Redirect to return_url with session cookie set
+async fn callback_handler(
+    State(state): State<AppState>,
+    Query(query): Query<crate::auth::callback::CallbackQuery>,
+    cookies: tower_cookies::Cookies,
+    headers: HeaderMap,
+) -> Result<axum::response::Redirect, axum::http::StatusCode> {
+    use crate::auth::authn_controller::extract_subdomain_from_host;
+    
+    // Extract Host header
+    let host = headers
+        .get("host")
+        .and_then(|v| v.to_str().ok())
+        .ok_or_else(|| {
+            tracing::error!("Missing or invalid Host header");
+            axum::http::StatusCode::BAD_REQUEST
+        })?;
+    
+    // Extract subdomain from host
+    let subdomain = extract_subdomain_from_host(host).ok_or_else(|| {
+        tracing::error!("Failed to extract subdomain from host: {}", host);
+        axum::http::StatusCode::BAD_REQUEST
+    })?;
+    
+    tracing::info!("Callback request for organization: {}", subdomain);
+    
+    // Get organization configuration
+    let org_config = crate::auth::authn_controller::get_org_config_by_subdomain(&state.db, &subdomain)
+        .await
+        .map_err(|e| {
+            tracing::error!("Failed to get org config: {:?}", e);
+            axum::http::StatusCode::NOT_FOUND
+        })?;
+    
+    // Extract client information
+    let client_ip = crate::auth::authn_controller::extract_client_ip(&headers);
+    let client_user_agent = crate::auth::authn_controller::extract_user_agent(&headers);
+    
+    // Create auth builder
+    let auth_builder = state.create_auth_builder().map_err(|e| {
+        tracing::error!("Failed to create auth builder: {:?}", e);
+        axum::http::StatusCode::INTERNAL_SERVER_ERROR
+    })?;
+    
+    // Handle callback
+    let result = crate::auth::callback::handle_callback(
+        &state.db,
+        &state.dex_config,
+        &org_config,
+        &auth_builder,
+        &query,
+        &cookies,
+        &client_ip,
+        &client_user_agent,
+    )
+    .await
+    .map_err(|e| {
+        tracing::error!("Callback handling failed: {:?}", e);
+        axum::http::StatusCode::INTERNAL_SERVER_ERROR
+    })?;
+    
+    tracing::info!(
+        "User {} logged in successfully with session {}",
+        result.user_id,
+        result.session_id
+    );
+    
+    // Redirect to return URL
+    Ok(axum::response::Redirect::to(&result.return_url))
 }
 
 /// Web login handler that extracts subdomain from Host header
@@ -131,8 +204,9 @@ pub fn auth_routes(state: AppState) -> Router {
         .route("/auth/login", get(login_with_subdomain_handler))
         // API-based login flow (subdomain from Host header)
         .route("/api/v2/login-with", post(api_login_handler))
-        // OAuth callback (handled separately - not shown here)
-        .route("/auth/callback", get(callback_handler_placeholder))
+        // OAuth callback (handles token exchange and session creation)
+        .route("/auth/callback", get(callback_handler))
+        .layer(tower_cookies::CookieManagerLayer::new()) // Add cookie middleware
         .with_state(state)
 }
 

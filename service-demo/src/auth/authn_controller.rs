@@ -160,7 +160,7 @@ pub async fn get_authorize_url_handler(
 // ============================================================================
 
 /// Extract client IP address from request headers
-fn extract_client_ip(headers: &HeaderMap) -> String {
+pub fn extract_client_ip(headers: &HeaderMap) -> String {
     // Check for X-Forwarded-For header (if behind proxy)
     if let Some(forwarded) = headers.get("x-forwarded-for") {
         if let Ok(forwarded_str) = forwarded.to_str() {
@@ -183,7 +183,7 @@ fn extract_client_ip(headers: &HeaderMap) -> String {
 }
 
 /// Extract user agent from request headers
-fn extract_user_agent(headers: &HeaderMap) -> String {
+pub fn extract_user_agent(headers: &HeaderMap) -> String {
     headers
         .get("user-agent")
         .and_then(|v| v.to_str().ok())
@@ -208,7 +208,7 @@ fn extract_user_agent(headers: &HeaderMap) -> String {
 /// FROM organizations
 /// WHERE subdomain = $1 AND active = true
 /// ```
-async fn get_org_config_by_subdomain(
+pub async fn get_org_config_by_subdomain(
     db: &sqlx::PgPool,
     subdomain: &str,
 ) -> anyhow::Result<OrgAuthConfig> {
@@ -220,6 +220,7 @@ async fn get_org_config_by_subdomain(
             dex_connector_id,
             auth0_organization_id,
             session_secret,
+            session_config,
             pkce_required,
             max_age_seconds,
             prompt,
@@ -243,6 +244,7 @@ struct OrgAuthConfigRow {
     dex_connector_id: String,
     auth0_organization_id: Option<String>,
     session_secret: String,
+    session_config: sqlx::types::JsonValue,
     pkce_required: bool,
     max_age_seconds: i32,
     prompt: Option<String>,
@@ -257,6 +259,8 @@ impl From<OrgAuthConfigRow> for OrgAuthConfig {
             dex_connector_id: row.dex_connector_id,
             auth0_organization_id: row.auth0_organization_id,
             session_secret: row.session_secret,
+            session_config: serde_json::from_value(row.session_config)
+                .unwrap_or_default(),
             pkce_required: row.pkce_required,
             max_age_seconds: row.max_age_seconds as u64,
             prompt: row.prompt,

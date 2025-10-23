@@ -1,6 +1,9 @@
 pub mod auth0;
 pub mod authn;
 pub mod authn_controller;
+pub mod callback;
+pub mod db_ops;
 pub mod home;
+pub mod models;
 pub mod oauth;
 pub mod openid;
