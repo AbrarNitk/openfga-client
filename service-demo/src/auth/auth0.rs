@@ -407,7 +407,7 @@ fn build_auth0_error_response(error: &str, error_description: &str) -> axum::res
                     <div class="error">
                         <h1>Auth0 Authentication Failed</h1>
                     </div>
-                    
+
                     <div class="error-code">
                         <div class="error-code-title">Error Code:</div>
                         <div class="error-code-value">{}</div>

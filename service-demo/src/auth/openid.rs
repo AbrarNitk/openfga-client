@@ -441,7 +441,7 @@ fn build_openid_error_response(error: &str, error_description: &str) -> axum::re
                     <div class="error">
                         <h1>Authentication Failed</h1>
                     </div>
-                    
+
                     <div class="error-code">
                         <div class="error-code-title">Error Code:</div>
                         <div class="error-code-value">{}</div>

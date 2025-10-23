@@ -1,3 +1,4 @@
+pub mod authn_routes;
 pub mod dex;
 pub mod fga;
 

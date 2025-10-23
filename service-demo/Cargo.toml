@@ -23,3 +23,11 @@ reqwest = "0.12.23"
 base64 = "0.22"
 anyhow = "*"
 openidconnect = { version = "4.0.1", features = ["reqwest"] }
+redis = { version = "0.32", features = ["tokio-comp", "connection-manager"] }
+hmac = "0.12"
+sha2 = "0.10"
+ulid = "1.1"
+url = "2.5"
+hex = "0.4"
+time = "0.3"
+rand = "0.8"
