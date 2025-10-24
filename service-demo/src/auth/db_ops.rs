@@ -1,7 +1,6 @@
 /// Database operations for authentication
-/// 
+///
 /// This module contains all database operations for users and sessions
-
 use super::models::{CreateSession, CreateUser, UpdateUserTokens, User, UserSession};
 use anyhow::{Context, Result};
 use chrono::{DateTime, Duration, Utc};
@@ -33,16 +32,12 @@ pub async fn find_user_by_provider(
     .fetch_optional(db)
     .await
     .context("Failed to find user by provider")?;
-    
+
     Ok(user)
 }
 
 /// Find user by email in organization
-pub async fn find_user_by_email(
-    db: &PgPool,
-    org_id: &str,
-    email: &str,
-) -> Result<Option<User>> {
+pub async fn find_user_by_email(db: &PgPool, org_id: &str, email: &str) -> Result<Option<User>> {
     let user = sqlx::query_as::<_, User>(
         r#"
         SELECT * FROM users
@@ -56,7 +51,7 @@ pub async fn find_user_by_email(
     .fetch_optional(db)
     .await
     .context("Failed to find user by email")?;
-    
+
     Ok(user)
 }
 
@@ -73,14 +68,14 @@ pub async fn find_user_by_id(db: &PgPool, user_id: &str) -> Result<Option<User>>
     .fetch_optional(db)
     .await
     .context("Failed to find user by ID")?;
-    
+
     Ok(user)
 }
 
 /// Create a new user
 pub async fn create_user(db: &PgPool, user: CreateUser) -> Result<User> {
     let now = Utc::now();
-    
+
     let created_user = sqlx::query_as::<_, User>(
         r#"
         INSERT INTO users (
@@ -111,14 +106,14 @@ pub async fn create_user(db: &PgPool, user: CreateUser) -> Result<User> {
     .fetch_one(db)
     .await
     .context("Failed to create user")?;
-    
+
     Ok(created_user)
 }
 
 /// Update user tokens and last login time
 pub async fn update_user_tokens(db: &PgPool, update: UpdateUserTokens) -> Result<User> {
     let now = Utc::now();
-    
+
     let updated_user = sqlx::query_as::<_, User>(
         r#"
         UPDATE users
@@ -141,7 +136,7 @@ pub async fn update_user_tokens(db: &PgPool, update: UpdateUserTokens) -> Result
     .fetch_one(db)
     .await
     .context("Failed to update user tokens")?;
-    
+
     Ok(updated_user)
 }
 
@@ -154,7 +149,7 @@ pub async fn update_user_profile(
     picture: Option<String>,
 ) -> Result<User> {
     let now = Utc::now();
-    
+
     let updated_user = sqlx::query_as::<_, User>(
         r#"
         UPDATE users
@@ -174,7 +169,7 @@ pub async fn update_user_profile(
     .fetch_one(db)
     .await
     .context("Failed to update user profile")?;
-    
+
     Ok(updated_user)
 }
 
@@ -185,7 +180,7 @@ pub async fn update_user_profile(
 /// Create a new session
 pub async fn create_session(db: &PgPool, session: CreateSession) -> Result<UserSession> {
     let now = Utc::now();
-    
+
     let created_session = sqlx::query_as::<_, UserSession>(
         r#"
         INSERT INTO user_sessions (
@@ -208,15 +203,12 @@ pub async fn create_session(db: &PgPool, session: CreateSession) -> Result<UserS
     .fetch_one(db)
     .await
     .context("Failed to create session")?;
-    
+
     Ok(created_session)
 }
 
 /// Find active session by session ID
-pub async fn find_session_by_id(
-    db: &PgPool,
-    session_id: &str,
-) -> Result<Option<UserSession>> {
+pub async fn find_session_by_id(db: &PgPool, session_id: &str) -> Result<Option<UserSession>> {
     let session = sqlx::query_as::<_, UserSession>(
         r#"
         SELECT * FROM user_sessions
@@ -229,17 +221,14 @@ pub async fn find_session_by_id(
     .fetch_optional(db)
     .await
     .context("Failed to find session")?;
-    
+
     Ok(session)
 }
 
 /// Update session activity timestamp
-pub async fn update_session_activity(
-    db: &PgPool,
-    session_id: &str,
-) -> Result<UserSession> {
+pub async fn update_session_activity(db: &PgPool, session_id: &str) -> Result<UserSession> {
     let now = Utc::now();
-    
+
     let updated_session = sqlx::query_as::<_, UserSession>(
         r#"
         UPDATE user_sessions
@@ -253,7 +242,7 @@ pub async fn update_session_activity(
     .fetch_one(db)
     .await
     .context("Failed to update session activity")?;
-    
+
     Ok(updated_session)
 }
 
@@ -264,7 +253,7 @@ pub async fn extend_session_expiration(
     new_expires_at: DateTime<Utc>,
 ) -> Result<UserSession> {
     let now = Utc::now();
-    
+
     let updated_session = sqlx::query_as::<_, UserSession>(
         r#"
         UPDATE user_sessions
@@ -280,7 +269,7 @@ pub async fn extend_session_expiration(
     .fetch_one(db)
     .await
     .context("Failed to extend session expiration")?;
-    
+
     Ok(updated_session)
 }
 
@@ -297,7 +286,7 @@ pub async fn invalidate_session(db: &PgPool, session_id: &str) -> Result<()> {
     .execute(db)
     .await
     .context("Failed to invalidate session")?;
-    
+
     Ok(())
 }
 
@@ -314,7 +303,7 @@ pub async fn invalidate_all_user_sessions(db: &PgPool, user_id: &str) -> Result<
     .execute(db)
     .await
     .context("Failed to invalidate all user sessions")?;
-    
+
     Ok(())
 }
 
@@ -329,7 +318,7 @@ pub async fn cleanup_expired_sessions(db: &PgPool) -> Result<u64> {
     .execute(db)
     .await
     .context("Failed to cleanup expired sessions")?;
-    
+
     Ok(result.rows_affected())
 }
 
@@ -348,7 +337,7 @@ pub async fn get_user_sessions(db: &PgPool, user_id: &str) -> Result<Vec<UserSes
     .fetch_all(db)
     .await
     .context("Failed to get user sessions")?;
-    
+
     Ok(sessions)
 }
 
@@ -357,16 +346,13 @@ pub async fn get_user_sessions(db: &PgPool, user_id: &str) -> Result<Vec<UserSes
 // ============================================================================
 
 /// Check if session should be extended based on threshold
-pub fn should_extend_session(
-    session: &UserSession,
-    threshold: f64,
-) -> bool {
+pub fn should_extend_session(session: &UserSession, threshold: f64) -> bool {
     let now = Utc::now();
     let total_duration = session.expires_at - session.created_at;
     let elapsed = now - session.created_at;
-    
+
     let elapsed_ratio = elapsed.num_seconds() as f64 / total_duration.num_seconds() as f64;
-    
+
     elapsed_ratio >= threshold
 }
 
@@ -398,11 +384,11 @@ pub fn generate_session_id() -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_should_extend_session() {
         let now = Utc::now();
-        
+
         // Session created 1 hour ago, expires in 1 hour (50% elapsed)
         let session = UserSession {
             session_id: "test".to_string(),
@@ -415,34 +401,33 @@ mod tests {
             expires_at: now + Duration::hours(1),
             last_activity_at: now,
         };
-        
+
         // Should extend with threshold 0.5 (50%)
         assert!(should_extend_session(&session, 0.5));
-        
+
         // Should not extend with threshold 0.6 (60%)
         assert!(!should_extend_session(&session, 0.6));
     }
-    
+
     #[test]
     fn test_calculate_new_expiration() {
         let now = Utc::now();
         let new_expiration = calculate_new_expiration(3600);
-        
+
         let diff = (new_expiration - now).num_seconds();
         assert!(diff >= 3599 && diff <= 3601);
     }
-    
+
     #[test]
     fn test_generate_ids() {
         let user_id1 = generate_user_id();
         let user_id2 = generate_user_id();
         assert_ne!(user_id1, user_id2);
         assert!(user_id1.starts_with("usr_"));
-        
+
         let session_id1 = generate_session_id();
         let session_id2 = generate_session_id();
         assert_ne!(session_id1, session_id2);
         assert!(session_id1.starts_with("ses_"));
     }
 }
-

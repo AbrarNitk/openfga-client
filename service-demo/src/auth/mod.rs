@@ -7,3 +7,4 @@ pub mod home;
 pub mod models;
 pub mod oauth;
 pub mod openid;
+pub mod redis_pool;

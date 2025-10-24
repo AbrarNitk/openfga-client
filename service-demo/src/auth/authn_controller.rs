@@ -1,14 +1,15 @@
 /// Authentication Controller
-/// 
+///
 /// Handles the OAuth2/OIDC authentication flow with Dex for multi-tenant organizations
-
 use super::authn::{AuthorizationUrlBuilder, AuthorizeRequest, DexAppConfig, OrgAuthConfig};
 use axum::{
+    Json,
     extract::{Query, State},
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Redirect, Response},
-    Json,
 };
+use bb8::Pool;
+use bb8_redis::RedisConnectionManager;
 use serde::{Deserialize, Serialize};
 
 // ============================================================================
@@ -42,19 +43,19 @@ pub struct ErrorResponse {
 pub struct AppState {
     /// PostgreSQL connection pool
     pub db: sqlx::PgPool,
-    
+
     /// Dex application configuration
     pub dex_config: DexAppConfig,
-    
-    /// Redis URL for creating auth builders
-    pub redis_url: String,
+
+    /// Redis connection pool for state management
+    pub redis_pool: Pool<RedisConnectionManager>,
 }
 
 impl AppState {
-    /// Create a new authorization URL builder
+    /// Create a new authorization URL builder using the Redis pool
     /// We create instances as needed since AuthorizationUrlBuilder is not Clone
-    pub fn create_auth_builder(&self) -> anyhow::Result<AuthorizationUrlBuilder> {
-        AuthorizationUrlBuilder::new(&self.redis_url)
+    pub async fn create_auth_builder(&self) -> anyhow::Result<AuthorizationUrlBuilder> {
+        AuthorizationUrlBuilder::new_with_pool(self.redis_pool.clone()).await
     }
 }
 
@@ -63,10 +64,10 @@ impl AppState {
 // ============================================================================
 
 /// Handler for initiating login flow
-/// 
+///
 /// # Endpoint
 /// GET /auth/login?return_url=/dashboard
-/// 
+///
 /// # Flow
 /// 1. Extract organization from subdomain or request
 /// 2. Load organization config from database
@@ -81,12 +82,12 @@ pub async fn login_handler(
     // 1. Extract client information
     let client_ip = extract_client_ip(&headers);
     let user_agent = extract_user_agent(&headers);
-    
+
     // 2. Lookup organization configuration by subdomain
     let org_config = get_org_config_by_subdomain(&app_state.db, &org_subdomain)
         .await
         .map_err(|e| AppError::NotFound(format!("Organization not found: {}", e)))?;
-    
+
     // 3. Build authorization request
     let authorize_request = AuthorizeRequest {
         dex_config: app_state.dex_config.clone(),
@@ -95,27 +96,28 @@ pub async fn login_handler(
         client_ip,
         client_user_agent: user_agent,
     };
-    
+
     // 4. Create auth builder and generate authorization URL
     let auth_builder = app_state
         .create_auth_builder()
+        .await
         .map_err(|e| AppError::InternalError(format!("Failed to create auth builder: {}", e)))?;
-    
+
     let auth_url = auth_builder
         .build_authorize_url(authorize_request)
         .await
         .map_err(|e| AppError::InternalError(format!("Failed to build auth URL: {}", e)))?;
-    
+
     // 5. Return redirect response
     Ok(Redirect::to(&auth_url).into_response())
 }
 
 /// Handler for getting authorization URL as JSON (for SPA/mobile apps)
-/// 
+///
 /// # Endpoint
 /// POST /api/v2/login-with
 /// Body: { "return_url": "/dashboard" }
-/// 
+///
 /// # Response
 /// { "authorize_url": "https://dex.example.com/authorize?..." }
 pub async fn get_authorize_url_handler(
@@ -127,31 +129,34 @@ pub async fn get_authorize_url_handler(
     // 1. Extract client information
     let client_ip = extract_client_ip(&headers);
     let user_agent = extract_user_agent(&headers);
-    
+
     // 2. Lookup organization configuration
     let org_config = get_org_config_by_subdomain(&app_state.db, &org_subdomain)
         .await
         .map_err(|e| AppError::NotFound(format!("Organization not found: {}", e)))?;
-    
+
     // 3. Build authorization request
     let authorize_request = AuthorizeRequest {
         dex_config: app_state.dex_config.clone(),
         org_config,
-        return_url: request.return_url.unwrap_or_else(|| "/dashboard".to_string()),
+        return_url: request
+            .return_url
+            .unwrap_or_else(|| "/dashboard".to_string()),
         client_ip,
         client_user_agent: user_agent,
     };
-    
+
     // 4. Create auth builder and generate authorization URL
     let auth_builder = app_state
         .create_auth_builder()
+        .await
         .map_err(|e| AppError::InternalError(format!("Failed to create auth builder: {}", e)))?;
-    
+
     let authorize_url = auth_builder
         .build_authorize_url(authorize_request)
         .await
         .map_err(|e| AppError::InternalError(format!("Failed to build auth URL: {}", e)))?;
-    
+
     Ok(Json(LoginResponse { authorize_url }))
 }
 
@@ -170,14 +175,14 @@ pub fn extract_client_ip(headers: &HeaderMap) -> String {
             }
         }
     }
-    
+
     // Check for X-Real-IP header
     if let Some(real_ip) = headers.get("x-real-ip") {
         if let Ok(ip_str) = real_ip.to_str() {
             return ip_str.to_string();
         }
     }
-    
+
     // Fallback to unknown
     "unknown".to_string()
 }
@@ -192,10 +197,10 @@ pub fn extract_user_agent(headers: &HeaderMap) -> String {
 }
 
 /// Get organization configuration from database by subdomain
-/// 
+///
 /// # Database Query Example
 /// ```sql
-/// SELECT 
+/// SELECT
 ///     org_id,
 ///     subdomain,
 ///     dex_connector_id,
@@ -232,7 +237,7 @@ pub async fn get_org_config_by_subdomain(
     .bind(subdomain)
     .fetch_one(db)
     .await?;
-    
+
     Ok(row.into())
 }
 
@@ -259,8 +264,7 @@ impl From<OrgAuthConfigRow> for OrgAuthConfig {
             dex_connector_id: row.dex_connector_id,
             auth0_organization_id: row.auth0_organization_id,
             session_secret: row.session_secret,
-            session_config: serde_json::from_value(row.session_config)
-                .unwrap_or_default(),
+            session_config: serde_json::from_value(row.session_config).unwrap_or_default(),
             pkce_required: row.pkce_required,
             max_age_seconds: row.max_age_seconds as u64,
             prompt: row.prompt,
@@ -292,12 +296,12 @@ impl IntoResponse for AppError {
                 (StatusCode::INTERNAL_SERVER_ERROR, "internal_error", msg)
             }
         };
-        
+
         let body = Json(ErrorResponse {
             error: error_type.to_string(),
             message,
         });
-        
+
         (status, body).into_response()
     }
 }
@@ -307,16 +311,16 @@ impl IntoResponse for AppError {
 // ============================================================================
 
 /// Extract organization subdomain from Host header
-/// 
+///
 /// # Example
 /// Host: acme.example.com -> "acme"
 /// Host: globex.example.com -> "globex"
 pub fn extract_subdomain_from_host(host: &str) -> Option<String> {
     // Expected format: <subdomain>.example.com
     // For development: <subdomain>.localhost:5001
-    
+
     let parts: Vec<&str> = host.split('.').collect();
-    
+
     if parts.len() >= 2 {
         // Return the first part as subdomain
         Some(parts[0].to_string())
@@ -328,7 +332,7 @@ pub fn extract_subdomain_from_host(host: &str) -> Option<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_extract_subdomain() {
         assert_eq!(
@@ -346,4 +350,3 @@ mod tests {
         assert_eq!(extract_subdomain_from_host("localhost"), None);
     }
 }
-

@@ -12,7 +12,7 @@ tokio = { version = "1.35.1", features = ["full"] }
 tower-http = { version = "0.5.0", features = ["trace"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
-sqlx = { version = "0.8.6", features = ["runtime-tokio", "postgres", "macros", "time", "uuid"] }
+sqlx = { version = "0.8.6", features = ["runtime-tokio", "postgres", "macros", "time", "uuid", "chrono"] }
 dotenv = "0.15.0"
 oauth2 = "5.0.0"
 lazy_static = "1.4.0"
@@ -24,6 +24,8 @@ base64 = "0.22"
 anyhow = "*"
 openidconnect = { version = "4.0.1", features = ["reqwest"] }
 redis = { version = "0.32", features = ["tokio-comp", "connection-manager"] }
+bb8 = "0.9"
+bb8-redis = "0.24"
 hmac = "0.12"
 sha2 = "0.10"
 ulid = "1.1"

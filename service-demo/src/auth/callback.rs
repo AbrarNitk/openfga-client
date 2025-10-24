@@ -1,7 +1,6 @@
 /// OAuth Callback Handler
-/// 
+///
 /// Handles the OAuth callback with token exchange, user creation/update, and session management
-
 use super::authn::{AuthorizationUrlBuilder, DexAppConfig, OrgAuthConfig};
 use super::db_ops;
 use super::models::{CreateSession, CreateUser, UpdateUserTokens};
@@ -9,9 +8,9 @@ use anyhow::{Context, Result};
 use chrono::{Duration, Utc};
 use hmac::{Hmac, Mac};
 use openidconnect::{
+    AuthorizationCode, ClientId, ClientSecret, IssuerUrl, Nonce, OAuth2TokenResponse,
+    PkceCodeVerifier, RedirectUrl,
     core::{CoreClient, CoreIdTokenClaims, CoreProviderMetadata, CoreTokenResponse},
-    AuthorizationCode, ClientId, ClientSecret, IssuerUrl, Nonce,
-    OAuth2TokenResponse, PkceCodeVerifier, RedirectUrl,
 };
 use reqwest::Client as HttpClient;
 use serde::{Deserialize, Serialize};
@@ -54,15 +53,14 @@ pub async fn exchange_code_for_tokens(
         .redirect(reqwest::redirect::Policy::none())
         .build()
         .context("Failed to build HTTP client")?;
-    
+
     // Parse issuer URL and discover provider metadata
-    let issuer_url = IssuerUrl::new(dex_config.issuer_url.clone())
-        .context("Invalid issuer URL")?;
-    
+    let issuer_url = IssuerUrl::new(dex_config.issuer_url.clone()).context("Invalid issuer URL")?;
+
     let provider_metadata = CoreProviderMetadata::discover_async(issuer_url, &http_client)
         .await
         .context("Failed to discover provider metadata")?;
-    
+
     // Create OIDC client
     let client = CoreClient::from_provider_metadata(
         provider_metadata,
@@ -70,10 +68,9 @@ pub async fn exchange_code_for_tokens(
         Some(ClientSecret::new(dex_config.client_secret.clone())),
     )
     .set_redirect_uri(
-        RedirectUrl::new(dex_config.redirect_url.clone())
-            .context("Invalid redirect URL")?,
+        RedirectUrl::new(dex_config.redirect_url.clone()).context("Invalid redirect URL")?,
     );
-    
+
     // Exchange authorization code for tokens with PKCE
     let token_response = client
         .exchange_code(AuthorizationCode::new(code.to_string()))
@@ -82,19 +79,22 @@ pub async fn exchange_code_for_tokens(
         .request_async(&http_client)
         .await
         .context("Failed to exchange authorization code for tokens")?;
-    
-    // Get ID token (this is already parsed and basic validation is done)           
-    let id_token = token_response.extra_fields().id_token().ok_or_else(|| anyhow::anyhow!("Server did not return an ID token"))?;
-    
+
+    // Get ID token (this is already parsed and basic validation is done)
+    let id_token = token_response
+        .extra_fields()
+        .id_token()
+        .ok_or_else(|| anyhow::anyhow!("Server did not return an ID token"))?;
+
     // Verify ID token signature and claims using JWKS
     let id_token_verifier = client.id_token_verifier();
     let nonce_verifier = Nonce::new(expected_nonce.to_string());
-    
+
     let claims = id_token
         .claims(&id_token_verifier, &nonce_verifier)
         .context("Failed to verify ID token")?
         .clone();
-    
+
     Ok((token_response.clone(), claims))
 }
 
@@ -103,25 +103,23 @@ pub async fn exchange_code_for_tokens(
 // ============================================================================
 
 /// Extract user information from verified ID token claims
-pub fn extract_user_info(claims: &CoreIdTokenClaims) -> (String, Option<String>, Option<String>, Option<String>) {
-    let email = claims
-        .email()
-        .map(|e| e.as_str().to_string());
-    
+pub fn extract_user_info(
+    claims: &CoreIdTokenClaims,
+) -> (String, Option<String>, Option<String>, Option<String>) {
+    let email = claims.email().map(|e| e.as_str().to_string());
+
     let name = claims
         .name()
         .and_then(|n| n.get(None))
         .map(|n| n.as_str().to_string());
-    
+
     let picture = claims
         .picture()
         .and_then(|p| p.get(None))
         .map(|p| p.as_str().to_string());
-    
-    let preferred_username = claims
-        .preferred_username()
-        .map(|u| u.as_str().to_string());
-    
+
+    let preferred_username = claims.preferred_username().map(|u| u.as_str().to_string());
+
     (
         email.unwrap_or_else(|| format!("{}@unknown", claims.subject().as_str())),
         name,
@@ -145,21 +143,16 @@ pub async fn create_or_update_user(
     // Extract user information from claims
     let (email, name, picture, preferred_username) = extract_user_info(claims);
     let provider_user_id = claims.subject().as_str().to_string();
-    
+
     // Calculate token expiration
     let token_expires_at = token_response
         .expires_in()
         .map(|exp| Utc::now() + Duration::seconds(exp.as_secs() as i64));
-    
+
     // Try to find existing user
-    let existing_user = db_ops::find_user_by_provider(
-        db,
-        org_id,
-        &provider_user_id,
-        auth_provider,
-    )
-    .await?;
-    
+    let existing_user =
+        db_ops::find_user_by_provider(db, org_id, &provider_user_id, auth_provider).await?;
+
     // Get tokens as strings
     let access_token = token_response.access_token().secret().clone();
     let refresh_token = token_response.refresh_token().map(|t| t.secret().clone());
@@ -167,7 +160,7 @@ pub async fn create_or_update_user(
         .extra_fields()
         .id_token()
         .map(|t| t.to_string());
-    
+
     match existing_user {
         Some(user) => {
             // Update existing user's tokens and profile
@@ -178,9 +171,9 @@ pub async fn create_or_update_user(
                 id_token,
                 token_expires_at,
             };
-            
+
             db_ops::update_user_tokens(db, update).await?;
-            
+
             // Update profile if information has changed
             if name.is_some() || picture.is_some() {
                 db_ops::update_user_profile(
@@ -189,15 +182,16 @@ pub async fn create_or_update_user(
                     name,
                     None, // display_name
                     picture,
-                ).await?;
+                )
+                .await?;
             }
-            
+
             Ok(user.user_id)
         }
         None => {
             // Create new user
             let user_id = db_ops::generate_user_id();
-            
+
             let create_user = CreateUser {
                 user_id: user_id.clone(),
                 email,
@@ -212,7 +206,7 @@ pub async fn create_or_update_user(
                 id_token,
                 token_expires_at,
             };
-            
+
             let user = db_ops::create_user(db, create_user).await?;
             Ok(user.user_id)
         }
@@ -234,7 +228,7 @@ pub async fn create_user_session(
 ) -> Result<String> {
     let session_id = db_ops::generate_session_id();
     let expires_at = Utc::now() + Duration::seconds(session_config.max_age_seconds);
-    
+
     let create_session = CreateSession {
         session_id: session_id.clone(),
         user_id: user_id.to_string(),
@@ -243,9 +237,9 @@ pub async fn create_user_session(
         user_agent: user_agent.to_string(),
         expires_at,
     };
-    
+
     db_ops::create_session(db, create_session).await?;
-    
+
     Ok(session_id)
 }
 
@@ -257,7 +251,7 @@ pub async fn create_user_session(
 fn sign_session_id(session_id: &str, secret: &str) -> Result<String> {
     let mut mac = HmacSha256::new_from_slice(secret.as_bytes())
         .context("Failed to create HMAC for cookie signing")?;
-    
+
     mac.update(session_id.as_bytes());
     let result = mac.finalize();
     Ok(hex::encode(result.into_bytes()))
@@ -272,21 +266,21 @@ fn create_signed_cookie_value(session_id: &str, secret: &str) -> Result<String> 
 /// Verify and extract session ID from signed cookie
 pub fn verify_and_extract_session_id(cookie_value: &str, secret: &str) -> Result<String> {
     let parts: Vec<&str> = cookie_value.split('.').collect();
-    
+
     if parts.len() != 2 {
         anyhow::bail!("Invalid cookie format");
     }
-    
+
     let session_id = parts[0];
     let signature = parts[1];
-    
+
     // Verify signature
     let expected_signature = sign_session_id(session_id, secret)?;
-    
+
     if signature != expected_signature {
         anyhow::bail!("Invalid cookie signature");
     }
-    
+
     Ok(session_id.to_string())
 }
 
@@ -297,20 +291,21 @@ pub fn set_session_cookie(
     org_config: &OrgAuthConfig,
 ) -> Result<()> {
     let session_config = &org_config.session_config;
-    
+
     // Create signed cookie value
-    let cookie_value = create_signed_cookie_value(session_id, &session_config.cookie_signing_secret)?;
-    
+    let cookie_value =
+        create_signed_cookie_value(session_id, &session_config.cookie_signing_secret)?;
+
     // Build cookie
     let mut cookie = Cookie::new(session_config.cookie_name.clone(), cookie_value);
-    
+
     // Set cookie attributes
     cookie.set_http_only(session_config.http_only);
     cookie.set_secure(session_config.secure);
     cookie.set_max_age(tower_cookies::cookie::time::Duration::seconds(
         session_config.max_age_seconds,
     ));
-    
+
     // Set SameSite attribute
     match &session_config.same_site {
         crate::auth::models::SameSitePolicy::Strict => {
@@ -323,18 +318,18 @@ pub fn set_session_cookie(
             cookie.set_same_site(tower_cookies::cookie::SameSite::None);
         }
     }
-    
+
     // Set domain if specified
     if let Some(domain) = &session_config.cookie_domain {
         cookie.set_domain(domain.clone());
     }
-    
+
     // Set path
     cookie.set_path("/");
-    
+
     // Add cookie to response
     cookies.add(cookie);
-    
+
     Ok(())
 }
 
@@ -355,15 +350,10 @@ pub async fn handle_callback(
 ) -> Result<CallbackResult> {
     // 1. Retrieve and validate auth state from Redis
     let auth_state = auth_builder
-        .retrieve_auth_state(
-            &query.state,
-            org_config,
-            client_ip,
-            client_user_agent,
-        )
+        .retrieve_auth_state(&query.state, org_config, client_ip, client_user_agent)
         .await
         .context("Failed to retrieve or validate auth state")?;
-    
+
     // 2. Exchange authorization code for tokens with automatic ID token verification
     // This includes:
     // - Token exchange with PKCE
@@ -378,7 +368,7 @@ pub async fn handle_callback(
     )
     .await
     .context("Failed to exchange code for tokens and verify ID token")?;
-    
+
     // 3. Create or update user
     let user_id = create_or_update_user(
         db,
@@ -389,7 +379,7 @@ pub async fn handle_callback(
     )
     .await
     .context("Failed to create or update user")?;
-    
+
     // 4. Create session
     let session_id = create_user_session(
         db,
@@ -401,17 +391,16 @@ pub async fn handle_callback(
     )
     .await
     .context("Failed to create session")?;
-    
+
     // 5. Set session cookie
-    set_session_cookie(cookies, &session_id, org_config)
-        .context("Failed to set session cookie")?;
-    
+    set_session_cookie(cookies, &session_id, org_config).context("Failed to set session cookie")?;
+
     // 6. Invalidate auth state (one-time use)
     auth_builder
         .consume_auth_state(&query.state, org_config)
         .await
         .context("Failed to invalidate auth state")?;
-    
+
     Ok(CallbackResult {
         user_id,
         session_id,
@@ -426,30 +415,28 @@ pub async fn handle_callback(
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_signed_cookie() {
         let session_id = "ses_abc123";
         let secret = "test-secret-key";
-        
+
         let cookie_value = create_signed_cookie_value(session_id, secret).unwrap();
         let extracted = verify_and_extract_session_id(&cookie_value, secret).unwrap();
-        
+
         assert_eq!(extracted, session_id);
-        
+
         // Test with wrong secret
         let result = verify_and_extract_session_id(&cookie_value, "wrong-secret");
         assert!(result.is_err());
     }
-    
+
     #[test]
     fn test_extract_user_info() {
         // This would require creating a CoreIdTokenClaims which is complex
         // User info extraction is tested via integration tests
     }
-    
+
     // Note: Token exchange and ID token verification tests require
     // either mocking the OIDC provider or using integration tests with a real Dex instance
 }
-
-

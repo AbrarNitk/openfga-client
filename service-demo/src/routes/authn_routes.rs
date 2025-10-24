@@ -1,17 +1,15 @@
 /// Authentication Routes
-/// 
+///
 /// This module contains route definitions for the multi-tenant authentication flow
-
 use crate::auth::authn_controller::{
-    extract_subdomain_from_host, get_authorize_url_handler, login_handler, AppState,
-    LoginRequest,
+    AppState, LoginRequest, extract_subdomain_from_host, get_authorize_url_handler, login_handler,
 };
 use axum::{
+    Json, Router,
     extract::{Query, State},
     http::HeaderMap,
     response::Response,
     routing::{get, post},
-    Json, Router,
 };
 
 // ============================================================================
@@ -19,12 +17,12 @@ use axum::{
 // ============================================================================
 
 /// OAuth callback handler
-/// 
+///
 /// # Example Request
 /// GET /auth/callback?code=AUTH_CODE&state=SIGNED_STATE
 /// Host: acme.example.com
 /// Cookie: ...
-/// 
+///
 /// # Response
 /// 302 Redirect to return_url with session cookie set
 async fn callback_handler(
@@ -34,7 +32,7 @@ async fn callback_handler(
     headers: HeaderMap,
 ) -> Result<axum::response::Redirect, axum::http::StatusCode> {
     use crate::auth::authn_controller::extract_subdomain_from_host;
-    
+
     // Extract Host header
     let host = headers
         .get("host")
@@ -43,33 +41,34 @@ async fn callback_handler(
             tracing::error!("Missing or invalid Host header");
             axum::http::StatusCode::BAD_REQUEST
         })?;
-    
+
     // Extract subdomain from host
     let subdomain = extract_subdomain_from_host(host).ok_or_else(|| {
         tracing::error!("Failed to extract subdomain from host: {}", host);
         axum::http::StatusCode::BAD_REQUEST
     })?;
-    
+
     tracing::info!("Callback request for organization: {}", subdomain);
-    
+
     // Get organization configuration
-    let org_config = crate::auth::authn_controller::get_org_config_by_subdomain(&state.db, &subdomain)
-        .await
-        .map_err(|e| {
-            tracing::error!("Failed to get org config: {:?}", e);
-            axum::http::StatusCode::NOT_FOUND
-        })?;
-    
+    let org_config =
+        crate::auth::authn_controller::get_org_config_by_subdomain(&state.db, &subdomain)
+            .await
+            .map_err(|e| {
+                tracing::error!("Failed to get org config: {:?}", e);
+                axum::http::StatusCode::NOT_FOUND
+            })?;
+
     // Extract client information
     let client_ip = crate::auth::authn_controller::extract_client_ip(&headers);
     let client_user_agent = crate::auth::authn_controller::extract_user_agent(&headers);
-    
+
     // Create auth builder
-    let auth_builder = state.create_auth_builder().map_err(|e| {
+    let auth_builder = state.create_auth_builder().await.map_err(|e| {
         tracing::error!("Failed to create auth builder: {:?}", e);
         axum::http::StatusCode::INTERNAL_SERVER_ERROR
     })?;
-    
+
     // Handle callback
     let result = crate::auth::callback::handle_callback(
         &state.db,
@@ -86,23 +85,23 @@ async fn callback_handler(
         tracing::error!("Callback handling failed: {:?}", e);
         axum::http::StatusCode::INTERNAL_SERVER_ERROR
     })?;
-    
+
     tracing::info!(
         "User {} logged in successfully with session {}",
         result.user_id,
         result.session_id
     );
-    
+
     // Redirect to return URL
     Ok(axum::response::Redirect::to(&result.return_url))
 }
 
 /// Web login handler that extracts subdomain from Host header
-/// 
+///
 /// # Example Request
 /// GET https://acme.example.com/auth/login?return_url=/dashboard
 /// Host: acme.example.com
-/// 
+///
 /// # Response
 /// 302 Redirect to Dex authorization URL
 async fn login_with_subdomain_handler(
@@ -118,19 +117,19 @@ async fn login_with_subdomain_handler(
             tracing::error!("Missing or invalid Host header");
             axum::http::StatusCode::BAD_REQUEST
         })?;
-    
+
     // Extract subdomain from host
     let subdomain = extract_subdomain_from_host(host).ok_or_else(|| {
         tracing::error!("Failed to extract subdomain from host: {}", host);
         axum::http::StatusCode::BAD_REQUEST
     })?;
-    
+
     tracing::info!(
         "Login request for organization subdomain: {}, return_url: {:?}",
         subdomain,
         query.return_url
     );
-    
+
     // Call the main login handler
     login_handler(State(state), Query(query), headers, subdomain)
         .await
@@ -141,16 +140,16 @@ async fn login_with_subdomain_handler(
 }
 
 /// API login handler for SPAs and mobile apps
-/// 
+///
 /// # Example Request
 /// POST https://acme.example.com/api/v2/login-with
 /// Host: acme.example.com
 /// Content-Type: application/json
-/// 
+///
 /// {
 ///   "return_url": "/dashboard"
 /// }
-/// 
+///
 /// # Example Response
 /// {
 ///   "authorize_url": "https://dex.example.com/authorize?client_id=..."
@@ -168,19 +167,19 @@ async fn api_login_handler(
             tracing::error!("Missing or invalid Host header");
             axum::http::StatusCode::BAD_REQUEST
         })?;
-    
+
     // Extract subdomain from host
     let subdomain = extract_subdomain_from_host(host).ok_or_else(|| {
         tracing::error!("Failed to extract subdomain from host: {}", host);
         axum::http::StatusCode::BAD_REQUEST
     })?;
-    
+
     tracing::info!(
         "API login request for organization subdomain: {}, return_url: {:?}",
         subdomain,
         request.return_url
     );
-    
+
     // Call the authorization URL handler
     let response = get_authorize_url_handler(State(state), headers, subdomain, Json(request))
         .await
@@ -188,7 +187,7 @@ async fn api_login_handler(
             tracing::error!("Get authorize URL error: {:?}", e);
             axum::http::StatusCode::INTERNAL_SERVER_ERROR
         })?;
-    
+
     Ok(Json(serde_json::to_value(response.0).unwrap()))
 }
 
@@ -266,7 +265,7 @@ async fn main() -> anyhow::Result<()> {
     // Start server
     let addr = "0.0.0.0:5001";
     tracing::info!("Server listening on {}", addr);
-    
+
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
 
@@ -274,4 +273,3 @@ async fn main() -> anyhow::Result<()> {
 }
 ```
 */
-

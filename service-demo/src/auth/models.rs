@@ -1,7 +1,6 @@
 /// Database models for authentication
-/// 
+///
 /// This module contains the database models for users, sessions, and related entities
-
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
@@ -15,49 +14,49 @@ use sqlx::FromRow;
 pub struct User {
     /// Unique user ID
     pub user_id: String,
-    
+
     /// User email address
     pub email: String,
-    
+
     /// User's full name
     pub name: Option<String>,
-    
+
     /// User's display name
     pub display_name: Option<String>,
-    
+
     /// Profile picture URL
     pub picture: Option<String>,
-    
+
     /// Authentication provider (e.g., "auth0", "google")
     pub auth_provider: String,
-    
+
     /// Provider-specific user ID (the 'sub' claim from ID token)
     pub provider_user_id: String,
-    
+
     /// Organization ID
     pub org_id: String,
-    
+
     /// Access token (encrypted at rest in production)
     pub access_token: Option<String>,
-    
+
     /// Refresh token (encrypted at rest in production)
     pub refresh_token: Option<String>,
-    
+
     /// ID token (encrypted at rest in production)
     pub id_token: Option<String>,
-    
+
     /// Token expiration time
     pub token_expires_at: Option<DateTime<Utc>>,
-    
+
     /// Whether user is active
     pub is_active: bool,
-    
+
     /// When user was created
     pub created_at: DateTime<Utc>,
-    
+
     /// Last login timestamp
     pub last_login_at: DateTime<Utc>,
-    
+
     /// Last updated timestamp
     pub updated_at: DateTime<Utc>,
 }
@@ -98,28 +97,28 @@ pub struct UpdateUserTokens {
 pub struct UserSession {
     /// Unique session ID
     pub session_id: String,
-    
+
     /// User ID
     pub user_id: String,
-    
+
     /// Organization ID
     pub org_id: String,
-    
+
     /// Client IP address
     pub ip_address: String,
-    
+
     /// User agent string
     pub user_agent: String,
-    
+
     /// Whether session is active
     pub is_active: bool,
-    
+
     /// When session was created
     pub created_at: DateTime<Utc>,
-    
+
     /// When session expires
     pub expires_at: DateTime<Utc>,
-    
+
     /// Last activity timestamp
     pub last_activity_at: DateTime<Utc>,
 }
@@ -145,33 +144,33 @@ pub struct SessionConfig {
     /// Cookie name (e.g., "session_id", "auth_token")
     #[serde(default = "default_cookie_name")]
     pub cookie_name: String,
-    
+
     /// Cookie domain (e.g., ".example.com" for subdomain sharing)
     pub cookie_domain: Option<String>,
-    
+
     /// Whether cookie should only be sent over HTTPS
     #[serde(default = "default_secure")]
     pub secure: bool,
-    
+
     /// Whether cookie should be HTTP-only (not accessible via JavaScript)
     #[serde(default = "default_http_only")]
     pub http_only: bool,
-    
+
     /// SameSite cookie attribute
     #[serde(default = "default_same_site")]
     pub same_site: SameSitePolicy,
-    
+
     /// Session duration in seconds
     #[serde(default = "default_max_age")]
     pub max_age_seconds: i64,
-    
+
     /// Secret for signing cookies (should be encrypted at rest, rotatable)
     pub cookie_signing_secret: String,
-    
+
     /// Whether to extend session on activity (sliding expiration)
     #[serde(default = "default_session_extension")]
     pub session_extension_enabled: bool,
-    
+
     /// Threshold for session extension (e.g., 0.5 = extend when 50% expired)
     #[serde(default = "default_extension_threshold")]
     pub session_extension_threshold: f64,
@@ -259,34 +258,34 @@ pub struct TokenResponse {
 pub struct IdTokenClaims {
     /// Subject (user ID from provider)
     pub sub: String,
-    
+
     /// Issuer
     pub iss: String,
-    
+
     /// Audience
     pub aud: String,
-    
+
     /// Expiration time
     pub exp: i64,
-    
+
     /// Issued at
     pub iat: i64,
-    
+
     /// Nonce (must match the one we sent)
     pub nonce: String,
-    
+
     /// Email
     pub email: Option<String>,
-    
+
     /// Email verified
     pub email_verified: Option<bool>,
-    
+
     /// Name
     pub name: Option<String>,
-    
+
     /// Picture URL
     pub picture: Option<String>,
-    
+
     /// Preferred username
     pub preferred_username: Option<String>,
 }
@@ -342,4 +341,3 @@ CREATE INDEX IF NOT EXISTS idx_sessions_org_id ON user_sessions(org_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON user_sessions(expires_at);
 CREATE INDEX IF NOT EXISTS idx_sessions_active ON user_sessions(is_active) WHERE is_active = TRUE;
 "#;
-
